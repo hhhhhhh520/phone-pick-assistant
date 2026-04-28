@@ -22,7 +22,23 @@
       "Bash(npx tsc *)",
       "Bash(curl -s \"http://localhost:5175/src/index.css\")",
       "Bash(taskkill /F /IM node.exe)",
-      "Bash(rm -rf node_modules/.vite)"
+      "Bash(rm -rf node_modules/.vite)",
+      "Bash(taskkill /F /IM python.exe)",
+      "Bash(.venv/Scripts/uvicorn backend.main:app --reload --port 8000)",
+      "Bash(curl -s http://localhost:8000/health)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :8000)",
+      "Bash(taskkill /F /PID 19780)",
+      "Bash(taskkill /F /PID 26984)",
+      "Bash(curl -X POST http://127.0.0.1:8000/api/chat -H \"Content-Type: application/json\" -d '{\"message\":\"iPhone 15和小米14哪个好\"}')",
+      "Bash(.venv/Scripts/uvicorn backend.main:app --host 127.0.0.1 --port 8001)",
+      "Bash(curl -s http://127.0.0.1:8001/health)",
+      "Bash(.venv/Scripts/python -c ' *)",
+      "Bash(curl *)",
+      "Bash(.venv/Scripts/uvicorn backend.main:app --host 0.0.0.0 --port 8001)",
+      "Bash(findstr :8001)",
+      "Bash(taskkill /F /PID 14764)",
+      "Bash(taskkill /F /PID 33828)"
     ]
   }
 }

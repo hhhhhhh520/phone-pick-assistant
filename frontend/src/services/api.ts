@@ -1,6 +1,6 @@
 import type { Phone } from '../types';
 
-const API_BASE = 'http://localhost:8000';
+const API_BASE = 'http://localhost:8002';
 
 export async function* chatStream(message: string): AsyncGenerator<{ type: string; data: unknown }> {
   const response = await fetch(`${API_BASE}/api/chat`, {

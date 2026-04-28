@@ -50,10 +50,11 @@ export function ChatWindow() {
         }
       }
     } catch (error) {
+      console.error('Chat error:', error);
       setMessages((prev) =>
         prev.map((m) =>
           m.id === assistantMessage.id
-            ? { ...m, content: '抱歉，发生了错误，请稍后再试。' }
+            ? { ...m, content: `抱歉，发生了错误：${error instanceof Error ? error.message : String(error)}` }
             : m
         )
       );
