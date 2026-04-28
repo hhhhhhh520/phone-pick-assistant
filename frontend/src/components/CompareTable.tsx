@@ -27,7 +27,7 @@ export function CompareTable({ phones }: CompareTableProps) {
     { label: '处理器', value1: phone1.processor, value2: phone2.processor, highlight: isDifferent(phone1.processor, phone2.processor) },
     { label: '内存', value1: `${phone1.ram}GB`, value2: `${phone2.ram}GB`, highlight: isDifferent(phone1.ram, phone2.ram) },
     { label: '存储', value1: `${phone1.storage}GB`, value2: `${phone2.storage}GB`, highlight: isDifferent(phone1.storage, phone2.storage) },
-    { label: '屏幕', value1: `${phone1.screen.size}" ${phone1.screen.refresh}Hz`, value2: `${phone2.screen.size}" ${phone2.screen.refresh}Hz` },
+    { label: '屏幕', value1: `${phone1.screen.size}" ${phone1.screen.refresh}Hz`, value2: `${phone2.screen.size}" ${phone2.screen.refresh}Hz`, highlight: isDifferent(phone1.screen.size, phone2.screen.size) || isDifferent(phone1.screen.refresh, phone2.screen.refresh) },
     { label: '电池', value1: `${phone1.battery}mAh`, value2: `${phone2.battery}mAh`, highlight: isDifferent(phone1.battery, phone2.battery) },
     { label: '主摄', value1: `${phone1.camera.main}MP`, value2: `${phone2.camera.main}MP`, highlight: isDifferent(phone1.camera.main, phone2.camera.main) },
     { label: '快充', value1: `${phone1.charging.wired}W`, value2: `${phone2.charging.wired}W`, highlight: isDifferent(phone1.charging.wired, phone2.charging.wired) },
