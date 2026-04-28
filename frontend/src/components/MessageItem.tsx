@@ -1,5 +1,6 @@
 import type { Message } from '../types';
 import { PhoneCard } from './PhoneCard';
+import { CompareTable } from './CompareTable';
 
 interface MessageItemProps {
   message: Message;
@@ -7,6 +8,7 @@ interface MessageItemProps {
 
 export function MessageItem({ message }: MessageItemProps) {
   const isUser = message.role === 'user';
+  const isCompare = message.isCompare ?? false;
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
@@ -20,11 +22,15 @@ export function MessageItem({ message }: MessageItemProps) {
         <p className="whitespace-pre-wrap">{message.content}</p>
 
         {message.phones && message.phones.length > 0 && (
-          <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {message.phones.map((phone) => (
-              <PhoneCard key={phone.id} phone={phone} />
-            ))}
-          </div>
+          isCompare ? (
+            <CompareTable phones={message.phones} />
+          ) : (
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {message.phones.map((phone) => (
+                <PhoneCard key={phone.id} phone={phone} />
+              ))}
+            </div>
+          )
         )}
       </div>
     </div>

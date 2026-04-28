@@ -33,14 +33,17 @@ export function ChatWindow() {
     setMessages((prev) => [...prev, assistantMessage]);
 
     let phones: Phone[] = [];
+    let isCompare = false;
 
     try {
       for await (const event of chatStream(content)) {
-        if (event.type === 'phones') {
+        if (event.type === 'intent') {
+          isCompare = (event.data as string) === 'compare';
+        } else if (event.type === 'phones') {
           phones = event.data as Phone[];
           setMessages((prev) =>
             prev.map((m) =>
-              m.id === assistantMessage.id ? { ...m, phones } : m
+              m.id === assistantMessage.id ? { ...m, phones, isCompare } : m
             )
           );
         } else if (event.type === 'content') {

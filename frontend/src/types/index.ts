@@ -38,6 +38,7 @@ export interface Message {
   role: 'user' | 'assistant';
   content: string;
   phones?: Phone[];
+  isCompare?: boolean;  // 是否为对比消息
   timestamp: Date;
 }
 
