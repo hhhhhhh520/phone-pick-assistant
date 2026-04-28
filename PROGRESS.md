@@ -21,17 +21,23 @@
 | Task 6 | 前端React项目初始化 | frontend/ | 2026-04-28 |
 | Task 7 | 前端聊天组件 | frontend/src/components/ | 2026-04-28 |
 | Task 8 | 集成测试与文档 | tests/, README.md | 2026-04-28 |
+| Task 9 | 启动验证 | 端到端测试通过 | 2026-04-28 |
+| Task 10 | 搜索历史 | useSearchHistory.ts, SearchHistory.tsx | 2026-04-28 |
+| Task 11 | 手机图片 | domain.py, PhoneCard.tsx | 2026-04-28 |
+| Task 12 | 对比表格 | CompareTable.tsx | 2026-04-28 |
+| Task 13 | 多轮对话 | session.py, useSession.ts | 2026-04-28 |
 
 ### ⏳ 进行中
 | 任务 | 状态 | 预计完成 |
 |------|------|----------|
-| Task 9 | 启动验证 | 待测试 |
+| 无 | - | - |
 
 ### 📋 待办
 | 优先级 | 任务 | 说明 |
 |--------|------|------|
-| - | 配置DeepSeek API Key | 在.env中填入真实API密钥 |
-| - | 端到端测试 | 测试完整对话流程 |
+| P5 | Task 5: 价格实时性 | 暂不实现，待正式上线再考虑 |
+
+详细计划见: `docs/FORMAL_VERSION_PLAN.md`
 
 ## 修改历史
 
