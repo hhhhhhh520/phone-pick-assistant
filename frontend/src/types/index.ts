@@ -41,3 +41,10 @@ export interface Message {
 }
 
 export type IntentType = 'recommend' | 'compare' | 'filter';
+
+export interface SearchHistoryItem {
+  id: string;
+  query: string;
+  phones: Phone[];
+  timestamp: number;
+}
