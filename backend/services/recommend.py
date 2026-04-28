@@ -1,7 +1,7 @@
 from backend.services.llm import LLMService
 from backend.models.domain import Phone
 from backend.models.schemas import IntentType
-from typing import List, AsyncGenerator
+from typing import List, AsyncGenerator, Dict, Optional
 
 RECOMMEND_PROMPT = """你是一个专业的手机选购顾问。
 
@@ -30,22 +30,45 @@ class RecommendService:
     def __init__(self):
         self.llm = LLMService()
 
-    async def recommend(self, user_need: str, phones: List[Phone]) -> AsyncGenerator[str, None]:
+    async def recommend(
+        self,
+        user_need: str,
+        phones: List[Phone],
+        history: Optional[List[Dict]] = None
+    ) -> AsyncGenerator[str, None]:
         """推荐手机"""
         phones_info = "\n".join([
             f"- {p.brand} {p.model}: {p.price}元, {p.processor}, {p.ram}GB内存, {p.camera_main}万像素主摄"
             for p in phones[:5]
         ])
         prompt = RECOMMEND_PROMPT.format(user_need=user_need, phones=phones_info)
-        async for chunk in self.llm.chat_stream([{"role": "user", "content": prompt}]):
+
+        # 构建消息列表，包含历史
+        messages = []
+        if history:
+            messages.extend(history)
+        messages.append({"role": "user", "content": prompt})
+
+        async for chunk in self.llm.chat_stream(messages):
             yield chunk
 
-    async def compare(self, phones: List[Phone]) -> AsyncGenerator[str, None]:
+    async def compare(
+        self,
+        phones: List[Phone],
+        history: Optional[List[Dict]] = None
+    ) -> AsyncGenerator[str, None]:
         """对比手机"""
         phones_info = "\n".join([
             f"- {p.brand} {p.model}: {p.price}元, {p.processor}, {p.ram}GB内存, {p.camera_main}万像素, {p.battery}mAh电池"
             for p in phones
         ])
         prompt = COMPARE_PROMPT.format(phones=phones_info)
-        async for chunk in self.llm.chat_stream([{"role": "user", "content": prompt}]):
+
+        # 构建消息列表，包含历史
+        messages = []
+        if history:
+            messages.extend(history)
+        messages.append({"role": "user", "content": prompt})
+
+        async for chunk in self.llm.chat_stream(messages):
             yield chunk

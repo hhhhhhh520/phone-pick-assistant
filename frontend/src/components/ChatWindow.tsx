@@ -5,11 +5,13 @@ import { MessageList } from './MessageList';
 import { InputBar } from './InputBar';
 import { SearchHistory } from './SearchHistory';
 import { useSearchHistory } from '../hooks/useSearchHistory';
+import { useSession } from '../hooks/useSession';
 
 export function ChatWindow() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const { history, addHistory, clearHistory } = useSearchHistory();
+  const { sessionId, saveSession } = useSession();
 
   const handleSend = async (content: string) => {
     const userMessage: Message = {
@@ -36,8 +38,11 @@ export function ChatWindow() {
     let isCompare = false;
 
     try {
-      for await (const event of chatStream(content)) {
-        if (event.type === 'intent') {
+      for await (const event of chatStream(content, sessionId)) {
+        if (event.type === 'session') {
+          // 保存服务器返回的 session_id
+          saveSession(event.data as string);
+        } else if (event.type === 'intent') {
           isCompare = (event.data as string) === 'compare';
         } else if (event.type === 'phones') {
           phones = event.data as Phone[];

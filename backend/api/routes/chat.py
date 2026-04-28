@@ -6,9 +6,13 @@ from backend.models.schemas import ChatRequest, IntentType
 from backend.services.intent import IntentService
 from backend.services.retrieval import RetrievalService
 from backend.services.recommend import RecommendService
+from backend.services.session import SessionService
 import json
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
+
+# 会话服务实例
+session_service = SessionService()
 
 
 @router.post("")
@@ -21,10 +25,24 @@ async def chat(
     retrieval_service = RetrievalService(db)
     recommend_service = RecommendService()
 
+    # 处理会话
+    session_id = request.session_id
+    if not session_id or not session_service.session_exists(session_id):
+        session_id = session_service.create_session()
+
+    # 添加用户消息到会话
+    session_service.add_message(session_id, "user", request.message)
+
+    # 获取会话历史用于LLM上下文
+    history = session_service.get_messages(session_id)
+
     # 识别意图
     intent_result = await intent_service.recognize(request.message)
 
     async def generate():
+        # 发送会话ID
+        yield f"data: {json.dumps({'type': 'session', 'data': session_id}, ensure_ascii=False)}\n\n"
+
         # 发送意图信息
         yield f"data: {json.dumps({'type': 'intent', 'data': intent_result.intent.value}, ensure_ascii=False)}\n\n"
 
@@ -38,9 +56,15 @@ async def chat(
             phones_data = [p.to_dict() for p in phones]
             yield f"data: {json.dumps({'type': 'phones', 'data': phones_data}, ensure_ascii=False)}\n\n"
 
+            # 收集完整回复
+            full_reply = ""
             # 流式输出对比结果
-            async for chunk in recommend_service.compare(phones):
+            async for chunk in recommend_service.compare(phones, history):
+                full_reply += chunk
                 yield f"data: {json.dumps({'type': 'content', 'data': chunk}, ensure_ascii=False)}\n\n"
+
+            # 保存助手回复到会话
+            session_service.add_message(session_id, "assistant", full_reply)
 
         else:
             # 推荐/筛选模式
@@ -52,9 +76,15 @@ async def chat(
             phones_data = [p.to_dict() for p in phones]
             yield f"data: {json.dumps({'type': 'phones', 'data': phones_data}, ensure_ascii=False)}\n\n"
 
+            # 收集完整回复
+            full_reply = ""
             # 流式输出推荐结果
-            async for chunk in recommend_service.recommend(request.message, phones):
+            async for chunk in recommend_service.recommend(request.message, phones, history):
+                full_reply += chunk
                 yield f"data: {json.dumps({'type': 'content', 'data': chunk}, ensure_ascii=False)}\n\n"
+
+            # 保存助手回复到会话
+            session_service.add_message(session_id, "assistant", full_reply)
 
         yield f"data: {json.dumps({'type': 'done'})}\n\n"
 

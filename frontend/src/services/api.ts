@@ -2,11 +2,14 @@ import type { Phone } from '../types';
 
 const API_BASE = 'http://localhost:8002';
 
-export async function* chatStream(message: string): AsyncGenerator<{ type: string; data: unknown }> {
+export async function* chatStream(
+  message: string,
+  sessionId?: string | null
+): AsyncGenerator<{ type: string; data: unknown }> {
   const response = await fetch(`${API_BASE}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message, session_id: sessionId }),
   });
 
   if (!response.ok) {
