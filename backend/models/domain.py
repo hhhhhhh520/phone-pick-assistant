@@ -30,6 +30,7 @@ class Phone(Base):
     weight = Column(Integer)
     features = Column(Text)
     url = Column(String(500))
+    image_url = Column(String(500))
     pros = Column(Text)
     cons = Column(Text)
     suitable_for = Column(Text)
@@ -58,6 +59,7 @@ class Phone(Base):
             "weight": self.weight,
             "features": json.loads(self.features) if self.features else [],
             "url": self.url,
+            "imageUrl": self.image_url,
             "pros": json.loads(self.pros) if self.pros else [],
             "cons": json.loads(self.cons) if self.cons else [],
             "suitable_for": json.loads(self.suitable_for) if self.suitable_for else []

@@ -11,6 +11,20 @@ export function PhoneCard({ phone, onClick }: PhoneCardProps) {
       className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
       onClick={onClick}
     >
+      {/* 手机图片 */}
+      {phone.imageUrl ? (
+        <div className="mb-3 flex justify-center">
+          <img
+            src={phone.imageUrl}
+            alt={`${phone.brand} ${phone.model}`}
+            className="w-24 h-24 object-contain"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/96x96?text=No+Image';
+            }}
+          />
+        </div>
+      ) : null}
+
       <div className="flex justify-between items-start mb-2">
         <div>
           <span className="text-sm text-gray-500">{phone.brand}</span>

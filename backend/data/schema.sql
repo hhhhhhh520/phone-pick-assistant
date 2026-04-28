@@ -20,6 +20,7 @@ CREATE TABLE IF NOT EXISTS phones (
     weight INTEGER,
     features TEXT,
     url TEXT,
+    image_url TEXT,
     pros TEXT,
     cons TEXT,
     suitable_for TEXT,

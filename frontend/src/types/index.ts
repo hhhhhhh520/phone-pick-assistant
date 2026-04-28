@@ -27,6 +27,7 @@ export interface Phone {
   weight: number;
   features: string[];
   url?: string;
+  imageUrl?: string;
   pros: string[];
   cons: string[];
   suitable_for: string[];
