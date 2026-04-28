@@ -1,3 +1,4 @@
+// Types for phone picker assistant
 export interface Phone {
   id: number;
   brand: string;

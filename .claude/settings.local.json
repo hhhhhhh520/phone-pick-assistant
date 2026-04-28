@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m venv .venv)",
+      "Bash(.venv/Scripts/pip install *)",
+      "Bash(.venv/Scripts/python -c \"from backend.config import get_settings; print\\('Config OK'\\)\")",
+      "Bash(.venv/Scripts/python -m backend.data.seed)",
+      "Bash(.venv/Scripts/python -c \"from backend.main import app; print\\('Backend OK'\\)\")",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(npx tailwindcss *)",
+      "Bash(./node_modules/.bin/tailwindcss init *)",
+      "Bash(node node_modules/tailwindcss/lib/cli.js init -p)",
+      "Bash(.venv/Scripts/pytest tests/ -v)",
+      "Bash(.venv/Scripts/uvicorn backend.main:app --host 127.0.0.1 --port 8000)",
+      "Bash(curl -s http://127.0.0.1:8000/health)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(npm uninstall *)",
+      "Bash(curl -s http://localhost:5174)",
+      "Bash(curl -s \"http://localhost:5175/src/main.tsx\")",
+      "Bash(npx tsc *)",
+      "Bash(curl -s \"http://localhost:5175/src/index.css\")",
+      "Bash(taskkill /F /IM node.exe)",
+      "Bash(rm -rf node_modules/.vite)"
+    ]
+  }
+}

@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { Message } from '../types';
+import type { Message, Phone } from '../types';
 import { chatStream } from '../services/api';
 import { MessageList } from './MessageList';
 import { InputBar } from './InputBar';
-import { Phone } from '../types';
 
 export function ChatWindow() {
   const [messages, setMessages] = useState<Message[]>([]);

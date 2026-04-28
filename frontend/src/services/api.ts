@@ -1,4 +1,4 @@
-import { Phone, Message } from '../types';
+import type { Phone } from '../types';
 
 const API_BASE = 'http://localhost:8000';
 
