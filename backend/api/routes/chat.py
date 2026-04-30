@@ -36,8 +36,8 @@ async def chat(
     # 获取会话历史用于LLM上下文
     history = session_service.get_messages(session_id)
 
-    # 识别意图
-    intent_result = await intent_service.recognize(request.message)
+    # 识别意图（传入历史上下文）
+    intent_result = await intent_service.recognize(request.message, history)
 
     async def generate():
         # 发送会话ID

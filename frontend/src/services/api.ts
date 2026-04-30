@@ -1,6 +1,6 @@
 import type { Phone } from '../types';
 
-const API_BASE = 'http://localhost:8002';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
 
 export async function* chatStream(
   message: string,
@@ -10,6 +10,7 @@ export async function* chatStream(
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message, session_id: sessionId }),
+    cache: 'no-store',  // 禁用缓存
   });
 
   if (!response.ok) {

@@ -1,9 +1,16 @@
 import httpx
 import json
+import logging
 from backend.config import get_settings
 from typing import AsyncGenerator, List, Dict
 
 settings = get_settings()
+logger = logging.getLogger(__name__)
+
+
+class LLMError(Exception):
+    """LLM服务错误"""
+    pass
 
 
 class LLMService:
@@ -33,6 +40,10 @@ class LLMService:
                 },
                 timeout=60.0
             ) as response:
+                if response.status_code != 200:
+                    error_body = await response.aread()
+                    logger.error(f"LLM API error: {response.status_code}, {error_body}")
+                    raise LLMError(f"API error: {response.status_code}, {error_body.decode()}")
                 async for line in response.aiter_lines():
                     if line.startswith("data: ") and line != "data: [DONE]":
                         try:

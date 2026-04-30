@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from backend.api.dependencies import get_db
 from backend.models.domain import Phone
@@ -10,9 +10,9 @@ router = APIRouter(prefix="/api/phones", tags=["phones"])
 @router.get("", response_model=PhoneListResponse)
 async def list_phones(
     brand: str = None,
-    min_price: int = None,
-    max_price: int = None,
-    limit: int = 20,
+    min_price: int = Query(None, ge=0),
+    max_price: int = Query(None, ge=0),
+    limit: int = Query(20, ge=1, le=100),
     db: Session = Depends(get_db)
 ):
     """获取手机列表"""
@@ -20,13 +20,14 @@ async def list_phones(
 
     if brand:
         query = query.filter(Phone.brand == brand)
-    if min_price:
+    if min_price is not None:
         query = query.filter(Phone.price >= min_price)
-    if max_price:
+    if max_price is not None:
         query = query.filter(Phone.price <= max_price)
 
-    phones = query.limit(limit).all()
+    # 先计算总数，再应用limit
     total = query.count()
+    phones = query.limit(limit).all()
 
     return PhoneListResponse(
         phones=[PhoneBrief(id=p.id, brand=p.brand, model=p.model, price=p.price) for p in phones],
