@@ -35,16 +35,24 @@ class RetrievalService:
         ).limit(limit).all()
 
     def get_phones_by_model(self, models: List[str]) -> List[Phone]:
-        """按型号查找"""
+        """按型号查找，优先返回有图片且价格有效的"""
         phones = []
         for model in models:
+            # 清理型号名称，提取核心关键词
+            # 如 "华为P60" -> "P60", "小米14" -> "14"
+            model_clean = model.replace("华为", "").replace("小米", "").replace("苹果", "").replace("OPPO", "").replace("vivo", "").replace("荣耀", "").strip()
+
+            # 先尝试精确匹配
             phone = self.db.query(Phone).filter(
-                Phone.model.contains(model)
+                Phone.price > 0,  # 过滤无效价格
+                Phone.model.contains(model_clean)
             ).order_by(
+                # 有图片的排前面
                 case(
                     (Phone.image_url.isnot(None), 0),
                     else_=1
-                )
+                ),
+                Phone.price
             ).first()
             if phone:
                 phones.append(phone)
