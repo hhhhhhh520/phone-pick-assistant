@@ -6,6 +6,9 @@ interface PhoneCardProps {
   onClick?: () => void;
 }
 
+// API基础地址
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8002';
+
 // 默认手机图标SVG
 function DefaultPhoneIcon() {
   return (
@@ -24,7 +27,17 @@ function DefaultPhoneIcon() {
 export function PhoneCard({ phone, onClick }: PhoneCardProps) {
   const [imageError, setImageError] = useState(false);
 
-  const showDefaultIcon = !phone.imageUrl || imageError;
+  // 处理图片URL：本地路径需要拼接API地址，外部URL直接使用
+  const getFullImageUrl = (url: string | undefined): string | null => {
+    if (!url) return null;
+    // 外部URL（如三星官方图片）直接使用
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    // 本地路径拼接API地址
+    return `${API_BASE}${url}`;
+  };
+
+  const fullImageUrl = getFullImageUrl(phone.imageUrl);
+  const showDefaultIcon = !fullImageUrl || imageError;
 
   return (
     <div
@@ -37,7 +50,7 @@ export function PhoneCard({ phone, onClick }: PhoneCardProps) {
           <DefaultPhoneIcon />
         ) : (
           <img
-            src={phone.imageUrl}
+            src={fullImageUrl!}
             alt={`${phone.brand} ${phone.model}`}
             className="w-24 h-24 object-contain"
             onError={() => setImageError(true)}

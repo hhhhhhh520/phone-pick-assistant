@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from backend.models.domain import Phone
+from backend.models.domain import Phone, get_processor_tier
 from typing import List
-from sqlalchemy import case
+from sqlalchemy import case, desc
 
 
 class RetrievalService:
@@ -87,6 +87,46 @@ class RetrievalService:
                 phones.append(phone)
         return phones
 
+    def _build_feature_filters(self, features: List[str]) -> tuple:
+        """构建场景筛选条件
+
+        Args:
+            features: 场景需求列表，如 ["游戏", "拍照", "续航"]
+
+        Returns:
+            (or_conditions, battery_threshold) 元组
+            - or_conditions: suitable_for 或 features 字段的匹配条件列表
+            - battery_threshold: 电池容量阈值（用于续航场景）
+        """
+        or_conditions = []
+        battery_threshold = None
+
+        for feature in features:
+            feature_lower = feature.lower()
+
+            if feature_lower == "游戏":
+                # 游戏：suitable_for 包含 "游戏玩家" 或 features 包含 "游戏"/"电竞"
+                or_conditions.append(
+                    (Phone.suitable_for.contains("游戏玩家")) |
+                    (Phone.features.contains("游戏")) |
+                    (Phone.features.contains("电竞"))
+                )
+            elif feature_lower == "拍照":
+                # 拍照：suitable_for 包含 "摄影" 或 features 包含影像相关关键词
+                or_conditions.append(
+                    (Phone.suitable_for.contains("摄影")) |
+                    (Phone.features.contains("影像")) |
+                    (Phone.features.contains("徕卡")) |
+                    (Phone.features.contains("哈苏")) |
+                    (Phone.features.contains("蔡司"))
+                )
+            elif feature_lower == "续航":
+                # 续航：suitable_for 包含 "续航" 或 battery >= 5000
+                or_conditions.append(Phone.suitable_for.contains("续航"))
+                battery_threshold = 5000
+
+        return or_conditions, battery_threshold
+
     def search(self, intent_result, limit: int = 10) -> List[Phone]:
         """综合搜索，优先返回有图片的"""
         query = self.db.query(Phone)
@@ -105,14 +145,37 @@ class RetrievalService:
         if intent_result.brands:
             query = query.filter(Phone.brand.in_(intent_result.brands))
 
-        return query.order_by(
+        # 场景筛选
+        if intent_result.features:
+            or_conditions, battery_threshold = self._build_feature_filters(intent_result.features)
+
+            # 应用 OR 条件（任一场景匹配即可）
+            if or_conditions:
+                from sqlalchemy import or_
+                query = query.filter(or_(*or_conditions))
+
+            # 续航场景额外筛选电池容量
+            if battery_threshold is not None:
+                query = query.filter(Phone.battery >= battery_threshold)
+
+        # 场景感知排序
+        phones = query.order_by(
             # 有图片的排前面
             case(
                 (Phone.image_url.isnot(None), 0),
                 else_=1
-            ),
-            Phone.price
-        ).limit(limit).all()
+            )
+        ).limit(limit * 2).all()  # 多取一些用于重排序
+
+        # 根据场景进行智能排序
+        if intent_result.features:
+            features_lower = [f.lower() for f in intent_result.features]
+            phones = self._sort_by_scenario(phones, features_lower)
+        else:
+            # 默认按价格升序
+            phones = sorted(phones, key=lambda p: p.price)
+
+        return phones[:limit]
 
     def get_all_phones(self, limit: int = 20) -> List[Phone]:
         """获取所有手机，优先返回有图片的"""

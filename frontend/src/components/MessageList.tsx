@@ -8,13 +8,32 @@ interface MessageListProps {
 
 export function MessageList({ messages }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const userScrolledUp = useRef(false);
+
+  // 检查用户是否滚动到了非底部位置
+  const handleScroll = () => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // 距离底部100px以内视为"在底部"
+    const isNearBottom = container.scrollHeight - container.scrollTop - container.clientHeight < 100;
+    userScrolledUp.current = !isNearBottom;
+  };
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // 只有用户在底部附近时才自动滚动
+    if (!userScrolledUp.current) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-4">
+    <div
+      ref={containerRef}
+      onScroll={handleScroll}
+      className="flex-1 overflow-y-auto p-4"
+    >
       {messages.length === 0 ? (
         <div className="h-full flex flex-col items-center justify-center text-gray-400">
           <div className="text-6xl mb-4">📱</div>

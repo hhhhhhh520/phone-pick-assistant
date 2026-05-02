@@ -16,6 +16,18 @@ RECOMMEND_PROMPT = """你是一个专业的手机选购顾问。
 
 请根据用户需求，从上面的候选手机列表中推荐最合适的2-3款手机。
 重要：你只能推荐上面列表中的手机，不要推荐列表之外的手机。
+
+## 场景匹配指南
+根据用户提到的使用场景，优先关注对应的手机特性：
+
+- **游戏场景**：优先推荐「特性」包含"游戏手机"、"高刷屏"的手机，或「适合」包含"游戏玩家"的手机
+- **拍照/摄影场景**：优先推荐「特性」包含"徕卡影像"、"哈苏"、"潜望长焦"等影像标签的手机，或「适合」包含"摄影爱好者"的手机
+- **续航场景**：优先推荐电池容量大（5000mAh以上）的手机，关注「特性」中的"快充"标签
+- **商务办公**：优先推荐「适合」包含"商务人士"的手机，关注大存储、长续航
+- **学生/性价比**：优先推荐「适合」包含"学生"或"性价比"的手机
+
+在推荐理由中，说明该手机如何满足用户提到的具体场景需求。
+
 说明推荐理由，用简洁自然的语言回答。
 """
 
@@ -52,6 +64,22 @@ class RecommendService:
             parts.append(f"主摄: {p.camera_main}万像素")
         if p.battery:
             parts.append(f"电池: {p.battery}mAh")
+        # 添加特性标签
+        if p.features:
+            try:
+                features = eval(p.features) if isinstance(p.features, str) else p.features
+                if features:
+                    parts.append(f"特性: {', '.join(features)}")
+            except:
+                pass
+        # 添加适用人群
+        if p.suitable_for:
+            try:
+                suitable = eval(p.suitable_for) if isinstance(p.suitable_for, str) else p.suitable_for
+                if suitable:
+                    parts.append(f"适合: {', '.join(suitable)}")
+            except:
+                pass
         return ", ".join(parts)
 
     async def recommend(

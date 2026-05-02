@@ -154,7 +154,7 @@ PHONES_DATA = [
         "charging_wired": 120,
         "charging_wireless": None,
         "weight": 209,
-        "features": ["2K屏幕", "金属中框", "红外遥控"],
+        "features": ["2K屏幕", "金属中框", "红外遥控", "游戏手机"],
         "pros": ["性价比高", "性能强", "充电快"],
         "cons": ["拍照一般", "无无线充电"],
         "suitable_for": ["游戏玩家", "追求性价比", "学生党"]
@@ -301,7 +301,7 @@ PHONES_DATA = [
         "charging_wired": 120,
         "charging_wireless": None,
         "weight": 203,
-        "features": ["自研电竞芯片", "超大VC散热"],
+        "features": ["自研电竞芯片", "超大VC散热", "游戏手机"],
         "pros": ["游戏性能强", "充电快", "性价比高"],
         "cons": ["拍照一般", "无无线充电"],
         "suitable_for": ["游戏玩家", "追求性能", "学生党"]
@@ -941,7 +941,7 @@ PHONES_DATA = [
         "charging_wired": 90,
         "charging_wireless": None,
         "weight": 206,
-        "features": ["2K屏幕", "IP68", "金属中框"],
+        "features": ["2K屏幕", "IP68", "金属中框", "游戏手机"],
         "pros": ["性价比高", "续航顶级", "性能强"],
         "cons": ["拍照一般", "无无线充电"],
         "suitable_for": ["游戏玩家", "学生党", "追求性价比"]
@@ -1015,7 +1015,7 @@ PHONES_DATA = [
         "charging_wired": 120,
         "charging_wireless": None,
         "weight": 199,
-        "features": ["自研电竞芯片", "超大VC散热", "双X轴马达"],
+        "features": ["自研电竞芯片", "超大VC散热", "双X轴马达", "游戏手机"],
         "pros": ["游戏性能强", "充电快", "性价比高"],
         "cons": ["拍照一般", "无无线充电"],
         "suitable_for": ["游戏玩家", "学生党", "追求性价比"]

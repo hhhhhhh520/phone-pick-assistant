@@ -82,3 +82,63 @@ def init_db():
     conn = sqlite3.connect(db_path)
     conn.executescript(schema)
     conn.close()
+
+
+# 处理器性能等级映射
+# 用于智能排序，数值越高性能越强
+PROCESSOR_PERFORMANCE_TIER = {
+    # 旗舰级 (tier 4)
+    "骁龙8 Gen3": 4,
+    "骁龙8Gen3": 4,
+    "骁龙8 Gen2": 4,
+    "骁龙8Gen2": 4,
+    "天玑9300": 4,
+    "天玑9200": 4,
+    "A17 Pro": 4,
+    "A17Pro": 4,
+    "A16": 4,
+
+    # 高端级 (tier 3)
+    "骁龙7+ Gen3": 3,
+    "骁龙7+Gen3": 3,
+    "骁龙7+ Gen2": 3,
+    "骁龙7+Gen2": 3,
+    "天玑8300": 3,
+
+    # 中端级 (tier 2)
+    "骁龙7s Gen2": 2,
+    "骁龙7sGen2": 2,
+    "天玑7200": 2,
+    "骁龙6 Gen1": 2,
+    "骁龙6Gen1": 2,
+
+    # 入门级 (tier 1)
+    "天玑6020": 1,
+    "骁龙480": 1,
+}
+
+
+def get_processor_tier(processor: str) -> int:
+    """
+    获取处理器的性能等级。
+
+    Args:
+        processor: 处理器名称
+
+    Returns:
+        性能等级 (1-4)，未知处理器返回0
+    """
+    if not processor:
+        return 0
+
+    # 直接匹配
+    if processor in PROCESSOR_PERFORMANCE_TIER:
+        return PROCESSOR_PERFORMANCE_TIER[processor]
+
+    # 去除空格后匹配
+    processor_no_space = processor.replace(" ", "")
+    for key, tier in PROCESSOR_PERFORMANCE_TIER.items():
+        if key.replace(" ", "") == processor_no_space:
+            return tier
+
+    return 0
