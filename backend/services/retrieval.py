@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from backend.models.domain import Phone, get_processor_tier
 from typing import List
-from sqlalchemy import case, desc
+from sqlalchemy import case
 
 
 class RetrievalService:
@@ -126,6 +126,39 @@ class RetrievalService:
                 battery_threshold = 5000
 
         return or_conditions, battery_threshold
+
+    def _sort_by_scenario(self, phones: List[Phone], features_lower: List[str]) -> List[Phone]:
+        """根据场景需求对手机进行智能排序
+
+        Args:
+            phones: 手机列表
+            features_lower: 小写化的场景需求列表
+
+        Returns:
+            排序后的手机列表
+        """
+        # 判断主要场景（优先级：游戏 > 拍照 > 续航）
+        if "游戏" in features_lower:
+            # 游戏场景：处理器性能等级 > 内存 > 电池
+            def game_sort_key(phone):
+                processor_tier = get_processor_tier(phone.processor) if phone.processor else 0
+                ram = phone.ram or 0
+                battery = phone.battery or 0
+                # 降序排列，取负值
+                return (-processor_tier, -ram, -battery, phone.price)
+            return sorted(phones, key=game_sort_key)
+
+        elif "拍照" in features_lower:
+            # 拍照场景：主摄像素降序
+            return sorted(phones, key=lambda p: -(p.camera_main or 0))
+
+        elif "续航" in features_lower:
+            # 续航场景：电池容量降序
+            return sorted(phones, key=lambda p: -(p.battery or 0))
+
+        else:
+            # 默认：价格升序
+            return sorted(phones, key=lambda p: p.price)
 
     def search(self, intent_result, limit: int = 10) -> List[Phone]:
         """综合搜索，优先返回有图片的"""

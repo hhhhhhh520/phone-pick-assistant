@@ -2,7 +2,7 @@
 from backend.models.domain import SessionLocal, Phone
 
 db = SessionLocal()
-phones = db.query(Phone).filter(Phone.image_url != None).all()
+phones = db.query(Phone).filter(Phone.image_url.isnot(None)).all()
 fixed = 0
 
 for p in phones:

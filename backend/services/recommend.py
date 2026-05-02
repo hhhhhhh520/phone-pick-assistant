@@ -3,6 +3,7 @@ from backend.models.domain import Phone
 from backend.config import get_settings
 from typing import List, AsyncGenerator, Dict, Optional
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 settings = get_settings()
@@ -67,18 +68,18 @@ class RecommendService:
         # 添加特性标签
         if p.features:
             try:
-                features = eval(p.features) if isinstance(p.features, str) else p.features
+                features = json.loads(p.features) if isinstance(p.features, str) else p.features
                 if features:
                     parts.append(f"特性: {', '.join(features)}")
-            except:
+            except (json.JSONDecodeError, TypeError):
                 pass
         # 添加适用人群
         if p.suitable_for:
             try:
-                suitable = eval(p.suitable_for) if isinstance(p.suitable_for, str) else p.suitable_for
+                suitable = json.loads(p.suitable_for) if isinstance(p.suitable_for, str) else p.suitable_for
                 if suitable:
                     parts.append(f"适合: {', '.join(suitable)}")
-            except:
+            except (json.JSONDecodeError, TypeError):
                 pass
         return ", ".join(parts)
 
