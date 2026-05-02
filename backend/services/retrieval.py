@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from backend.models.domain import Phone, get_processor_tier
+from backend.models.domain import Phone, get_antutu_score
 from typing import List
 from sqlalchemy import case
 
@@ -139,13 +139,13 @@ class RetrievalService:
         """
         # 判断主要场景（优先级：游戏 > 拍照 > 续航）
         if "游戏" in features_lower:
-            # 游戏场景：处理器性能等级 > 内存 > 电池
+            # 游戏场景：安兔兔跑分 > 内存 > 电池 > 价格
             def game_sort_key(phone):
-                processor_tier = get_processor_tier(phone.processor) if phone.processor else 0
+                antutu_score = get_antutu_score(phone.processor) if phone.processor else 0
                 ram = phone.ram or 0
                 battery = phone.battery or 0
                 # 降序排列，取负值
-                return (-processor_tier, -ram, -battery, phone.price)
+                return (-antutu_score, -ram, -battery, phone.price)
             return sorted(phones, key=game_sort_key)
 
         elif "拍照" in features_lower:

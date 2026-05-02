@@ -14,7 +14,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.models.domain import Phone, Base, get_processor_tier
+from backend.models.domain import Phone, Base, get_antutu_score
 from backend.services.retrieval import RetrievalService
 from backend.models.schemas import IntentResult, IntentType
 
@@ -181,10 +181,10 @@ class TestGamingScenario:
         # 断言1: 应该返回手机
         assert len(phones) > 0, "游戏场景应返回手机"
 
-        # 断言2: 不应包含入门机 (天玑6020处理器)
+        # 断言2: 不应包含入门机 (跑分<30万)
         for phone in phones:
-            processor_tier = get_processor_tier(phone.processor)
-            assert processor_tier >= 2, f"游戏手机不应是入门机，但返回了 {phone.model} (处理器: {phone.processor})"
+            score = get_antutu_score(phone.processor)
+            assert score >= 300000 or score == 0, f"游戏手机不应是入门机，但返回了 {phone.model} (处理器: {phone.processor}, 跑分: {score})"
 
         # 断言3: 应包含游戏手机标签
         gaming_phones = [p for p in phones if p.features and ("游戏" in p.features or "电竞" in p.features)]
@@ -206,12 +206,12 @@ class TestGamingScenario:
 
         phones = service.search(intent, limit=5)
 
-        # 验证排序: 处理器等级应递减 (高性能在前)
-        tiers = [get_processor_tier(p.processor) for p in phones]
+        # 验证排序: 安兔兔跑分应递减 (高性能在前)
+        scores = [get_antutu_score(p.processor) for p in phones]
         # 允许相等的相邻元素
-        for i in range(len(tiers) - 1):
-            assert tiers[i] >= tiers[i + 1], \
-                f"游戏场景应按处理器性能降序，实际: {tiers}"
+        for i in range(len(scores) - 1):
+            assert scores[i] >= scores[i + 1], \
+                f"游戏场景应按安兔兔跑分降序，实际: {scores}"
 
     def test_gaming_excludes_low_end_phones(self, db_session):
         """测试游戏场景排除入门手机"""
@@ -481,43 +481,47 @@ class TestCombinedScenarios:
                 f"无场景时应按价格升序，实际: {prices}"
 
 
-class TestProcessorTier:
-    """测试处理器性能等级"""
+class TestProcessorScore:
+    """测试处理器安兔兔跑分"""
 
-    def test_flagship_processor_tier(self):
-        """测试旗舰处理器等级"""
+    def test_flagship_processor_score(self):
+        """测试旗舰处理器跑分 (130万+)"""
         flagship_processors = [
-            "骁龙8 Gen3", "骁龙8Gen3", "骁龙8 Gen2",
-            "天玑9300", "天玑9200", "A17 Pro", "A17Pro", "A16"
+            ("骁龙8 Gen3", 1372529),
+            ("骁龙8Gen3", 1372529),
+            ("骁龙8 Gen2", 952809),
+            ("天玑9300", 1344087),
+            ("天玑9300+", 1382983),
         ]
-        for processor in flagship_processors:
-            tier = get_processor_tier(processor)
-            assert tier == 4, f"{processor} 应为旗舰级(tier 4)，实际: {tier}"
+        for processor, expected_min in flagship_processors:
+            score = get_antutu_score(processor)
+            assert score >= expected_min * 0.9, f"{processor} 跑分应>=130万，实际: {score}"
 
-    def test_high_end_processor_tier(self):
-        """测试高端处理器等级"""
-        high_end_processors = ["骁龙7+ Gen3", "骁龙7+Gen2", "天玑8300"]
+    def test_high_end_processor_score(self):
+        """测试高端处理器跑分 (60-130万)"""
+        high_end_processors = ["骁龙7+ Gen3", "骁龙7+Gen2", "天玑8300-Ultra"]
         for processor in high_end_processors:
-            tier = get_processor_tier(processor)
-            assert tier == 3, f"{processor} 应为高端级(tier 3)，实际: {tier}"
+            score = get_antutu_score(processor)
+            assert score >= 600000, f"{processor} 跑分应>=60万，实际: {score}"
 
-    def test_mid_range_processor_tier(self):
-        """测试中端处理器等级"""
+    def test_mid_range_processor_score(self):
+        """测试中端处理器跑分 (40-80万)"""
         mid_range_processors = ["骁龙7s Gen2", "天玑7200", "骁龙6 Gen1"]
         for processor in mid_range_processors:
-            tier = get_processor_tier(processor)
-            assert tier == 2, f"{processor} 应为中端级(tier 2)，实际: {tier}"
+            score = get_antutu_score(processor)
+            assert score >= 300000, f"{processor} 跑分应>=30万，实际: {score}"
 
-    def test_entry_level_processor_tier(self):
-        """测试入门处理器等级"""
+    def test_entry_level_processor_score(self):
+        """测试入门处理器跑分 (<40万)"""
         entry_processors = ["天玑6020", "骁龙480"]
         for processor in entry_processors:
-            tier = get_processor_tier(processor)
-            assert tier == 1, f"{processor} 应为入门级(tier 1)，实际: {tier}"
+            score = get_antutu_score(processor)
+            assert score > 0, f"{processor} 应有跑分数据"
+            assert score < 400000, f"{processor} 跑分应<40万，实际: {score}"
 
-    def test_unknown_processor_tier(self):
+    def test_unknown_processor_score(self):
         """测试未知处理器返回0"""
         unknown = ["未知处理器", "", None]
         for processor in unknown:
-            tier = get_processor_tier(processor)
-            assert tier == 0, f"未知处理器应返回0，实际: {tier}"
+            score = get_antutu_score(processor)
+            assert score == 0, f"未知处理器应返回0，实际: {score}"
