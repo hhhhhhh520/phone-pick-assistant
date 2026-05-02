@@ -1,0 +1,328 @@
+{
+  "description": "手机型号图片URL映射表 - 包含官方URL和本地备选路径",
+  "updated_at": "2026-05-02",
+  "note": "官方URL优先，本地路径作为备选。本地图片位于 frontend/public/images/ 目录",
+  "image_mappings": {
+    "Apple": {
+      "iPhone 16 Pro Max": {
+        "official_url": "https://www.apple.com/v/iphone-16-pro/c/images/overview/hero/hero_iphone_16pro__bn5fkd8x0b6a_large.jpg",
+        "local_path": "images/苹果iPhone 16 Pro Max（256GB）_1.jpg",
+        "status": "官方URL可用"
+      },
+      "iPhone 16 Pro": {
+        "official_url": "https://www.apple.com/v/iphone-16-pro/c/images/overview/hero/hero_iphone_16pro__bn5fkd8x0b6a_large.jpg",
+        "local_path": "images/苹果iPhone 16 Pro（128GB）_1.jpg",
+        "status": "官方URL可用"
+      },
+      "iPhone 16": {
+        "official_url": "https://www.apple.com/v/iphone-16/c/images/overview/hero/hero_iphone_16__bn5fkd8x0b6a_large.jpg",
+        "local_path": "images/苹果iPhone 16（128GB）_1.jpg",
+        "status": "官方URL可用"
+      },
+      "iPhone 16 Plus": {
+        "official_url": "https://www.apple.com/v/iphone-16/c/images/overview/hero/hero_iphone_16_plus__bn5fkd8x0b6a_large.jpg",
+        "local_path": "images/苹果iPhone 16 Plus（128GB）_1.jpg",
+        "status": "官方URL可用"
+      },
+      "iPhone 15 Pro Max": {
+        "official_url": "https://www.apple.com/v/iphone-15-pro/c/images/overview/hero/hero_iphone_15pro__bn5fkd8x0b6a_large.jpg",
+        "local_path": "images/苹果iPhone 15 Pro Max（256GB）_1.png",
+        "status": "官方URL可用"
+      },
+      "iPhone 15": {
+        "official_url": "https://www.apple.com/v/iphone-15/c/images/overview/hero/hero_iphone_15__bn5fkd8x0b6a_large.jpg",
+        "local_path": "images/苹果iPhone 15（128GB）_1.png",
+        "status": "官方URL可用"
+      },
+      "iPhone 14": {
+        "official_url": "https://www.apple.com/v/iphone-14/c/images/overview/hero/hero_iphone_14__bn5fkd8x0b6a_large.jpg",
+        "local_path": "images/苹果iPhone 14（128GB）_1.jpg",
+        "status": "官方URL可用"
+      }
+    },
+    "小米": {
+      "小米14 Ultra": {
+        "official_url": "待补充",
+        "local_path": "images/小米14 Ultra(12GB256GB)_1.png",
+        "status": "需从mi.com获取"
+      },
+      "小米14": {
+        "official_url": "待补充",
+        "local_path": "images/小米14(8GB256GB)_1.png",
+        "status": "需从mi.com获取"
+      },
+      "Redmi K70 Pro": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      },
+      "小米15 Ultra": {
+        "official_url": "待补充",
+        "local_path": "images/小米15 Ultra(12GB256GB)_1.png",
+        "status": "需从mi.com获取"
+      },
+      "小米15 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/小米15 Pro(12GB256GB)_1.png",
+        "status": "需从mi.com获取"
+      },
+      "小米15": {
+        "official_url": "待补充",
+        "local_path": "images/小米15(12GB256GB)_1.jpg",
+        "status": "需从mi.com获取"
+      },
+      "Redmi Note 14 Pro+": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      },
+      "Redmi Note 14": {
+        "official_url": "待补充",
+        "local_path": "images/Redmi  Note 14(6GB128GB)_1.png",
+        "status": "需从mi.com获取"
+      },
+      "Redmi K80": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      },
+      "MIX Fold 4": {
+        "official_url": "待补充",
+        "local_path": "images/小米MIX FOLD 4(12GB256GB)_1.jpg",
+        "status": "需从mi.com获取"
+      },
+      "MIX Flip": {
+        "official_url": "待补充",
+        "local_path": "images/小米MIX Flip(12GB256GB)_1.png",
+        "status": "需从mi.com获取"
+      }
+    },
+    "华为": {
+      "Mate 60 Pro+": {
+        "official_url": "待补充",
+        "local_path": "images/HUAWEI Mate 60 Pro（12GB256GB）_1.jpg",
+        "status": "需从consumer.huawei.com获取"
+      },
+      "P60 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/华为P40 Pro（8GB128GB全网通5G版）_1.jpg",
+        "status": "需从consumer.huawei.com获取"
+      },
+      "Mate 70 Pro+": {
+        "official_url": "待补充",
+        "local_path": "images/HUAWEI Mate 70 Pro+(16GB512GB)_1.jpg",
+        "status": "需从consumer.huawei.com获取"
+      },
+      "Mate 70 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/HUAWEI Mate 70 Pro(12GB512GB)_1.jpg",
+        "status": "需从consumer.huawei.com获取"
+      },
+      "Pura 70 Ultra": {
+        "official_url": "待补充",
+        "local_path": "images/HUAWEI Pura 70(12GB1TB)_1.jpg",
+        "status": "需从consumer.huawei.com获取"
+      },
+      "Mate X5": {
+        "official_url": "待补充",
+        "local_path": "images/华为Mate X5 （12GB256GB）_1.jpg",
+        "status": "需从consumer.huawei.com获取"
+      },
+      "Pocket 2": {
+        "official_url": "待补充",
+        "local_path": "images/华为novaFlip_1.jpg",
+        "status": "需从consumer.huawei.com获取"
+      }
+    },
+    "OPPO": {
+      "Find X7 Ultra": {
+        "official_url": "待补充",
+        "local_path": "images/OPPO Find X7 Ultra(12GB256GB)_1.png",
+        "status": "需从oppo.com获取"
+      },
+      "Reno 11 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/OPPO Reno 12(12GB256GB)_1.jpg",
+        "status": "需从oppo.com获取"
+      },
+      "Find X8 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/OPPO Find X8 Pro(12GB256GB)_1.png",
+        "status": "需从oppo.com获取"
+      },
+      "Find X8": {
+        "official_url": "待补充",
+        "local_path": "images/OPPO Find X8(16GB1TB)_1.png",
+        "status": "需从oppo.com获取"
+      },
+      "Find N3": {
+        "official_url": "待补充",
+        "local_path": "images/OPPO Find N3（12GB512GB）_1.jpg",
+        "status": "需从oppo.com获取"
+      },
+      "Find N3 Flip": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      }
+    },
+    "vivo": {
+      "X100 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/vivo X100 Pro（12GB256GB）_1.jpg",
+        "status": "需从vivo.com获取"
+      },
+      "iQOO 12": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      },
+      "X200 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/vivo X200 Pro(12GB256GB)_1.jpg",
+        "status": "需从vivo.com获取"
+      },
+      "X200": {
+        "official_url": "待补充",
+        "local_path": "images/vivo X200(12GB256GB)_1.jpg",
+        "status": "需从vivo.com获取"
+      },
+      "iQOO Neo10": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      },
+      "iQOO Z9 Turbo+": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      },
+      "vivo Y300 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/vivo Y300 Pro(8GB128GB)_1.jpg",
+        "status": "需从vivo.com获取"
+      },
+      "X Fold3 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/vivo X Fold3 Pro(16GB512GB)_1.jpg",
+        "status": "需从vivo.com获取"
+      },
+      "X Fold3": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需补充"
+      }
+    },
+    "三星": {
+      "Galaxy S24 Ultra": {
+        "official_url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2401/gallery/uk-galaxy-s24-s928-sm-s928bzkyxe-539498613?$650_519_PNG$",
+        "local_path": "待补充",
+        "status": "官方URL可用"
+      },
+      "Galaxy S24": {
+        "official_url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2401/gallery/uk-galaxy-s24-s921-sm-s921bzygxe-539496922?$650_519_PNG$",
+        "local_path": "待补充",
+        "status": "官方URL可用"
+      },
+      "Galaxy Z Fold6": {
+        "official_url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2407/gallery/uk-galaxy-z-fold6-sm-f956-sm-f956bzygxe-539587913?$650_519_PNG$",
+        "local_path": "待补充",
+        "status": "官方URL可用"
+      },
+      "Galaxy Z Flip6": {
+        "official_url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2407/gallery/uk-galaxy-z-flip6-sm-f741-sm-f741bzygxe-539588043?$650_519_PNG$",
+        "local_path": "待补充",
+        "status": "官方URL可用"
+      }
+    },
+    "一加": {
+      "一加12": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从oneplus.com获取"
+      },
+      "一加13": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从oneplus.com获取"
+      }
+    },
+    "荣耀": {
+      "Magic6 Pro": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从honor.com获取"
+      },
+      "Magic7 Pro": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从honor.com获取"
+      },
+      "荣耀X60 Pro": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从honor.com获取"
+      },
+      "荣耀X50": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从honor.com获取"
+      },
+      "Magic V3": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从honor.com获取"
+      },
+      "Magic V Flip": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从honor.com获取"
+      }
+    },
+    "realme": {
+      "GT5 Pro": {
+        "official_url": "待补充",
+        "local_path": "images/真我GT5 Pro(12GB256GB)_1.jpg",
+        "status": "需从realme.com获取"
+      },
+      "GT Neo6": {
+        "official_url": "待补充",
+        "local_path": "images/真我GT Neo6(12GB256GB)_1.jpg",
+        "status": "需从realme.com获取"
+      }
+    },
+    "魅族": {
+      "魅族21": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从meizu.com获取"
+      }
+    },
+    "中兴": {
+      "努比亚Z60 Ultra": {
+        "official_url": "待补充",
+        "local_path": "待补充",
+        "status": "需从nubia.com获取"
+      }
+    }
+  },
+  "sources": {
+    "Apple": "https://www.apple.com/iphone/",
+    "小米": "https://www.mi.com/",
+    "华为": "https://consumer.huawei.com/cn/phones/",
+    "OPPO": "https://www.oppo.com/cn/products/",
+    "vivo": "https://www.vivo.com/cn/products/",
+    "三星": "https://www.samsung.com/cn/smartphones/",
+    "一加": "https://www.oneplus.com/cn/phone",
+    "荣耀": "https://www.honor.com/cn/phones/",
+    "realme": "https://www.realme.com/cn/products/",
+    "魅族": "https://www.meizu.com/",
+    "中兴": "https://www.nubia.com/"
+  },
+  "statistics": {
+    "total_models": 47,
+    "with_official_url": 11,
+    "with_local_path": 31,
+    "needs_supplement": 16
+  }
+}

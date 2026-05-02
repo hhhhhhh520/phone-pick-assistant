@@ -8,6 +8,59 @@ settings = get_settings()
 logger = logging.getLogger(__name__)
 
 
+def estimate_tokens(text: str) -> int:
+    """估算文本的token数量（简化实现：字符数/2）"""
+    if not text:
+        return 0
+    return len(text) // 2
+
+
+def truncate_messages(
+    messages: List[Dict],
+    max_tokens: int = None,
+    max_messages: int = None
+) -> List[Dict]:
+    """
+    截断消息列表以满足token和数量限制
+
+    Args:
+        messages: 消息列表
+        max_tokens: 最大token数（默认使用配置）
+        max_messages: 最大消息数（默认使用配置）
+
+    Returns:
+        截断后的消息列表，保留系统消息
+    """
+    max_tokens = max_tokens or settings.max_context_tokens
+    max_messages = max_messages or settings.max_context_messages
+
+    if not messages:
+        return messages
+
+    # 分离系统消息和普通消息
+    system_messages = [m for m in messages if m.get("role") == "system"]
+    regular_messages = [m for m in messages if m.get("role") != "system"]
+
+    # 按max_messages截断（保留最新的消息）
+    if len(regular_messages) > max_messages:
+        regular_messages = regular_messages[-max_messages:]
+        logger.info(f"Truncated messages: kept {max_messages} of {len(messages)} messages")
+
+    # 按max_tokens截断
+    result = system_messages + regular_messages
+    total_tokens = sum(estimate_tokens(m.get("content", "")) for m in result)
+
+    if total_tokens > max_tokens:
+        # 从普通消息中移除最旧的，直到满足token限制
+        while regular_messages and total_tokens > max_tokens:
+            removed = regular_messages.pop(0)
+            total_tokens -= estimate_tokens(removed.get("content", ""))
+            logger.info(f"Removed message to fit token limit: {total_tokens} tokens remaining")
+        result = system_messages + regular_messages
+
+    return result
+
+
 class LLMError(Exception):
     """LLM服务错误"""
     pass
@@ -25,6 +78,8 @@ class LLMService:
         """流式对话"""
         if system_prompt:
             messages = [{"role": "system", "content": system_prompt}] + messages
+
+        logger.debug(f"LLM request: model={self.model}, messages={len(messages)}")
 
         async with httpx.AsyncClient() as client:
             async with client.stream(
@@ -58,4 +113,5 @@ class LLMService:
         result = ""
         async for chunk in self.chat_stream(messages, system_prompt):
             result += chunk
+        logger.debug(f"LLM response length: {len(result)}")
         return result

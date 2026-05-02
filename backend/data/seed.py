@@ -10,6 +10,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from backend.models.domain import init_db, SessionLocal, Phone
+from backend.data.image_loader import get_image_url, get_placeholder_url
 
 PHONES_DATA = [
     # Apple
@@ -1427,7 +1428,7 @@ def seed_database():
                 weight=phone_data.get("weight"),
                 features=json.dumps(phone_data.get("features", []), ensure_ascii=False),
                 url=phone_data.get("url"),
-                image_url=f"https://via.placeholder.com/200x200?text={phone_data['brand']}+{phone_data['model'].replace(' ', '+')}",
+                image_url=get_image_url(phone_data["brand"], phone_data["model"]) or get_placeholder_url(phone_data["brand"], phone_data["model"]),
                 pros=json.dumps(phone_data.get("pros", []), ensure_ascii=False),
                 cons=json.dumps(phone_data.get("cons", []), ensure_ascii=False),
                 suitable_for=json.dumps(phone_data.get("suitable_for", []), ensure_ascii=False),

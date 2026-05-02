@@ -1,7 +1,11 @@
-from backend.services.llm import LLMService
+from backend.services.llm import LLMService, truncate_messages
 from backend.models.domain import Phone
-from backend.models.schemas import IntentType
+from backend.config import get_settings
 from typing import List, AsyncGenerator, Dict, Optional
+import logging
+
+logger = logging.getLogger(__name__)
+settings = get_settings()
 
 
 RECOMMEND_PROMPT = """你是一个专业的手机选购顾问。
@@ -69,6 +73,16 @@ class RecommendService:
             messages.extend(history)
         messages.append({"role": "user", "content": prompt})
 
+        # 截断消息以满足上下文限制
+        original_count = len(messages)
+        messages = truncate_messages(
+            messages,
+            max_tokens=settings.max_context_tokens,
+            max_messages=settings.max_context_messages
+        )
+        if len(messages) < original_count:
+            logger.info(f"recommend: truncated {original_count} -> {len(messages)} messages")
+
         async for chunk in self.llm.chat_stream(messages):
             yield chunk
 
@@ -89,6 +103,16 @@ class RecommendService:
         if history:
             messages.extend(history)
         messages.append({"role": "user", "content": prompt})
+
+        # 截断消息以满足上下文限制
+        original_count = len(messages)
+        messages = truncate_messages(
+            messages,
+            max_tokens=settings.max_context_tokens,
+            max_messages=settings.max_context_messages
+        )
+        if len(messages) < original_count:
+            logger.info(f"compare: truncated {original_count} -> {len(messages)} messages")
 
         async for chunk in self.llm.chat_stream(messages):
             yield chunk

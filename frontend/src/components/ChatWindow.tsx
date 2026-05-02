@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Message, Phone, SearchHistoryItem } from '../types';
-import { chatStream } from '../services/api';
+import { chatStream, abortCurrentRequest } from '../services/api';
 import { MessageList } from './MessageList';
 import { InputBar } from './InputBar';
 import { SearchHistory } from './SearchHistory';
@@ -12,6 +12,23 @@ export function ChatWindow() {
   const [loading, setLoading] = useState(false);
   const { history, addHistory, clearHistory } = useSearchHistory();
   const { sessionId, saveSession } = useSession();
+
+  const handleCancel = () => {
+    abortCurrentRequest();
+    setLoading(false);
+    // 添加取消提示
+    setMessages((prev) => {
+      const lastMessage = prev[prev.length - 1];
+      if (lastMessage?.role === 'assistant' && !lastMessage.content) {
+        return prev.map((m) =>
+          m.id === lastMessage.id
+            ? { ...m, content: '请求已取消' }
+            : m
+        );
+      }
+      return prev;
+    });
+  };
 
   const handleSend = async (content: string) => {
     const userMessage: Message = {
@@ -68,14 +85,25 @@ export function ChatWindow() {
         addHistory(content, phones);
       }
     } catch (error) {
-      console.error('Chat error:', error);
-      setMessages((prev) =>
-        prev.map((m) =>
-          m.id === assistantMessage.id
-            ? { ...m, content: `抱歉，发生了错误：${error instanceof Error ? error.message : String(error)}` }
-            : m
-        )
-      );
+      if (error instanceof Error && error.name === 'AbortError') {
+        // 请求被用户取消，不显示错误
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantMessage.id
+              ? { ...m, content: '请求已取消' }
+              : m
+          )
+        );
+      } else {
+        console.error('Chat error:', error);
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantMessage.id
+              ? { ...m, content: `抱歉，发生了错误：${error instanceof Error ? error.message : String(error)}` }
+              : m
+          )
+        );
+      }
     }
 
     setLoading(false);
@@ -115,7 +143,7 @@ export function ChatWindow() {
 
       <MessageList messages={messages} />
 
-      <InputBar onSend={handleSend} disabled={loading} />
+      <InputBar onSend={handleSend} onCancel={handleCancel} disabled={loading} />
     </div>
   );
 }

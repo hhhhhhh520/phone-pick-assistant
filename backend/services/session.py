@@ -3,16 +3,20 @@
 """
 import uuid
 import threading
+import logging
 from typing import Dict, List, Optional, Tuple
 from datetime import datetime, timedelta
+
+logger = logging.getLogger(__name__)
 
 # 会话存储：session_id -> (messages, last_activity_time)
 sessions: Dict[str, Tuple[List[Dict], datetime]] = {}
 # 线程锁，保护并发访问
 _sessions_lock = threading.Lock()
 
-# 每个会话最大保留消息数
-MAX_MESSAGES = 20  # 10轮对话
+# 存储层消息上限（高于LLM传入层，保留完整历史用于追溯）
+# LLM传入层使用 config.max_context_messages (默认10)
+MAX_STORED_MESSAGES = 50
 # 会话过期时间（30分钟不活跃）
 SESSION_EXPIRE_MINUTES = 30
 
@@ -32,6 +36,7 @@ class SessionService:
         session_id = str(uuid.uuid4())
         with _sessions_lock:
             sessions[session_id] = ([], datetime.now())
+        logger.debug(f"Session created: {session_id[:8]}...")
         return session_id
 
     def get_session(self, session_id: str) -> Optional[List[Dict]]:
@@ -55,11 +60,13 @@ class SessionService:
                 "timestamp": datetime.now().isoformat()
             })
 
-            # 保留最近的消息
-            if len(messages) > MAX_MESSAGES:
-                messages = messages[-MAX_MESSAGES:]
+            # 保留最近的消息（存储层上限）
+            if len(messages) > MAX_STORED_MESSAGES:
+                messages = messages[-MAX_STORED_MESSAGES:]
 
             sessions[session_id] = (messages, datetime.now())
+
+        logger.debug(f"Message added to session {session_id[:8]}...: role={role}, length={len(content)}")
 
     def get_messages(self, session_id: str) -> List[Dict]:
         """获取会话消息列表（用于LLM上下文）"""
@@ -85,4 +92,8 @@ class SessionService:
             for sid in expired_sessions:
                 del sessions[sid]
                 expired_count += 1
+
+        if expired_count > 0:
+            logger.info(f"Cleaned up {expired_count} expired sessions")
+
         return expired_count

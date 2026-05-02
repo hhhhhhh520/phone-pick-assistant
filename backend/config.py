@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     llm_max_tokens: int = 2048
     llm_temperature: float = 0.7
     llm_model: str = "deepseek-chat"
+    # LLM上下文配置
+    max_context_messages: int = 10  # 传入LLM的最大消息数
+    max_context_tokens: int = 4000  # 上下文最大token数
+    max_message_length: int = 500  # 单条消息最大字符数
 
     class Config:
         env_file = ".env"

@@ -38,22 +38,51 @@ class RetrievalService:
         """按型号查找，优先返回有图片且价格有效的"""
         phones = []
         for model in models:
-            # 清理型号名称，提取核心关键词
-            # 如 "华为P60" -> "P60", "小米14" -> "14"
-            model_clean = model.replace("华为", "").replace("小米", "").replace("苹果", "").replace("OPPO", "").replace("vivo", "").replace("荣耀", "").strip()
-
-            # 先尝试精确匹配
+            # 优先级1: 精确匹配完整型号（如"小米14"）
             phone = self.db.query(Phone).filter(
-                Phone.price > 0,  # 过滤无效价格
-                Phone.model.contains(model_clean)
-            ).order_by(
-                # 有图片的排前面
-                case(
-                    (Phone.image_url.isnot(None), 0),
-                    else_=1
-                ),
-                Phone.price
+                Phone.price > 0,
+                Phone.model == model
             ).first()
+
+            # 优先级2: 完整型号作为子串匹配（如"小米14"匹配"小米14 Ultra"）
+            if not phone:
+                phone = self.db.query(Phone).filter(
+                    Phone.price > 0,
+                    Phone.model.contains(model)
+                ).order_by(
+                    # 优先匹配最短的型号（避免"小米14"匹配到"小米14 Ultra"）
+                    case(
+                        (Phone.image_url.isnot(None), 0),
+                        else_=1
+                    ),
+                    Phone.price
+                ).first()
+
+            # 优先级3: 提取核心型号匹配（如"小米14" -> "14"，但必须同品牌）
+            if not phone:
+                # 提取品牌和核心型号
+                brand_prefix = None
+                model_core = model
+                for brand in ["小米", "华为", "苹果", "OPPO", "vivo", "荣耀", "Redmi", "realme"]:
+                    if model.startswith(brand):
+                        brand_prefix = brand
+                        model_core = model[len(brand):].strip()
+                        break
+
+                if brand_prefix and model_core:
+                    # 必须同时匹配品牌和核心型号
+                    phone = self.db.query(Phone).filter(
+                        Phone.price > 0,
+                        Phone.brand == brand_prefix,
+                        Phone.model.contains(model_core)
+                    ).order_by(
+                        case(
+                            (Phone.image_url.isnot(None), 0),
+                            else_=1
+                        ),
+                        Phone.price
+                    ).first()
+
             if phone:
                 phones.append(phone)
         return phones

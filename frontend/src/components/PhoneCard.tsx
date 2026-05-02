@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Phone } from '../types';
 
 interface PhoneCardProps {
@@ -5,25 +6,44 @@ interface PhoneCardProps {
   onClick?: () => void;
 }
 
+// 默认手机图标SVG
+function DefaultPhoneIcon() {
+  return (
+    <svg
+      className="w-16 h-16 text-gray-300"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <rect x="5" y="2" width="14" height="20" rx="2" ry="2" strokeWidth="1.5" />
+      <line x1="9" y1="18" x2="15" y2="18" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function PhoneCard({ phone, onClick }: PhoneCardProps) {
+  const [imageError, setImageError] = useState(false);
+
+  const showDefaultIcon = !phone.imageUrl || imageError;
+
   return (
     <div
       className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
       onClick={onClick}
     >
       {/* 手机图片 */}
-      {phone.imageUrl ? (
-        <div className="mb-3 flex justify-center">
+      <div className="mb-3 flex justify-center items-center h-24">
+        {showDefaultIcon ? (
+          <DefaultPhoneIcon />
+        ) : (
           <img
             src={phone.imageUrl}
             alt={`${phone.brand} ${phone.model}`}
             className="w-24 h-24 object-contain"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = 'none';
-            }}
+            onError={() => setImageError(true)}
           />
-        </div>
-      ) : null}
+        )}
+      </div>
 
       <div className="flex justify-between items-start mb-2">
         <div>

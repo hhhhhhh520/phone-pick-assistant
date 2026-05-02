@@ -1,0 +1,241 @@
+{
+  "description": "手机型号图片映射表 - 整合官方URL和本地图片",
+  "updated_at": "2026-05-02",
+  "format": "键格式: '{brand} {model}'，如 'Apple iPhone 15 Pro Max'",
+  "mappings": {
+    "Apple iPhone 15 Pro Max": {
+      "url": "https://www.apple.com/v/iphone-15-pro/c/images/overview/hero/hero_iphone_15pro__bn5fkd8x0b6a_large.jpg",
+      "source": "official"
+    },
+    "Apple iPhone 15": {
+      "url": "https://www.apple.com/v/iphone-15/c/images/overview/hero/hero_iphone_15__bn5fkd8x0b6a_large.jpg",
+      "source": "official"
+    },
+    "Apple iPhone 14": {
+      "url": "https://www.apple.com/v/iphone-14/c/images/overview/hero/hero_iphone_14__bn5fkd8x0b6a_large.jpg",
+      "source": "official"
+    },
+    "Apple iPhone 16 Pro Max": {
+      "url": "https://www.apple.com/v/iphone-16-pro/c/images/overview/hero/hero_iphone_16pro__bn5fkd8x0b6a_large.jpg",
+      "source": "official"
+    },
+    "Apple iPhone 16 Pro": {
+      "url": "https://www.apple.com/v/iphone-16-pro/c/images/overview/hero/hero_iphone_16pro__bn5fkd8x0b6a_large.jpg",
+      "source": "official"
+    },
+    "Apple iPhone 16": {
+      "url": "https://www.apple.com/v/iphone-16/c/images/overview/hero/hero_iphone_16__bn5fkd8x0b6a_large.jpg",
+      "source": "official"
+    },
+    "Apple iPhone 16 Plus": {
+      "url": "https://www.apple.com/v/iphone-16/c/images/overview/hero/hero_iphone_16_plus__bn5fkd8x0b6a_large.jpg",
+      "source": "official"
+    },
+    "小米 小米14 Ultra": {
+      "url": "/images/小米14 Ultra(12GB256GB)_1.png",
+      "source": "local"
+    },
+    "小米 小米14": {
+      "url": "/images/小米14(8GB256GB)_1.png",
+      "source": "local"
+    },
+    "小米 Redmi K70 Pro": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "小米 小米15 Ultra": {
+      "url": "/images/小米15 Ultra(12GB256GB)_1.png",
+      "source": "local"
+    },
+    "小米 小米15 Pro": {
+      "url": "/images/小米15 Pro(12GB256GB)_1.png",
+      "source": "local"
+    },
+    "小米 小米15": {
+      "url": "/images/小米15(12GB256GB)_1.jpg",
+      "source": "local"
+    },
+    "小米 Redmi Note 14 Pro+": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "小米 Redmi Note 14": {
+      "url": "/images/Redmi  Note 14(6GB128GB)_1.png",
+      "source": "local"
+    },
+    "小米 Redmi K80": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "小米 MIX Fold 4": {
+      "url": "/images/小米MIX FOLD 4(12GB256GB)_1.jpg",
+      "source": "local"
+    },
+    "小米 MIX Flip": {
+      "url": "/images/小米MIX Flip(12GB256GB)_1.png",
+      "source": "local"
+    },
+    "华为 Mate 60 Pro+": {
+      "url": "/images/HUAWEI Mate 60 Pro（12GB256GB）_1.jpg",
+      "source": "local"
+    },
+    "华为 P60 Pro": {
+      "url": "/images/华为P40 Pro（8GB128GB全网通5G版）_1.jpg",
+      "source": "local"
+    },
+    "华为 Mate 70 Pro+": {
+      "url": "/images/HUAWEI Mate 70 Pro+(16GB512GB)_1.jpg",
+      "source": "local"
+    },
+    "华为 Mate 70 Pro": {
+      "url": "/images/HUAWEI Mate 70 Pro(12GB512GB)_1.jpg",
+      "source": "local"
+    },
+    "华为 Pura 70 Ultra": {
+      "url": "/images/HUAWEI Pura 70(12GB1TB)_1.jpg",
+      "source": "local"
+    },
+    "华为 Mate X5": {
+      "url": "/images/华为Mate X5 （12GB256GB）_1.jpg",
+      "source": "local"
+    },
+    "华为 Pocket 2": {
+      "url": "/images/华为novaFlip_1.jpg",
+      "source": "local"
+    },
+    "OPPO Find X7 Ultra": {
+      "url": "/images/OPPO Find X7 Ultra(12GB256GB)_1.png",
+      "source": "local"
+    },
+    "OPPO Reno 11 Pro": {
+      "url": "/images/OPPO Reno 12(12GB256GB)_1.jpg",
+      "source": "local"
+    },
+    "OPPO Find X8 Pro": {
+      "url": "/images/OPPO Find X8 Pro(12GB256GB)_1.png",
+      "source": "local"
+    },
+    "OPPO Find X8": {
+      "url": "/images/OPPO Find X8(16GB1TB)_1.png",
+      "source": "local"
+    },
+    "OPPO Find N3": {
+      "url": "/images/OPPO Find N3（12GB512GB）_1.jpg",
+      "source": "local"
+    },
+    "OPPO Find N3 Flip": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "vivo X100 Pro": {
+      "url": "/images/vivo X100 Pro（12GB256GB）_1.jpg",
+      "source": "local"
+    },
+    "vivo iQOO 12": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "vivo X200 Pro": {
+      "url": "/images/vivo X200 Pro(12GB256GB)_1.jpg",
+      "source": "local"
+    },
+    "vivo X200": {
+      "url": "/images/vivo X200(12GB256GB)_1.jpg",
+      "source": "local"
+    },
+    "vivo iQOO Neo10": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "vivo iQOO Z9 Turbo+": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "vivo vivo Y300 Pro": {
+      "url": "/images/vivo Y300 Pro(8GB128GB)_1.jpg",
+      "source": "local"
+    },
+    "vivo X Fold3 Pro": {
+      "url": "/images/vivo X Fold3 Pro(16GB512GB)_1.jpg",
+      "source": "local"
+    },
+    "vivo X Fold3": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "三星 Galaxy S24 Ultra": {
+      "url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2401/gallery/uk-galaxy-s24-s928-sm-s928bzkyxe-539498613?$650_519_PNG$",
+      "source": "official"
+    },
+    "三星 Galaxy S24": {
+      "url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2401/gallery/uk-galaxy-s24-s921-sm-s921bzygxe-539496922?$650_519_PNG$",
+      "source": "official"
+    },
+    "三星 Galaxy Z Fold6": {
+      "url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2407/gallery/uk-galaxy-z-fold6-sm-f956-sm-f956bzygxe-539587913?$650_519_PNG$",
+      "source": "official"
+    },
+    "三星 Galaxy Z Flip6": {
+      "url": "https://images.samsung.com/is/image/samsung/p6pim/uk/2407/gallery/uk-galaxy-z-flip6-sm-f741-sm-f741bzygxe-539588043?$650_519_PNG$",
+      "source": "official"
+    },
+    "一加 一加12": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "一加 一加13": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "荣耀 Magic6 Pro": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "荣耀 Magic7 Pro": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "荣耀 荣耀X60 Pro": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "荣耀 荣耀X50": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "荣耀 Magic V3": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "荣耀 Magic V Flip": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "realme GT5 Pro": {
+      "url": "/images/真我GT5 Pro(12GB256GB)_1.jpg",
+      "source": "local"
+    },
+    "realme GT Neo6": {
+      "url": "/images/真我GT Neo6(12GB256GB)_1.jpg",
+      "source": "local"
+    },
+    "魅族 魅族21": {
+      "url": null,
+      "source": "placeholder"
+    },
+    "中兴 努比亚Z60 Ultra": {
+      "url": null,
+      "source": "placeholder"
+    }
+  },
+  "statistics": {
+    "total_models": 60,
+    "with_official_url": 11,
+    "with_local_path": 31,
+    "placeholder": 18
+  },
+  "notes": {
+    "local_path_prefix": "/images/ 是前端public目录下的路径",
+    "placeholder_strategy": "无图片型号建议使用CSS生成的占位符或首字母展示"
+  }
+}

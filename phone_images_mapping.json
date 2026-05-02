@@ -1,0 +1,49 @@
+{
+  "description": "手机型号图片URL映射 - P4任务输出",
+  "updated_at": "2026-05-02",
+  "source": "京东/天猫电商平台",
+  "status": "部分完成，部分待补充",
+  "image_mapping": {
+    "一加": {
+      "一加12": "待补充",
+      "一加13": "待补充",
+      "一加Ace 6 至尊版": "images/一加Ace 6 至尊版(12GB256GB)_1.jpg"
+    },
+    "荣耀": {
+      "Magic6 Pro": "待补充",
+      "Magic7 Pro": "待补充",
+      "荣耀X60 Pro": "待补充",
+      "荣耀X50": "待补充",
+      "Magic V3": "待补充",
+      "Magic V Flip": "待补充",
+      "荣耀500 Pro": "images/荣耀500 Pro(12GB256GB)_1.jpg"
+    },
+    "realme": {
+      "GT5 Pro": "images/真我GT5 Pro(12GB256GB)_1.jpg",
+      "GT Neo6": "images/真我GT Neo6(12GB256GB)_1.jpg"
+    },
+    "魅族": {
+      "魅族21": "待补充"
+    },
+    "中兴": {
+      "努比亚Z60 Ultra": "待补充"
+    }
+  },
+  "notes": {
+    "问题说明": "WebFetch工具权限被拒绝，无法直接从京东/天猫获取图片URL",
+    "已有资源": "项目中images目录已有一加Ace 6、realme GT5 Pro/GT Neo6、荣耀500 Pro的本地图片",
+    "建议方案": [
+      "1. 手动从京东/天猫搜索对应型号，获取商品主图URL",
+      "2. 或使用图片下载后放入images目录，更新JSON数据",
+      "3. 京东商品图片URL格式示例：https://img14.360buyimg.com/n1/s450x450_jfs/t1/xxx.jpg"
+    ],
+    "京东商品页搜索URL": {
+      "一加12": "https://search.jd.com/Search?keyword=一加12",
+      "一加13": "https://search.jd.com/Search?keyword=一加13",
+      "荣耀Magic6 Pro": "https://search.jd.com/Search?keyword=荣耀Magic6 Pro",
+      "荣耀Magic7 Pro": "https://search.jd.com/Search?keyword=荣耀Magic7 Pro",
+      "魅族21": "https://search.jd.com/Search?keyword=魅族21",
+      "努比亚Z60 Ultra": "https://search.jd.com/Search?keyword=努比亚Z60 Ultra"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-from backend.services.llm import LLMService
+from backend.services.llm import LLMService, truncate_messages
 from backend.models.schemas import IntentResult, IntentType
 import json
 import logging
@@ -88,12 +88,12 @@ class IntentService:
         # 构建历史上下文
         history_context = ""
         if history and len(history) > 0:
-            # 只取最近几轮对话作为上下文
-            recent_history = history[-6:] if len(history) > 6 else history
+            # 使用统一的截断方法处理历史消息
+            truncated_history = truncate_messages(history, max_messages=6)
             history_lines = []
-            for msg in recent_history:
+            for msg in truncated_history:
                 role = "用户" if msg["role"] == "user" else "助手"
-                history_lines.append(f"{role}: {msg['content'][:100]}")  # 限制每条长度
+                history_lines.append(f"{role}: {msg['content']}")
             history_context = "历史对话:\n" + "\n".join(history_lines) + "\n\n"
 
         prompt = INTENT_PROMPT.format(user_message=user_message, history_context=history_context)

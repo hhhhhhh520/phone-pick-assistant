@@ -9,9 +9,22 @@ from backend.api.routes import chat, phones
 from pathlib import Path
 import asyncio
 import logging
+import sys
 
 settings = get_settings()
+
+# 配置日志
+logging.basicConfig(
+    level=getattr(logging, settings.log_level.upper()),
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[
+        logging.StreamHandler(sys.stdout),
+        logging.FileHandler("app.log", encoding="utf-8"),
+    ],
+)
+
 logger = logging.getLogger(__name__)
+logger.info(f"Starting application in {settings.app_env} mode")
 
 app = FastAPI(title="手机选购助手API", version="0.1.0")
 
@@ -48,6 +61,22 @@ async def root():
 @app.get("/health")
 async def health():
     return {"status": "healthy"}
+
+
+@app.get("/stats/sessions")
+async def session_stats():
+    """获取会话统计信息"""
+    from backend.services.session import sessions, _sessions_lock
+
+    with _sessions_lock:
+        total_sessions = len(sessions)
+        total_messages = sum(len(data[0]) for data in sessions.values())
+
+    return {
+        "total_sessions": total_sessions,
+        "total_messages": total_messages,
+        "avg_messages_per_session": round(total_messages / total_sessions, 2) if total_sessions > 0 else 0,
+    }
 
 
 # 后台任务：定期清理过期会话
