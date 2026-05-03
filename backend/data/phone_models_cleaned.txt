@@ -1,0 +1,608 @@
+OPPO | Find N
+OPPO | Find N3 Flip
+OPPO | Find X
+OPPO | Find X6 Pro
+OPPO | Find X7 Pro
+OPPO | Find X8 Pro
+OPPO | Find X9 Pro
+OPPO | OPPO A32（8GB/128GB/全网通）
+OPPO | OPPO A3i
+OPPO | OPPO A3i
+OPPO | OPPO A5 活力版
+OPPO | OPPO A5 活力版
+OPPO | OPPO A6 Pro
+OPPO | OPPO A6 Pro
+OPPO | OPPO A6s Pro
+OPPO | OPPO A6s Pro
+OPPO | OPPO A6s Pro
+OPPO | OPPO Find N2
+OPPO | OPPO Find N3
+OPPO | OPPO Find N5
+OPPO | OPPO Find N6
+OPPO | OPPO Find X6
+OPPO | OPPO Find X6 Pro
+OPPO | OPPO Find X7
+OPPO | OPPO Find X7 Pro
+OPPO | OPPO Find X7 Ultra
+OPPO | OPPO Find X8
+OPPO | OPPO Find X8 Pro
+OPPO | OPPO Find X8 Ultra
+OPPO | OPPO Find X8 Ultra
+OPPO | OPPO Find X8s
+OPPO | OPPO Find X8s+
+OPPO | OPPO Find X9
+OPPO | OPPO Find X9
+OPPO | OPPO Find X9 Pro
+OPPO | OPPO Find X9 Pro
+OPPO | OPPO Find X9 Pro
+OPPO | OPPO Find X9s Pro
+OPPO | OPPO K
+OPPO | OPPO K11
+OPPO | OPPO K12
+OPPO | OPPO K12s
+OPPO | OPPO K12s
+OPPO | OPPO K13 Turbo Pro
+OPPO | OPPO K13 Turbo Pro
+OPPO | OPPO K13s
+OPPO | OPPO K13s
+OPPO | OPPO K15 Pro
+OPPO | OPPO K15 Pro
+OPPO | OPPO K15 Pro
+OPPO | OPPO K15 Pro+
+OPPO | OPPO K15 Pro+
+OPPO | OPPO Reno
+OPPO | OPPO Reno 12
+OPPO | OPPO Reno 13
+OPPO | OPPO Reno14
+OPPO | OPPO Reno14 Pro
+OPPO | OPPO Reno14 Pro
+OPPO | OPPO Reno15
+OPPO | OPPO Reno15
+OPPO | OPPO Reno15 Pro
+OPPO | OPPO Reno15 Pro
+OPPO | OPPO Reno15c
+OPPO | OPPO Reno15c
+OPPO | OPPO Reno8
+OPPO | Reno 11 Pro
+ROG | 5s Pro
+ROG | 6天玑9000+
+ROG | 6矩阵式液冷
+ROG | ROG 8
+ROG | ROG 8
+ROG | ROG 8 Pro
+ROG | ROG 8 Pro
+ROG | ROG 8 Pro(24GB/1T)骁龙8Gen3
+ROG | ROG 8(12GB/256GB/QQ飞车手游定制限量版)骁龙8Gen3
+ROG | ROG 游戏手机9
+ROG | ROG 游戏手机9
+ROG | ROG 游戏手机9 Pro
+ROG | ROG 游戏手机9 Pro
+ROG | 华为 Pura 90 Pro
+ROG | 华为 畅享90 Pro Max 128GB
+ROG | 苹果 iPhone 17
+ROG | 苹果 iPhone 17 Pro Max
+iQOO | iQOO 12
+iQOO | iQOO 12 Pro
+iQOO | iQOO 13
+iQOO | iQOO 15
+iQOO | iQOO 15
+iQOO | iQOO 15 Ultra
+iQOO | iQOO 15 Ultra
+iQOO | iQOO Neo10
+iQOO | iQOO Neo11
+iQOO | iQOO Neo11
+iQOO | iQOO Neo9 8
+iQOO | iQOO Z10 Turbo
+iQOO | iQOO Z10 Turbo Pro
+iQOO | iQOO Z10 Turbo+
+iQOO | iQOO Z10x
+iQOO | iQOO Z11
+iQOO | iQOO Z11 Turbo
+iQOO | iQOO Z11 Turbo
+iQOO | iQOO Z11x
+iQOO | iQOO Z11x
+iQOO | iQOO Z9
+iQOO | iQOO Z9 Turbo
+iQOO | iQOO Z9 Turbo 长续航版
+vivo | X Fold
+vivo | X Fold3 Pro
+vivo | X100 Pro
+vivo | X200 Pro
+vivo | iQOO 12 Pro
+vivo | iQOO 15 Ultra
+vivo | iQOO Neo
+vivo | iQOO Z
+vivo | iQOO Z10 Turbo
+vivo | iQOO Z9 Turbo
+vivo | vivo S
+vivo | vivo S18
+vivo | vivo S19
+vivo | vivo S20
+vivo | vivo S30
+vivo | vivo S30
+vivo | vivo S30 Pro
+vivo | vivo S30 Pro mini
+vivo | vivo S50
+vivo | vivo S50 Pro
+vivo | vivo S50 Pro mini
+vivo | vivo S50 Pro mini
+vivo | vivo X
+vivo | vivo X Fold3 Pro
+vivo | vivo X Fold5
+vivo | vivo X100
+vivo | vivo X100 Pro
+vivo | vivo X100 Ultra
+vivo | vivo X100s
+vivo | vivo X200
+vivo | vivo X200
+vivo | vivo X200 Pro
+vivo | vivo X200 Pro
+vivo | vivo X200 Pro mini
+vivo | vivo X200 Ultra
+vivo | vivo X200s
+vivo | vivo X200s
+vivo | vivo X300
+vivo | vivo X300
+vivo | vivo X300 Pro
+vivo | vivo X300 Pro
+vivo | vivo X300 Pro
+vivo | vivo X300 Pro
+vivo | vivo X300 Ultra
+vivo | vivo X300 Ultra
+vivo | vivo X300s
+vivo | vivo X300s
+vivo | vivo Y
+vivo | vivo Y200i
+vivo | vivo Y300
+vivo | vivo Y300 Pro
+vivo | vivo Y300 Pro
+vivo | vivo Y300 Pro+
+vivo | vivo Y300t
+vivo | vivo Y500
+vivo | vivo Y500 Pro
+vivo | vivo Y500 Pro
+vivo | vivo Y600 Pro
+vivo | vivo Y600 Pro
+vivo | vivo(S50 12GB/512GB)
+一加 | 12哈苏全焦段超光影
+一加 | Ace 3 Pro
+一加 | Ace 6T
+一加 | OPPO Find X9 Ultra
+一加 | Turbo 6V
+一加 | iQOO Z11 Turbo
+一加 | 一加12
+一加 | 一加13
+一加 | 一加13
+一加 | 一加13T
+一加 | 一加13T
+一加 | 一加15
+一加 | 一加15
+一加 | 一加15T
+一加 | 一加15T
+一加 | 一加15T
+一加 | 一加Ace 2
+一加 | 一加Ace 3
+一加 | 一加Ace 3 Pro 8
+一加 | 一加Ace 5 8
+一加 | 一加Ace 5 至尊版
+一加 | 一加Ace 5 至尊版
+一加 | 一加Ace 6
+一加 | 一加Ace 6
+一加 | 一加Ace 6
+一加 | 一加Ace 6 至尊版
+一加 | 一加Ace 6T
+一加 | 一加Ace 6T
+一加 | 一加Turbo 6 风驰版
+一加 | 一加Turbo 6 风驰版
+一加 | 一加Turbo 6V
+三星 | Galaxy A
+三星 | Galaxy S
+三星 | Galaxy S23 Ultra
+三星 | Galaxy S24 Ultra
+三星 | Galaxy S25 Ultra
+三星 | Galaxy S26 Ultra
+三星 | Galaxy Z Flip
+三星 | Galaxy Z Flip7 FEAl大视野智能外屏
+三星 | Galaxy Z Flip7多模态Galaxy Al
+三星 | Galaxy Z Fold
+三星 | Galaxy Z Fold5闭合
+三星 | Galaxy Z TriFold多功能大
+三星 | 三星Galaxy A54
+三星 | 三星Galaxy A56
+三星 | 三星Galaxy S23
+三星 | 三星Galaxy S23 Ultra
+三星 | 三星Galaxy S24
+三星 | 三星Galaxy S24 Ultra
+三星 | 三星Galaxy S25
+三星 | 三星Galaxy S25 Ultra
+三星 | 三星Galaxy S26
+三星 | 三星Galaxy S26 Ultra
+三星 | 三星Galaxy S26+
+三星 | 三星Galaxy Z Flip5 骁龙8 Gen2 CPU核心数:八核 ROM容量:256GB 电池容量:3700mAh 后置摄像头1 后置摄像头:1200万像素 有线充电:25w 前置摄像头1 前置摄像头:1000万像素
+三星 | 三星Galaxy Z Flip7 Al
+三星 | 三星Galaxy Z Flip7 FE
+三星 | 三星Galaxy Z Fold5
+三星 | 三星Galaxy Z Fold6 AI
+三星 | 三星Galaxy Z Fold7
+三星 | 三星Galaxy Z TriFold
+三星 | 三星W25
+三星 | 三星W26
+努比亚 | Z50 Ultra
+努比亚 | Z60 Ultra
+努比亚 | Z70 Ultra
+努比亚 | Z80 Ultra
+努比亚 | p 25000
+努比亚 | 努比亚Flip 2
+努比亚 | 努比亚Flip 2
+努比亚 | 努比亚Z50 Ultra
+努比亚 | 努比亚Z60 Ultra
+努比亚 | 努比亚Z70 Ultra
+努比亚 | 努比亚Z70 Ultra
+努比亚 | 努比亚Z70S Ultra 摄影师版
+努比亚 | 努比亚Z70S Ultra 摄影师版
+努比亚 | 努比亚Z80 Ultra
+努比亚 | 努比亚Z80 Ultra
+努比亚 | 努比亚Z80 Ultra(16GB/11B)第五代骁龙8至尊版
+努比亚 | 努比亚小牛
+努比亚 | 努比亚红魔10 Pro(12GB/256GB/暗夜骑士)骁龙8至尊版
+努比亚 | 努比亚红魔10 Pro+(16GB/512GB/暗夜骑士)骁龙8至尊版
+努比亚 | 努比亚红魔10 Pro+(24GB/1TB/暗夜骑士)骁龙8至尊版
+努比亚 | 努比亚红魔10S Pro+ 16GB+512GB骁龙8至尊领先版
+努比亚 | 努比亚红魔11 Air
+努比亚 | 努比亚红魔11 Air
+努比亚 | 努比亚红魔11Pro
+努比亚 | 努比亚红魔11Pro+
+努比亚 | 努比亚红魔11Pro+
+努比亚 | 努比亚红魔11Pro+
+努比亚 | 努比亚红魔9 Pro
+努比亚 | 红魔10 Pro
+努比亚 | 红魔11 Air
+努比亚 | 红魔11Pro
+努比亚 | 红魔9 Pro
+华为 | HUAWEI Mate 60
+华为 | HUAWEI Mate 60 Pro
+华为 | HUAWEI Mate 70
+华为 | HUAWEI Mate 70 Pro
+华为 | HUAWEI Mate 70 Pro+
+华为 | HUAWEI Mate 80
+华为 | HUAWEI Mate 80
+华为 | HUAWEI Mate 80
+华为 | HUAWEI Mate 80 Pro
+华为 | HUAWEI Mate 80 Pro Max
+华为 | HUAWEI Mate 80 Pro Max 风驰版
+华为 | HUAWEI Pura 70
+华为 | HUAWEI Pura 70 Pro
+华为 | HUAWEI Pura X
+华为 | Mate 60 Pro
+华为 | Mate 70 Pro
+华为 | Mate 80 Pro
+华为 | Mate X
+华为 | Mate XTs 非凡
+华为 | P60 Pro
+华为 | Pocket
+华为 | Pura 70 Pro
+华为 | Pura 70 Ultra
+华为 | Pura 80 Pro
+华为 | Pura 80 Ultra
+华为 | Pura 90 Pro
+华为 | Pura X Max
+华为 | nova 14 Pro
+华为 | nova 14 Ultra
+华为 | nova 15 Pro
+华为 | nova 15 Ultra
+华为 | novaFlip
+华为 | 华为Mate 70 Air
+华为 | 华为Mate 70 Air
+华为 | 华为Mate X5
+华为 | 华为Mate X7
+华为 | 华为Mate XTs 非凡大师
+华为 | 华为Mate30 Pro（8GB/256GB/全网通/5G版/玻璃版）
+华为 | 华为Mate30（8GB/128GB/全网通/5G版/玻璃版）
+华为 | 华为Pura 80
+华为 | 华为Pura 80 Pro
+华为 | 华为Pura 80 Ultra
+华为 | 华为Pura 90
+华为 | 华为Pura 90 Pro
+华为 | 华为Pura X Max
+华为 | 华为Pura X Max
+华为 | 华为nova 14
+华为 | 华为nova 14 Pro
+华为 | 华为nova 14 Ultra
+华为 | 华为nova 15
+华为 | 华为nova 15 Pro
+华为 | 华为nova 15 Ultra
+华为 | 华为畅享 70X
+华为 | 华为畅享 80
+华为 | 华为畅享 90 128GB
+华为 | 华为畅享 90 256GB
+华为 | 华为畅享90 Plus 128GB
+华为 | 华为畅享90 Pro Max 256GB
+华为 | 华为畅享90 Pro Max 512GB
+华为 | 畅享90 Plus
+华为 | 畅享90 Pro
+小米 | MIX FOLD
+小米 | MIX Flip
+小米 | MIX Fold
+小米 | Redmi K
+小米 | Redmi K70 Pro
+小米 | Redmi K80 Pro
+小米 | Redmi K90 Pro
+小米 | Redmi Note
+小米 | Redmi Note 13 Pro
+小米 | Redmi Note 14 Pro
+小米 | Redmi Note 15 Pro
+小米 | Redmi Turbo
+小米 | Redmi Turbo 4 Pro
+小米 | RedmiTurbo
+小米 | 小米10S（8GB/128GB/全网通/5G版）
+小米 | 小米10（8GB/128GB/全网通/5G版/至尊纪念版）
+小米 | 小米10（8GB/128GB/全网通）
+小米 | 小米11 Pro
+小米 | 小米11 Pro（8GB/256GB/全网通/5G版）
+小米 | 小米11 Ultra
+小米 | 小米11 Ultra（12GB/512GB/全网通/5G版）
+小米 | 小米11青春版（8GB/128GB/全网通/5G版）
+小米 | 小米11（8GB/128GB/全网通/5G版）
+小米 | 小米12 Pro
+小米 | 小米12 Pro（8GB/256GB/5G版）
+小米 | 小米12S
+小米 | 小米12S Pro
+小米 | 小米12S Ultra
+小米 | 小米12（8GB/256GB/5G版）
+小米 | 小米13
+小米 | 小米13 Pro
+小米 | 小米13 Pro
+小米 | 小米13 Ultra
+小米 | 小米13 Ultra
+小米 | 小米13 Ultra
+小米 | 小米14
+小米 | 小米14 Pro
+小米 | 小米14 Pro
+小米 | 小米14 Ultra
+小米 | 小米14 Ultra
+小米 | 小米14 Ultra
+小米 | 小米14 Ultra
+小米 | 小米15
+小米 | 小米15
+小米 | 小米15
+小米 | 小米15 Pro
+小米 | 小米15 Pro
+小米 | 小米15 Pro
+小米 | 小米15 Pro16GB/1TB)
+小米 | 小米15 Ultra
+小米 | 小米15 Ultra
+小米 | 小米15 Ultra
+小米 | 小米15S Pro
+小米 | 小米17
+小米 | 小米17
+小米 | 小米17
+小米 | 小米17 Pro
+小米 | 小米17 Pro
+小米 | 小米17 Pro
+小米 | 小米17 Pro Max
+小米 | 小米17 Ultra
+小米 | 小米17 Ultra
+小米 | 小米17 Ultra
+小米 | 小米17 Ultra
+小米 | 小米Civi
+小米 | 小米Civi 3
+小米 | 小米Civi 4 Pro
+小米 | 小米Civi 4 Pro
+小米 | 小米Civi 5 Pro
+小米 | 小米Civi 5 Pro
+小米 | 小米MIX 4（12GB/256GB/全网通/5G版）
+小米 | 小米MIX Flip
+小米 | 小米MIX Flip 2
+真我 | 15 Pro
+真我 | 15T前后5000万
+真我 | GT Neo
+真我 | GT Neo5
+真我 | GT Neo5 SE
+真我 | GT Neo6 SE
+真我 | GT2 Pro
+真我 | GT5 Pro
+真我 | GT7 Pro
+真我 | GT8 Pro
+真我 | Q3 Pro
+真我 | Redmi K90 Pro Max
+真我 | Redmi Turbo 5 MAX
+真我 | 真我15 Pro
+真我 | 真我15T
+真我 | 真我GT Neo2（8GB/256GB/全网通/5G版）
+真我 | 真我GT Neo5 150W
+真我 | 真我GT Neo5 SE
+真我 | 真我GT 大师探索版（12GB/256GB/全网通/5G版）
+真我 | 真我GT5 150W
+真我 | 真我GT5 Pro
+真我 | 真我GT6
+真我 | 真我GT7
+真我 | 真我GT7
+真我 | 真我GT7 Pro
+真我 | 真我GT8
+真我 | 真我GT8
+真我 | 真我GT8
+真我 | 真我GT8
+真我 | 真我GT8 Pro
+真我 | 真我GT8 Pro
+真我 | 真我Neo7
+真我 | 真我Neo7 SE
+真我 | 真我Neo7 Turbo
+真我 | 真我Neo7 Turbo
+真我 | 真我Neo8
+真我 | 真我Neo8
+真我 | 真我Neo8
+真我 | 真我Neo8
+索尼 | HUAWEI Pura X
+索尼 | OPPO Find X9s Pro
+索尼 | Xperia
+索尼 | Xperia PRO-I
+索尼 | iPhone 17 Pro
+索尼 | iPhone Air 1TB
+索尼 | vivo X300 Ultra
+索尼 | 一加Ace 6 至尊版
+索尼 | 华为 Pura 90 Pro Max
+索尼 | 华为Pura 90 Pro Max
+索尼 | 华为Pura X Max(16GB/512GB/典藏版)
+索尼 | 华为novaFlip
+索尼 | 华为畅享90 Pro Max 128GB
+索尼 | 索尼Xperia 1 IV
+索尼 | 索尼Xperia 1 IV
+索尼 | 索尼Xperia 10 III（6GB/128GB/全网通/5G版）高通骁龙690
+索尼 | 索尼Xperia 10 IV
+索尼 | 索尼Xperia 5 III（8GB/256GB/全网通/5G版）高通骁龙888
+索尼 | 索尼Xperia PRO-I（12GB/512GB/全网通/5G版）高通骁龙888
+索尼 | 索尼Xperia Pro（8GB/512GB/全网通/5G版）360度天线设计
+索尼 | 索尼移动Xperia 1 V
+索尼 | 索尼移动Xperia 1 VII
+索尼 | 索尼移动Xperia 1 VII
+索尼 | 索尼移动Xperia 5 V
+索尼 | 索尼移动Xperia 5 Ⅳ 骁龙8 Gen1
+索尼 | 索尼移动Xperia Pro-i IICPU型号:高通 骁龙8 Gen2 CPU核心数:八核 RAM容量:12GB ROM容量:512GB 电池容量:4500mAh 后置摄像头1 后置摄像头:1220万像素 有线充电:30w
+索尼 | 红米note
+索尼 | 荣耀 500 Pro
+红米 | Redmi  K80至尊版
+红米 | Redmi  Note 14
+红米 | Redmi  Note 14 Pro
+红米 | Redmi  Note 15
+红米 | Redmi K70
+红米 | Redmi K80
+红米 | Redmi K80 Pro
+红米 | Redmi K80至尊版
+红米 | Redmi K90
+红米 | Redmi K90
+红米 | Redmi K90 Max
+红米 | Redmi K90 Max
+红米 | Redmi Note 13 Pro
+红米 | Redmi Note 15 Pro
+红米 | Redmi Note 15 Pro
+红米 | Redmi Note 15 Pro+
+红米 | Redmi Turbo 4 Pro 8s
+红米 | Redmi Turbo 4天玑 8400-Ultra
+红米 | Redmi Turbo 5
+红米 | Redmi（红米）Turbo 4 12GB+512GB天玑 8400-Ultra
+联想 | Moto Edge
+联想 | Moto Edge S Pro（8GB/128GB/全网通/5G版）高通骁龙870处理器
+联想 | Moto Edge S30（12GB/512GB/5G版/冠军版）骁龙888 Plus处理器
+联想 | Moto Razr
+联想 | Moto Razr 50
+联想 | Moto S
+联想 | Moto S50 7300
+联想 | Moto X70 Air
+联想 | Moto X70 Air
+联想 | Moto X70 Air
+联想 | Moto X70 Air Pro
+联想 | Moto X70 Air Pro
+联想 | Moto edge
+联想 | Moto edge 60 Pro
+联想 | Moto edge 60 Pro
+联想 | Moto edge s（8GB/128GB/全网通/5G版）骁龙870
+联想 | Moto g
+联想 | Moto g100
+联想 | Moto g100
+联想 | Moto g100 Pro
+联想 | Moto g100 Pro
+联想 | Moto g100 Pro
+联想 | Moto g100s
+联想 | Moto g100s
+联想 | Moto g54
+联想 | Moto g75
+联想 | Moto razr
+联想 | Moto razr 50 Ultra
+联想 | Moto razr 50 Ultra
+联想 | Moto razr 60 12GB+512GB60万次折叠认证
+联想 | Moto razr 60 8GB+256GB60万次折叠认证
+联想 | Moto razr 60 Ultra
+联想 | Moto razr 60 Ultra
+联想 | moto S50 Neo
+联想 | 小米 17 Ultra
+苹果 | Apple（苹果）iPhone Air 1TB
+苹果 | Apple（苹果）iPhone Air 256GB
+苹果 | iPhone
+苹果 | iPhone 15 Plus
+苹果 | iPhone 15 Pro
+苹果 | iPhone 16 Plus
+苹果 | iPhone 16 Pro
+苹果 | iPhone Air 256GB
+苹果 | 苹果iPhone 15
+苹果 | 苹果iPhone 15 Plus
+苹果 | 苹果iPhone 15 Pro
+苹果 | 苹果iPhone 15 Pro
+苹果 | 苹果iPhone 15 Pro Max
+苹果 | 苹果iPhone 15 Pro Max
+苹果 | 苹果iPhone 16
+苹果 | 苹果iPhone 16
+苹果 | 苹果iPhone 16 Plus
+苹果 | 苹果iPhone 16 Pro
+苹果 | 苹果iPhone 16 Pro
+苹果 | 苹果iPhone 16 Pro Max
+苹果 | 苹果iPhone 16 Pro Max
+苹果 | 苹果iPhone 16e
+苹果 | 苹果iPhone 17
+苹果 | 苹果iPhone 17
+苹果 | 苹果iPhone 17 Pro
+苹果 | 苹果iPhone 17 Pro
+苹果 | 苹果iPhone 17 Pro
+苹果 | 苹果iPhone 17 Pro Max
+苹果 | 苹果iPhone 17 Pro Max
+苹果 | 苹果iPhone 17 Pro Max
+苹果 | 苹果iPhone 17 Pro Max
+苹果 | 苹果iPhone 17e
+苹果 | 苹果iPhone XR（全网通）
+荣耀 | Magic V
+荣耀 | Magic V Flip
+荣耀 | Magic6 Pro
+荣耀 | Magic7 Pro
+荣耀 | 真我12
+荣耀 | 真我12x
+荣耀 | 真我15
+荣耀 | 真我15T
+荣耀 | 真我GT Neo 闪速版（8GB/256GB/全网通/5G版）
+荣耀 | 真我GT Neo2T（8GB/256GB/全网通/5G版）
+荣耀 | 真我GT Neo6
+荣耀 | 真我GT Neo6 SE
+荣耀 | 真我GT Neo（8GB/128GB/全网通/5G版）
+荣耀 | 真我GT2 Pro（12GB/256GB/5G版）
+荣耀 | 真我GT6
+荣耀 | 真我GT7
+荣耀 | 真我GT7
+荣耀 | 真我GT7 Pro
+荣耀 | 真我GT7 Pro竞速版
+荣耀 | 真我GT8
+荣耀 | 真我GT8
+荣耀 | 真我GT8
+荣耀 | 真我GT8
+荣耀 | 真我GT8
+荣耀 | 真我Neo7
+荣耀 | 真我Neo7 Turbo
+荣耀 | 真我Neo7x（ 8GB+256GB）
+荣耀 | 真我Neo8
+荣耀 | 真我Neo8
+荣耀 | 真我Neo8
+荣耀 | 真我Neo8
+荣耀 | 真我Q2（4GB/128GB/全网通/5G版）
+荣耀 | 真我Q3 Pro（8GB/128GB/全网通/5G版）
+荣耀 | 真我Q3s（8GB/128GB/全网通/5G版）
+荣耀 | 真我Q3（6GB/128GB/全网通/5G版）
+荣耀 | 真我V11（4GB/128GB/全网通/5G版）
+荣耀 | 真我V15（6GB/128GB/全网通/5G版）
+荣耀 | 真我X7 Pro（8GB/128GB/全网通/5G版）
+荣耀 | 荣耀500 Pro
+荣耀 | 荣耀500 Pro
+荣耀 | 荣耀X60 Pro
+魅族 | 17 Pro
+魅族 | 17超线性扬声器
+魅族 | 18 Pro
+魅族 | 20 INFINITY
+魅族 | 20 Pro
+魅族 | 21 Note
+魅族 | 21 Pro
+魅族 | Note 16 Pro
+魅族 | 魅族22
+魅族 | 魅族22
+魅族 | 魅族22
+魅族 | 魅族22
+黑鲨 | 4S Pro
+黑鲨 | 4S 高达限定版CPU型号:
+黑鲨 | 4骁龙870
+黑鲨 | 小米MIX FOLD 4
+黑鲨 | 红米note14
