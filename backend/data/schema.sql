@@ -24,6 +24,12 @@ CREATE TABLE IF NOT EXISTS phones (
     pros TEXT,
     cons TEXT,
     suitable_for TEXT,
+    -- 影像字段
+    sensor_main TEXT,
+    telephoto_type TEXT,
+    has_ois INTEGER DEFAULT NULL,  -- 是否支持OIS光学防抖 (0=否/1=是/NULL=未知)
+    image_brand TEXT,
+    camera_score INTEGER,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     updated_at TEXT DEFAULT CURRENT_TIMESTAMP
 );

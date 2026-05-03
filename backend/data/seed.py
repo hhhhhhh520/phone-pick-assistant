@@ -12,6 +12,99 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspa
 from backend.models.domain import init_db, SessionLocal, Phone
 from backend.data.image_loader import get_image_url, get_placeholder_url
 
+
+# 主流机型影像配置参考表
+# 格式: "品牌+型号": (主摄传感器, 长焦类型, 影像品牌)
+# 长焦类型: 双潜望/单潜望/直立长焦/无
+# 影像品牌: 徕卡/哈苏/蔡司/XMAGE/Blueimage/鹰眼/原色
+IMAGE_CONFIG = {
+    # 小米旗舰
+    "小米14 Ultra": ("LYT-900", "双潜望", "徕卡"),
+    "小米15 Ultra": ("LYT-900", "双潜望", "徕卡"),
+    "小米15 Pro": ("LYT-818", "单潜望", "徕卡"),
+    "小米15": ("光影猎人900", "直立长焦", "徕卡"),
+    "小米14": ("光影猎人900", "直立长焦", "徕卡"),
+    "MIX Fold 4": ("LYT-900", "单潜望", "徕卡"),
+    "MIX Flip": ("光影猎人800", "无", "徕卡"),
+    # OPPO旗舰
+    "Find X7 Ultra": ("LYT-900", "双潜望", "哈苏"),
+    "Find X8 Pro": ("LYT-818", "双潜望", "哈苏"),
+    "Find X8": ("LYT-700", "单潜望", "哈苏"),
+    "Find N3": ("LYT-800", "单潜望", "哈苏"),
+    "Find N3 Flip": ("IMX890", "直立长焦", "哈苏"),
+    "一加12": ("LYT-808", "单潜望", "哈苏"),
+    "一加13": ("LYT-808", "单潜望", "哈苏"),
+    # vivo旗舰
+    "X100 Pro": ("IMX989", "单潜望", "蔡司"),
+    "X200 Pro": ("LYT-818", "单潜望", "蔡司"),
+    "X200": ("IMX920", "直立长焦", "蔡司"),
+    "X Fold3 Pro": ("LYT-T808", "单潜望", "蔡司"),
+    "X Fold3": ("LYT-T808", "直立长焦", "蔡司"),
+    # 华为旗舰
+    "Mate 70 Pro+": ("IMX989", "单潜望", "XMAGE"),
+    "Mate 70 Pro": ("IMX989", "单潜望", "XMAGE"),
+    "Mate 60 Pro+": ("IMX888", "单潜望", "XMAGE"),
+    "P60 Pro": ("IMX888", "单潜望", "XMAGE"),
+    "Pura 70 Ultra": ("IMX989", "单潜望", "XMAGE"),
+    "Mate X5": ("IMX766", "直立长焦", "XMAGE"),
+    "Pocket 2": ("IMX766", "直立长焦", "XMAGE"),
+    # 荣耀旗舰
+    "Magic7 Pro": ("OV50K", "单潜望", "鹰眼"),
+    "Magic6 Pro": ("OV50H", "单潜望", "鹰眼"),
+    "Magic V3": ("OV50H", "直立长焦", "鹰眼"),
+    "Magic V Flip": ("IMX800", "无", "鹰眼"),
+    # Apple
+    "iPhone 16 Pro Max": ("IMX803", "单潜望", "原色"),
+    "iPhone 16 Pro": ("IMX803", "单潜望", "原色"),
+    "iPhone 16 Plus": ("IMX803", "无", "原色"),
+    "iPhone 16": ("IMX803", "无", "原色"),
+    "iPhone 15 Pro Max": ("IMX803", "单潜望", "原色"),
+    "iPhone 15 Pro": ("IMX703", "直立长焦", "原色"),
+    "iPhone 15": ("IMX703", "无", "原色"),
+    "iPhone 14": ("IMX703", "无", "原色"),
+    # 三星
+    "Galaxy S24 Ultra": ("HP2", "单潜望", "原色"),
+    "Galaxy S24": ("GN3", "直立长焦", "原色"),
+    "Galaxy Z Fold6": ("GN3", "直立长焦", "原色"),
+    "Galaxy Z Flip6": ("GN3", "无", "原色"),
+    # 其他
+    "Redmi K70 Pro": ("光影猎人800", "无", "原色"),
+    "Redmi K80": ("光影猎人800", "无", "原色"),
+    "Redmi Note 14 Pro+": ("HP3", "无", "原色"),
+    "Redmi Note 14": ("OV50C", "无", "原色"),
+    "iQOO 12": ("GN5", "直立长焦", "原色"),
+    "iQOO Neo10": ("IMX920", "无", "原色"),
+    "iQOO Z9 Turbo+": ("LYT-600", "无", "原色"),
+    "realme GT5 Pro": ("LYT-808", "单潜望", "原色"),
+    "GT Neo6": ("LYT-600", "无", "原色"),
+    "魅族21": ("HP3", "无", "原色"),
+    "努比亚Z60 Ultra": ("IMX800", "直立长焦", "原色"),
+    "Reno 11 Pro": ("LYT-700", "直立长焦", "原色"),
+    "荣耀X60 Pro": ("HM6", "无", "原色"),
+    "荣耀X50": ("HM6", "无", "原色"),
+    "vivo Y300 Pro": ("OV50D", "无", "原色"),
+}
+
+
+def get_image_brand_from_features(features: list) -> str:
+    """从 features 字段提取影像品牌"""
+    features_str = "".join(features) if features else ""
+
+    if "徕卡" in features_str:
+        return "徕卡"
+    if "哈苏" in features_str:
+        return "哈苏"
+    if "蔡司" in features_str:
+        return "蔡司"
+    if "XMAGE" in features_str or "华为影像" in features_str or "红枫影像" in features_str:
+        return "XMAGE"
+    if "Blueimage" in features_str or "蓝厂影像" in features_str:
+        return "Blueimage"
+    if "鹰眼" in features_str:
+        return "鹰眼"
+    return "原色"
+
+
 PHONES_DATA = [
     # Apple
     {
@@ -1407,6 +1500,26 @@ def seed_database():
 
         print("正在插入种子数据...")
         for phone_data in PHONES_DATA:
+            # 获取影像配置
+            model_key = phone_data["model"]
+            image_config = IMAGE_CONFIG.get(model_key, (None, None, None))
+            sensor_main, telephoto_type, image_brand = image_config
+
+            # 如果没有预定义的影像品牌，从 features 提取
+            if not image_brand:
+                image_brand = get_image_brand_from_features(phone_data.get("features", []))
+
+            # 判断是否有长焦镜头
+            if telephoto_type is None:
+                has_telephoto = phone_data.get("camera_telephoto") is not None
+                if has_telephoto:
+                    telephoto_type = "直立长焦"  # 默认中低端机型是直立长焦
+                else:
+                    telephoto_type = "无"
+
+            # OIS默认为True（旗舰机都有）
+            has_ois = True
+
             phone = Phone(
                 brand=phone_data["brand"],
                 model=phone_data["model"],
@@ -1432,6 +1545,11 @@ def seed_database():
                 pros=json.dumps(phone_data.get("pros", []), ensure_ascii=False),
                 cons=json.dumps(phone_data.get("cons", []), ensure_ascii=False),
                 suitable_for=json.dumps(phone_data.get("suitable_for", []), ensure_ascii=False),
+                # 影像字段
+                sensor_main=sensor_main,
+                telephoto_type=telephoto_type,
+                has_ois=has_ois,
+                image_brand=image_brand,
             )
             db.add(phone)
 

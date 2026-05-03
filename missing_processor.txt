@@ -1,0 +1,157 @@
+缺失processor的记录 (共126条)
+============================================================
+
+【华为】28条
+  HUAWEI Mate 70 Pro(12GB/512GB)
+  HUAWEI Mate 70 Pro+(16GB/512GB)
+  HUAWEI Mate 70(12GB/512GB)
+  HUAWEI Mate 80(12GB/256GB)
+  HUAWEI Pura 70 Pro(12GB/256GB)
+  HUAWEI Pura 70(12GB/1TB)
+  HUAWEI Pura X(12GB/256GB)
+  HUAWEI Pura X(12GB/512GB)
+  三星Galaxy Z Flip7 FE（8GB/256GB）Al大视野智能外屏，5000万像素超清相机，多模态Galaxy AI
+  华为 Pura 90 Pro
+  华为 Pura 90 Pro Max
+  华为 Pura X Max
+  华为 畅享90 Pro Max 128GB
+  华为Mate X5 （12GB/256GB）
+  华为Pura 80 Pro(12GB/256GB)
+  华为Pura 80 Ultra（16GB/512GB）
+  华为Pura 80(12GB/256GB)
+  华为Pura 90 Pro Max(16GB/512GB)
+  华为Pura X Max(16GB/512GB/典藏版)
+  华为nova 14 Pro（256GB）
+  华为nova 14 Ultra（256GB）
+  华为nova 14（256GB）
+  华为novaFlip
+  华为畅享 70X(128GB)
+  华为畅享 80（128GB）
+  华为畅享90 Pro Max 128GB
+  魅族Note 16(12GB/256GB)6600mAh超耐久电池，泰坦护盾合金架构，IP65 防水泼溅
+  魅族Note 16(8GB/128GB)6600mAh超耐久电池，泰坦护盾合金架构，IP65 防水泼溅
+
+【联想】16条
+  Moto S50(12GB/256GB)天玑 7300，68W 快充，6.36英寸OLED屏幕
+  Moto X70 Air Pro(16GB/512GB)轻薄最强AI影像，双8K AI云台影像，清晰防抖新标准
+  Moto X70 Air(12GB/512GB)超轻薄直屏，多面耐摔，强力抗水
+  Moto edge 60 Pro（12GB/512GB）索尼5000万影像系统，悬浮四曲机身，全生态直觉交互
+  Moto g100 Pro(12GB/512GB)6720mAh大电池强续航，杜比双扬1.5K高刷超清屏，湿手触控防水防污
+  Moto g100 Pro(8GB/256GB)6720mAh大电池强续航，杜比双扬1.5K高刷超清屏，湿手触控防水防污
+  Moto g100s(8GB/128GB)千元小钢炮，护眼强续航，多功能NFC
+  Moto g100s(8GB/256GB)千元小钢炮，护眼强续航，多功能NFC
+  Moto g54（8GB/128GB）5000万AI影像，5000mAh， 120Hz
+  Moto g75(8GB/256GB)护眼大屏，抗冻耐摔，第三代骁龙6
+  Moto razr 50 Ultra(12GB/512GB)无界AI大屏，潘通色彩定制，新五代星轨转轴
+  Moto razr 60 12GB+512GB60万次折叠认证，康宁防护，湿手触控
+  Moto razr 60 8GB+256GB60万次折叠认证，康宁防护，湿手触控
+  Moto razr 60 Ultra(16GB/256GB)4英寸大外屏，第六代折叠屏，30W无线充
+  moto S50 Neo(8GB/256GB)潘通色彩定制，应用六开，AI夜景大师
+  小米 17 Ultra
+
+【真我】15条
+  真我15 Pro（12GB+256GB）
+  真我15T（8GB+128GB）前后5000万超清拍照，7000mAh泰坦电池，4000nits阳光屏
+  真我GT Neo2（8GB/256GB/全网通/5G版）
+  真我GT Neo5 150W（8GB/256GB）
+  真我GT Neo5 SE（8GB/256GB）
+  真我GT Neo6 SE(8GB/256GB)
+  真我GT 大师探索版（12GB/256GB/全网通/5G版）
+  真我GT5 150W （12GB/256GB）
+  真我GT5 Pro(12GB/256GB)
+  真我GT7 Pro(12GB/256GB)
+  真我GT8 Pro（12GB/256GB）
+  真我GT8 Pro（12GB/512GB）
+  真我Neo7 SE(8GB/256GB)
+  真我Neo7 Turbo(12GB/256GB)
+  真我Neo7 Turbo(12GB/512GB)
+
+【三星】12条
+  ROG 游戏手机6（8GB/128GB）矩阵式液冷散热6.0，165Hz三星电竞屏，2x3Plus肩键
+  三星Galaxy A54（8GB/128GB）光学防抖，IP67等级，5000毫安大电池
+  三星Galaxy A56(8GB/256GB)5000万像素，5000mAh大电池，7.4mm机身
+  三星Galaxy Note 20 Ultra（12GB/256GB/全网通/5G版）S Pen，三星笔记，120Hz自适应屏幕，专业视频拍摄
+  三星Galaxy S20（12GB/128GB/全网通）6400万后置主摄，LPDDR5内存，AI一键多拍
+  三星Galaxy S24 Ultra(12GB/256GB)Al智享生活办公，四长焦系统，SPen
+  三星Galaxy S24(8GB/256GB)装甲铝边框，超视觉引擎，Galaxy AI
+  三星Galaxy S25 Ultra
+  三星Galaxy Z Flip7（12GB/256GB）多模态Galaxy Al，超大视野智能外屏，5000万超清主摄
+  三星Galaxy Z Fold5（12GB/512GB）闭合折叠，轻薄手感，PC般强大生产力
+  三星Galaxy Z Fold7(12GB/256GB)
+  三星Galaxy Z TriFold（16GB/512GB）多功能大屏幕，Galaxy Al，2亿像素广角摄像头
+
+【小米】11条
+  Redmi  Note 14 Pro(8GB/128GB)IP68防尘防水，固态电解质电池，高光护眼屏
+  Redmi  Note 14(6GB/128GB)
+  Redmi  Note 15(6GB/128GB)第三代骁龙6，5800mAh大电量，IP66防尘防水
+  Redmi K70(12GB/256GB)第二代晓龙8，光影猎人，120W充电
+  Redmi K90 Pro Max(12GB/256GB)
+  Redmi Note 15 Pro+(12GB/256GB)真抗摔，真防水，长续航
+  Redmi Turbo 4 Pro(12GB/256GB)第四代骁龙 8s，双环路3D冰封散热，6.83英寸极窄边大屏
+  Redmi Turbo 4天玑 8400-Ultra，6550mAh大电池，小米澎湃OS2
+  Redmi Turbo 5 MAX(12GB/256GB)
+  Redmi（红米）Turbo 4 12GB+512GB天玑 8400-Ultra，6550mAh大电池，小米澎湃OS2
+  小米MIX FOLD 4(12GB/256GB)
+
+【魅族】10条
+  魅族17 Pro（8GB/128GB/全网通/5G版）6400W专业影像系统，27W无线超充，mSmart 5G，mEngine 3.0
+  魅族17（8GB/128GB/全网通/5G版）超线性扬声器，mSmart 5G，mEngine 3.0，全场景影像系统
+  魅族20 INFINITY 无界版（12GB/256GB）2.48mm 四等极边，91% 极致屏占,惊艳视觉感官，挑战行业极限
+  魅族21 Pro(12GB+256GB)Flyme AI，2k+ 单手臻彩屏，mTouch Max 广域超声波指纹识别
+  魅族21 Pro(16GB+512GB)Flyme AI，2k+ 单手臻彩屏，mTouch Max 广域超声波指纹识别
+  魅族Lucky 08(12GB/512GB)无界天线系统，星轨科技美学，AI按键
+  魅族Lucky 08(8GB/256GB)无界天线系统，星轨科技美学，AI按键
+  魅族Note 16 (8GB/256GB)超级信号战神，五年持久流畅认证，三防品质认证
+  魅族Note 16 Pro(12GB/512GB)超级信号战神，五年持久流畅认证，三防品质认证
+  魅族Note 16 Pro(16GB/512GB)超级信号战神，五年持久流畅认证，三防品质认证
+
+【一加】8条
+  一加13T(12GB/256GB)性能超强小直屏，骁龙 8 至尊版，冰川电池
+  一加13T(12GB/512GB)性能超强小直屏，骁龙 8 至尊版，冰川电池
+  一加15T(12GB/256GB)
+  一加15（12GB/256GB）
+  一加Ace 3 Pro（12GB/256GB）第三代骁龙 8，冰川电池，1.5K东方屏
+  一加Ace 5 至尊版(12GB/256GB)
+  一加Ace 5(12GB/256GB)第三代骁龙 8，冰川电池，电竞护眼屏
+  一加Ace 6 至尊版(12GB/256GB)
+
+【vivo】5条
+  iQOO Neo8（12GB/256GB）自研芯片 V1+，120W 超快闪充，VC立体散热系统
+  iQOO Neo9(12GB/256GB)第二代骁龙 8，自研电竞芯片 Q1，MX920 索尼大底主摄
+  iQOO Z11 Turbo(12GB/256GB)
+  vivo X300 Ultra(12GB/256GB)
+  vivo Y600 Pro（8GB/256GB）
+
+【努比亚】5条
+  努比亚Flip 2(12GB/512GB)5000万后置双摄，全视角悬停摄影，轻薄抗摔
+  努比亚Flip 2(8GB/256GB)5000万后置双摄，全视角悬停摄影，轻薄抗摔
+  努比亚Z50 Ultra（8GB/256GB）真全面屏，第四代屏下摄像，黄金双焦段定制光学
+  努比亚小牛(6GB/256GB)Neovision泰山AI影像，双玻璃机身，5000mAh大电池
+  努比亚红魔8 PRO（8GB/128GB）UDC全面屏4.0，ICE11.0魔冷散热系统，80w快充
+
+【ROG】4条
+  ROG 游戏手机9 Pro(16GB/512GB)光显矩阵屏，185Hz高刷，SoC中置架构
+  ROG 游戏手机9 Pro(24GB/1TB)光显矩阵屏，185Hz高刷，SoC中置架构
+  ROG 游戏手机9(12GB/256GB)光显矩阵屏，185Hz高刷，SoC中置架构
+  ROG 游戏手机9(12GB/512GB)光显矩阵屏，185Hz高刷，SoC中置架构
+
+【索尼】4条
+  索尼移动Xperia 1 VII（12GB/256GB）
+  索尼移动Xperia 1 VII（16GB/512GB）
+  索尼移动Xperia 5 V(8GB/256GB)
+  红米note14
+
+【苹果】4条
+  Apple（苹果）iPhone Air 256GB
+  苹果 iPhone 17
+  苹果 iPhone 17 Pro Max
+  苹果iPhone 17 Pro Max（256GB）
+
+【OPPO】3条
+  OPPO Find X9 Pro(12GB/256GB)
+  OPPO Find X9 Ultra(12GB/256GB)
+  OPPO Find X9s Pro(16GB/512GB)
+
+【荣耀】1条
+  荣耀 500 Pro
+

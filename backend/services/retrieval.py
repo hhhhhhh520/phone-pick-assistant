@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from backend.models.domain import Phone, get_antutu_score
 from typing import List
 from sqlalchemy import case
+from backend.services.camera_score import camera_scoring_service
 
 
 class RetrievalService:
@@ -105,12 +106,8 @@ class RetrievalService:
             feature_lower = feature.lower()
 
             if feature_lower == "游戏":
-                # 游戏：suitable_for 包含 "游戏玩家" 或 features 包含 "游戏"/"电竞"
-                or_conditions.append(
-                    (Phone.suitable_for.contains("游戏玩家")) |
-                    (Phone.features.contains("游戏")) |
-                    (Phone.features.contains("电竞"))
-                )
+                # 游戏场景：不依赖标签（覆盖率太低，仅7款），靠 _sort_by_scenario 按跑分排序
+                pass
             elif feature_lower == "拍照":
                 # 拍照：suitable_for 包含 "摄影" 或 features 包含影像相关关键词
                 or_conditions.append(
@@ -124,6 +121,12 @@ class RetrievalService:
                 # 续航：suitable_for 包含 "续航" 或 battery >= 5000
                 or_conditions.append(Phone.suitable_for.contains("续航"))
                 battery_threshold = 5000
+            elif feature_lower == "性能":
+                # 性能场景：不添加DB筛选，所有手机都是候选，依赖 _sort_by_scenario 按跑分排序
+                pass
+            elif "无线" in feature_lower or "wireless" in feature_lower:
+                # 无线充电：charging_wireless > 0 表示支持无线充电
+                or_conditions.append(Phone.charging_wireless > 0)
 
         return or_conditions, battery_threshold
 
@@ -149,8 +152,20 @@ class RetrievalService:
             return sorted(phones, key=game_sort_key)
 
         elif "拍照" in features_lower:
-            # 拍照场景：主摄像素降序
-            return sorted(phones, key=lambda p: -(p.camera_main or 0))
+            # 拍照场景：综合影像评分排序
+            # 总分降序，总分相同时按硬件分降序（传感器+长焦更重要）
+            def photo_sort_key(phone):
+                scores = camera_scoring_service.calc_total_score(phone)
+                return (-scores["total"], -scores["hardware_score"])
+            return sorted(phones, key=photo_sort_key)
+
+        elif "性能" in features_lower:
+            # 性能场景：安兔兔跑分 > 内存 > 价格
+            def perf_sort_key(phone):
+                antutu_score = get_antutu_score(phone.processor) if phone.processor else 0
+                ram = phone.ram or 0
+                return (-antutu_score, -ram, phone.price)
+            return sorted(phones, key=perf_sort_key)
 
         elif "续航" in features_lower:
             # 续航场景：电池容量降序
@@ -192,20 +207,21 @@ class RetrievalService:
                 query = query.filter(Phone.battery >= battery_threshold)
 
         # 场景感知排序
-        phones = query.order_by(
-            # 有图片的排前面
-            case(
-                (Phone.image_url.isnot(None), 0),
-                else_=1
-            )
-        ).limit(limit * 2).all()  # 多取一些用于重排序
-
-        # 根据场景进行智能排序
         if intent_result.features:
+            # 有场景需求时：取全部候选(无ORDER BY)，用场景排序重排
+            phones = query.all()
             features_lower = [f.lower() for f in intent_result.features]
             phones = self._sort_by_scenario(phones, features_lower)
+            # 场景排序后，同分优先有图片（稳定排序：先排图片，再排场景，场景为主键）
         else:
-            # 默认按价格升序
+            # 无场景需求：优先有图片，按价格排序
+            phones = query.order_by(
+                case(
+                    (Phone.image_url.isnot(None), 0),
+                    else_=1
+                ),
+                Phone.price
+            ).limit(limit * 2).all()
             phones = sorted(phones, key=lambda p: p.price)
 
         return phones[:limit]

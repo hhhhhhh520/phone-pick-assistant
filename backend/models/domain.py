@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Float, create_engine
+from sqlalchemy import Column, Integer, String, Text, Float, Boolean, create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 from backend.config import get_settings
 import json
@@ -28,12 +28,16 @@ class Phone(Base):
     charging_wired = Column(Integer)
     charging_wireless = Column(Integer)
     weight = Column(Integer)
-    features = Column(Text)
     url = Column(String(500))
     image_url = Column(String(500))
-    pros = Column(Text)
-    cons = Column(Text)
-    suitable_for = Column(Text)
+    # 影像评分相关字段（可为空，向后兼容）
+    sensor_main = Column(String(50))  # 主摄传感器型号，如 "LYT-900"
+    telephoto_type = Column(String(30))  # 长焦类型：双潜望/单潜望/直立长焦/无
+    has_ois = Column(Boolean, default=None)  # 是否支持OIS光学防抖
+    image_brand = Column(String(30))  # 影像品牌：XMAGE/徕卡/哈苏/蔡司/Blueimage/原色
+    camera_score = Column(Integer)  # 综合影像评分（缓存字段）
+    features = Column(Text)  # 特性标签 JSON数组，如 '["游戏", "电竞"]'
+    suitable_for = Column(Text)  # 适用人群 JSON数组，如 '["游戏玩家", "学生"]'
     created_at = Column(String(30))
     updated_at = Column(String(30))
 
@@ -52,17 +56,18 @@ class Phone(Base):
                 "main": self.camera_main,
                 "ultra": self.camera_ultra,
                 "telephoto": self.camera_telephoto,
-                "front": self.camera_front
+                "front": self.camera_front,
+                "sensorMain": self.sensor_main,
+                "telephotoType": self.telephoto_type,
+                "hasOis": self.has_ois,
+                "imageBrand": self.image_brand,
+                "score": self.camera_score
             },
             "battery": self.battery,
             "charging": {"wired": self.charging_wired, "wireless": self.charging_wireless},
             "weight": self.weight,
-            "features": json.loads(self.features) if self.features else [],
             "url": self.url,
-            "imageUrl": self.image_url,
-            "pros": json.loads(self.pros) if self.pros else [],
-            "cons": json.loads(self.cons) if self.cons else [],
-            "suitable_for": json.loads(self.suitable_for) if self.suitable_for else []
+            "imageUrl": self.image_url
         }
 
 
@@ -88,6 +93,17 @@ def init_db():
 # 数据来源: https://www.antutu.com/ranking/rank301.htm
 # 分数为 CPU + GPU 总分
 ANTUTU_SCORES = {
+    # Apple A系列 (来源: 安兔兔V11 iPhone榜单)
+    "A19 Pro": 2200000,
+    "A19": 2100000,
+    "A18 Pro": 1720000,
+    "A18": 1820000,
+    "A17 Pro": 1420000,
+    "A16": 1400000,
+    "A15": 1320000,
+    "A14": 1240000,
+    "A13": 1060000,
+
     # 顶级旗舰 (200万+)
     "骁龙8 至尊版 Gen5": 2449060,
     "骁龙8至尊版Gen5": 2449060,
@@ -416,7 +432,6 @@ PROCESSOR_PERFORMANCE_TIER = {
     "骁龙778G": 2,
     "骁龙778G Plus": 2,
     "骁龙780G": 2,
-    "天玑8100": 2,
     "天玑1200": 2,
     "天玑1100": 2,
     "麒麟9000": 2,

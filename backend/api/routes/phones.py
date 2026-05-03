@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from backend.api.dependencies import get_db
 from backend.models.domain import Phone
 from backend.models.schemas import PhoneBrief, PhoneListResponse
+from backend.services.camera_score import camera_scoring_service
 
 router = APIRouter(prefix="/api/phones", tags=["phones"])
 
@@ -41,4 +42,12 @@ async def get_phone(phone_id: int, db: Session = Depends(get_db)):
     phone = db.query(Phone).filter(Phone.id == phone_id).first()
     if not phone:
         raise HTTPException(status_code=404, detail="手机不存在")
-    return phone.to_dict()
+
+    # 获取基础信息
+    result = phone.to_dict()
+
+    # 计算影像评分明细
+    scoring = camera_scoring_service.calc_total_score(phone)
+    result["cameraScoring"] = scoring
+
+    return result

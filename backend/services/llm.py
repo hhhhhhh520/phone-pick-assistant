@@ -74,6 +74,76 @@ class LLMService:
         self.max_tokens = settings.llm_max_tokens
         self.temperature = settings.llm_temperature
 
+    async def health_check(self) -> dict:
+        """
+        轻量级LLM健康检查
+
+        通过发送最小化请求验证API可达性和API Key有效性。
+        使用最小的token消耗（仅发送一条空消息获取模型响应）。
+
+        Returns:
+            dict: {"status": "available"|"error", "model": str, "error": str|None}
+        """
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    f"{self.base_url}/chat/completions",
+                    headers={"Authorization": f"Bearer {self.api_key}"},
+                    json={
+                        "model": self.model,
+                        "messages": [{"role": "user", "content": "hi"}],
+                        "max_tokens": 1,  # 最小化token消耗
+                        "stream": False
+                    },
+                    timeout=10.0  # 健康检查使用较短超时
+                )
+
+                if response.status_code == 200:
+                    return {
+                        "status": "available",
+                        "model": self.model,
+                        "error": None
+                    }
+                elif response.status_code == 401:
+                    return {
+                        "status": "error",
+                        "model": self.model,
+                        "error": "API Key无效或已过期"
+                    }
+                elif response.status_code == 429:
+                    # 速率限制也算可达，只是暂时受限
+                    return {
+                        "status": "available",
+                        "model": self.model,
+                        "error": "API速率受限，但服务可达"
+                    }
+                else:
+                    error_detail = response.text[:100] if response.text else "未知错误"
+                    return {
+                        "status": "error",
+                        "model": self.model,
+                        "error": f"API错误 ({response.status_code}): {error_detail}"
+                    }
+        except httpx.TimeoutException:
+            return {
+                "status": "error",
+                "model": self.model,
+                "error": "API连接超时"
+            }
+        except httpx.ConnectError:
+            return {
+                "status": "error",
+                "model": self.model,
+                "error": "无法连接到API服务"
+            }
+        except Exception as e:
+            logger.error(f"LLM health check failed: {e}")
+            return {
+                "status": "error",
+                "model": self.model,
+                "error": str(e)[:100]
+            }
+
     async def chat_stream(self, messages: List[Dict], system_prompt: str = None) -> AsyncGenerator[str, None]:
         """流式对话"""
         if system_prompt:

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // 模拟 fetch
 const mockFetch = vi.fn();
-global.fetch = mockFetch;
+(globalThis as unknown as { fetch: typeof vi.fn }).fetch = mockFetch;
 
 // 模拟 ReadableStream
 class MockReadableStream {
@@ -45,9 +45,7 @@ describe('API Service - AbortController', () => {
     const { abortCurrentRequest, chatStream } = await import('../services/api');
 
     // 创建一个 AbortController 来跟踪
-    let capturedController: AbortController | null = null;
-    mockFetch.mockImplementation(async (url: string, options: { signal?: AbortSignal }) => {
-      capturedController = options?.signal ? { abort: vi.fn() } as unknown as AbortController : null;
+    mockFetch.mockImplementation(async (_url: string, _options: { signal?: AbortSignal }) => {
       return {
         ok: true,
         body: new MockReadableStream(['data: {"type":"done"}\n\n']),

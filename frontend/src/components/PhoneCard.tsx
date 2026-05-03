@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Phone } from '../types';
+import type { Phone, CameraScoring } from '../types';
 
 interface PhoneCardProps {
   phone: Phone;
@@ -8,6 +8,67 @@ interface PhoneCardProps {
 
 // API基础地址
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8002';
+
+// 获取评分等级对应的颜色
+function getGradeColor(grade: string): string {
+  const gradeColors: Record<string, string> = {
+    '顶级': 'text-amber-500',
+    '旗舰': 'text-blue-500',
+    '高端': 'text-green-500',
+    '中端': 'text-orange-500',
+    '基础': 'text-gray-500',
+  };
+  return gradeColors[grade] || 'text-gray-500';
+}
+
+// 获取评分对应的进度条颜色
+function getScoreColor(score: number): string {
+  if (score >= 85) return 'bg-amber-500';
+  if (score >= 75) return 'bg-blue-500';
+  if (score >= 60) return 'bg-green-500';
+  if (score >= 40) return 'bg-orange-500';
+  return 'bg-gray-500';
+}
+
+// 评分进度条组件
+function ScoreBar({ label, score, maxScore = 100 }: { label: string; score: number; maxScore?: number }) {
+  const percentage = Math.min((score / maxScore) * 100, 100);
+
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      <span className="text-gray-500 w-12 shrink-0">{label}</span>
+      <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full transition-all ${getScoreColor(score)}`}
+          style={{ width: `${percentage}%` }}
+        />
+      </div>
+      <span className="text-gray-700 w-6 text-right">{score}</span>
+    </div>
+  );
+}
+
+// 影像评分卡片组件
+function CameraScoringCard({ scoring }: { scoring: CameraScoring }) {
+  return (
+    <div className="mt-3 pt-3 border-t border-gray-100">
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs text-gray-500">影像评分</span>
+        <div className="flex items-center gap-1">
+          <span className={`text-sm font-medium ${getGradeColor(scoring.grade)}`}>
+            {scoring.grade}
+          </span>
+          <span className="text-lg font-bold text-gray-800">{scoring.total}</span>
+        </div>
+      </div>
+      <div className="space-y-1.5">
+        <ScoreBar label="芯片" score={scoring.chip_score} />
+        <ScoreBar label="硬件" score={scoring.hardware_score} />
+        <ScoreBar label="算法" score={scoring.algorithm_score} />
+      </div>
+    </div>
+  );
+}
 
 // 默认手机图标SVG
 function DefaultPhoneIcon() {
@@ -92,6 +153,11 @@ export function PhoneCard({ phone, onClick }: PhoneCardProps) {
             </span>
           ))}
         </div>
+      )}
+
+      {/* 影像评分 */}
+      {phone.cameraScoring && (
+        <CameraScoringCard scoring={phone.cameraScoring} />
       )}
     </div>
   );

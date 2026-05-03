@@ -140,7 +140,7 @@ def db_session():
         Phone(
             brand="小米", model="小米14", price=3999,
             processor="骁龙8 Gen3", ram=12, storage=256,
-            battery=4610, charging_wired=90,
+            battery=4610, charging_wired=90, charging_wireless=50,
             camera_main=5000,
             features='["小屏旗舰"]',
             suitable_for='["小屏党"]',
@@ -149,11 +149,42 @@ def db_session():
         Phone(
             brand="苹果", model="iPhone 15 Pro", price=7999,
             processor="A17 Pro", ram=8, storage=256,
-            battery=3274, charging_wired=27,
+            battery=3274, charging_wired=27, charging_wireless=15,
             camera_main=4800,
             features='["灵动岛", "钛金属"]',
             suitable_for='["苹果生态用户"]',
             image_url="http://example.com/iphone15pro.jpg"
+        ),
+
+        # ========== 无线充电手机 ==========
+        Phone(
+            brand="华为", model="Mate 60 Pro", price=6999,
+            processor="麒麟9000s", ram=12, storage=512,
+            battery=5000, charging_wired=88, charging_wireless=50,
+            camera_main=5000,
+            features='["卫星通信", "昆仑玻璃"]',
+            suitable_for='["商务人士"]',
+            image_url="http://example.com/mate60pro.jpg"
+        ),
+        Phone(
+            brand="OPPO", model="Find X6 Pro", price=5499,
+            processor="骁龙8 Gen2", ram=16, storage=256,
+            battery=5000, charging_wired=100, charging_wireless=50,
+            camera_main=5000,
+            features='["哈苏影像", "潜望长焦"]',
+            suitable_for='["摄影爱好者"]',
+            image_url="http://example.com/findx6pro.jpg"
+        ),
+
+        # ========== 非无线充电手机 ==========
+        Phone(
+            brand="Redmi", model="Redmi K60", price=2199,
+            processor="骁龙8+ Gen1", ram=12, storage=256,
+            battery=5500, charging_wired=67, charging_wireless=0,
+            camera_main=6400,
+            features='["性价比", "2K屏"]',
+            suitable_for='["学生", "性价比党"]',
+            image_url="http://example.com/k60.jpg"
         ),
     ]
 
@@ -479,6 +510,72 @@ class TestCombinedScenarios:
         for i in range(len(prices) - 1):
             assert prices[i] <= prices[i + 1], \
                 f"无场景时应按价格升序，实际: {prices}"
+
+
+class TestWirelessChargingScenario:
+    """测试无线充电场景匹配"""
+
+    def test_wireless_returns_wireless_phones(self, db_session):
+        """测试无线充电筛选返回支持无线充电的手机"""
+        service = RetrievalService(db_session)
+
+        intent = IntentResult(
+            intent=IntentType.RECOMMEND,
+            features=["无线充电"]
+        )
+
+        phones = service.search(intent, limit=10)
+
+        # 断言1: 应该返回手机
+        assert len(phones) > 0, "无线充电场景应返回手机"
+
+        # 断言2: 所有返回的手机都应支持无线充电
+        for phone in phones:
+            assert phone.charging_wireless > 0, \
+                f"无线充电手机应 charging_wireless > 0，{phone.model} 的值是 {phone.charging_wireless}"
+
+        # 断言3: 小米14、iPhone 15 Pro、Mate 60 Pro 应在结果中
+        models = [p.model for p in phones]
+        wireless_models = ["小米14", "iPhone 15 Pro", "Mate 60 Pro", "Find X6 Pro"]
+        assert any(m in models for m in wireless_models), \
+            f"应包含支持无线充电的手机，实际返回: {models}"
+
+    def test_wireless_excludes_non_wireless_phones(self, db_session):
+        """测试无线充电筛选排除不支持无线充电的手机"""
+        service = RetrievalService(db_session)
+
+        intent = IntentResult(
+            intent=IntentType.RECOMMEND,
+            features=["无线充电"]
+        )
+
+        phones = service.search(intent, limit=10)
+        models = [p.model for p in phones]
+
+        # 非无线充电手机不应出现
+        non_wireless_models = ["Redmi K60", "Redmi Note 13", "荣耀Play8T"]
+        for model in non_wireless_models:
+            assert model not in models, \
+                f"无线充电场景不应返回不支持无线充电的手机 {model}"
+
+    def test_wireless_charging_filter_condition(self, db_session):
+        """测试筛选条件 charging_wireless > 0"""
+        service = RetrievalService(db_session)
+
+        intent = IntentResult(
+            intent=IntentType.RECOMMEND,
+            features=["无线充电"]
+        )
+
+        phones = service.search(intent, limit=10)
+
+        # 验证所有返回手机的充电_wireless 字段值
+        for phone in phones:
+            # charging_wireless 应该是正整数
+            assert isinstance(phone.charging_wireless, int), \
+                f"charging_wireless 应该是整数，{phone.model} 的类型是 {type(phone.charging_wireless)}"
+            assert phone.charging_wireless > 0, \
+                f"charging_wireless 应该 > 0，{phone.model} 的值是 {phone.charging_wireless}"
 
 
 class TestProcessorScore:

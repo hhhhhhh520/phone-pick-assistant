@@ -1,3 +1,12 @@
+// 影像评分接口
+export interface CameraScoring {
+  total: number;
+  chip_score: number;
+  hardware_score: number;
+  algorithm_score: number;
+  grade: string;
+}
+
 // Types for phone picker assistant
 export interface Phone {
   id: number;
@@ -31,6 +40,7 @@ export interface Phone {
   pros: string[];
   cons: string[];
   suitable_for: string[];
+  cameraScoring?: CameraScoring;  // 影像评分（可选）
 }
 
 export interface Message {
