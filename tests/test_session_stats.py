@@ -73,8 +73,7 @@ class TestSessionStats:
         # 手动设置过期时间
         from backend.services.session import sessions, _sessions_lock
         with _sessions_lock:
-            messages, _ = sessions[sid]
-            sessions[sid] = (messages, datetime.now() - timedelta(minutes=60))
+            sessions[sid].last_activity = datetime.now() - timedelta(minutes=60)
 
         # 清理过期会话
         session_service.cleanup_expired_sessions()

@@ -3,8 +3,8 @@
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
-from backend.api.dependencies import get_db
-from backend.models.domain import Phone
+from backend.api.dependencies import get_db  # noqa: E402
+from backend.models.domain import Phone  # noqa: E402
 
 db = next(get_db())
 

@@ -1,267 +1,111 @@
-# 手机选购助手 - 开发进度
+# 手机选购助手 - 项目进度
 
-> 创建时间: 2026-04-28 | 最后更新: 2026-05-02
+> 创建时间: 2026-04-28 | 最后更新: 2026-06-25（含正则修复+脚本整理）
 
 ## 项目概述
+
 **项目地址**: D:\my project\phone-pick-assistant
-**技术栈**: FastAPI + React + DeepSeek API + SQLite
-**当前状态**: 正式版功能开发中
+**技术栈**: FastAPI + React 19 + DeepSeek API + SQLite
+**当前状态**: 功能完成，代码质量优化中
 
 ---
 
-## 当前进度
+## 当前待办
 
-### ✅ 已完成
+| 优先级 | 任务 | 说明 | 相关 Issue |
+|--------|------|------|-----------|
+| P2 | chat.py 架构重构 | 120 行业务逻辑拆分为 ChatOrchestrator | ISSUE-032 |
+| P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
+| P7 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
+
+---
+
+## 2026-06-25 全面代码审查
+
+使用 5 个并行专项审查 Agent（Critical Pass、Security、Performance、Testing、Maintainability）对全量代码库进行多角度审查。
+
+**审查结果**: 原始发现 41 个 → 验证后真实问题 17 个（排除 5 个假阳性）
+
+### 已修复（9 项，759 tests passed）
+
+| ISSUE | 修复内容 | 改动 |
+|-------|----------|------|
+| 027 | 删除 `recommend.py` 中 3 处 `print("[DEBUG]")` | 删除 3 行 |
+| 028 | 删除 `chat.py` 中重复的 cons 后处理逻辑 | 删除 16 行 |
+| 029 | 抽取 `_find_matching_key` 公共方法消除 antutu 函数重复 | 重构 ~120 行 |
+| 030 | 抽取 `_parse_json_field` 静态方法消除 to_dict 重复 | 重构 ~40 行 |
+| 031 | 4 处 `import re/random` 从函数内移到模块级 | 4 个文件 |
+| 033 | 删除 `ChatErrorBoundary` + `is_production` 死代码 | 2 个文件 |
+| 035 | CORS 从 12 个 localhost 简化为 2 个 | config.py |
+| — | `_extract_budget` 正则 bug（"X万以下" 匹配失败） | intent.py 2 行 + 12 测试 |
+| — | `test_logging.py` 方法名过时（`_call_api` → `chat`） | test_logging.py 1 行 |
+
+### 假阳性（不是问题）
+
+| 原始发现 | 原因 |
+|----------|------|
+| `question.py:189` IndexError | 受调用方 `question.py:271` 的守卫保护 |
+| `llm.py` tiktoken 每次探测 | Python import 缓存，非热路径 |
+| `llm.py` httpx 每次新建客户端 | `async with` 是 httpx 正确用法 |
+| `dependencies.py` 单例竞态 | FastAPI 单线程事件循环 |
+| `session.py` 模块级全局状态 | FastAPI 单例服务标准做法 |
+
+---
+
+## 已完成
+
 | 阶段 | 内容 | 完成日期 |
 |------|------|----------|
-| MVP | 9个任务全部完成 | 2026-04-28 |
-| Task 1 | 搜索历史 | 2026-04-28 |
-| Task 2 | 手机图片 | 2026-04-28 |
-| Task 3 | 对比表格 | 2026-04-28 |
-| Task 4 | 多轮对话 | 2026-04-28 |
-| Bug修复 | 多轮对话意图识别问题 | 2026-04-30 |
-| Bug修复 | 对比功能型号匹配问题 | 2026-05-01 |
-| ISSUE-006 | 服务实例化不一致 | 2026-05-01 |
-| ISSUE-010 | 请求取消机制（AbortController） | 2026-05-02 |
-| ISSUE-013 | Prompt注入防护 | 2026-05-02 |
-| ISSUE-016 | 日志记录 | 2026-05-02 |
-| ISSUE-020 | Error Boundary | 2026-05-02 |
-| Session内存泄漏 | TTL过期机制 + 统计端点 | 2026-05-02 |
-| P3 | LLM历史上下文限制 | 2026-05-02 |
-| P4 | 收集真实手机图片URL | 2026-05-02 |
-| 上线阻塞项 | CORS配置+健康检查+错误处理+输入验证 | 2026-05-02 |
-
-### ⏳ 进行中
-| 任务 | 状态 | 问题 |
-|------|------|------|
-| - | - | - |
-
-### 📋 待办
-| 优先级 | 任务 | 说明 |
-|--------|------|------|
-| P6 | 补充processor数据 | 286条缺失，无法从型号提取，需外部数据源 |
-| P7 | 补充camera_main数据 | 324条缺失，需外部数据源 |
+| MVP | 核心功能 9 个任务 | 2026-04-28 |
+| 多轮对话 | 5 维度引导追问 + 痛点检测 | 2026-05-06 |
+| 数据清洗 | 品牌修复 122 条、删除无效 51 条、RAM/Storage 补充 | 2026-05-02 |
+| QA 测试 | 4 Agent 并行测试，5 问题全部修复 | 2026-05-05 |
+| P3 改进 | LLM 上下文限制 + Token 估算 | 2026-05-02 |
+| P0 改进 | 推荐解释增强 + 用户原话引用 + 潜在不足 | 2026-05-06 |
+| P1 改进 | 体验标签库（19 特性 + 13 适用人群） | 2026-05-06 |
+| P2 改进 | 痛点追问机制（6 种冲突检测） | 2026-05-06 |
+| 安兔兔数据 | 处理器跑分配置化（JSON 文件） | 2026-05-06 |
+| 代码审查 | ISSUE-027~031, 033, 035 修复 | 2026-06-25 |
+| 测试覆盖 | 后端 chat 路由 16 测试 + 前端 7 组件 84 测试 | 2026-06-25 |
+| 死代码清理 | 4 个未使用函数 + 23 个对应测试 | 2026-06-25 |
+| 正则修复 | `_extract_budget` "X万以下" 匹配失败 | 2026-06-25 |
+| 项目整理 | 23 个 backup DB 删除 + 19 个脚本移入 scripts/ | 2026-06-25 |
 
 ---
 
-## 2026-05-02 数据清洗记录
+## 关键决策记录
 
-### 数据清洗内容
-
-**1. 修复品牌错乱 (122条)**
-- 问题：品牌字段与型号不匹配，如"荣耀 真我GT6"
-- 修复：从型号名称检测正确品牌并更新
-- 结果：品牌分布更准确
-
-**2. 删除无效记录 (51条)**
-- 删除价格=0的记录（未上市机型、爬取失败等）
-- 删除后剩余556条有效记录
-
-**3. 补充RAM/Storage参数**
-- 从型号名称提取RAM和Storage
-- 处理中文括号（）、英文括号()、TB/GB单位
-- RAM: 49.3% → 92.6%
-- Storage: 51.6% → 97.1%
-
-### 数据完整性对比
-
-| 字段 | 清洗前 | 清洗后 | 变化 |
-|------|--------|--------|------|
-| 总记录 | 607 | 556 | -51 |
-| 品牌 | 100% | 100% | - |
-| 价格 | 91.6% | 100% | +8.4% |
-| 存储 | 51.6% | 97.1% | +45.5% |
-| 内存 | 49.3% | 92.6% | +43.3% |
-| 处理器 | 50.2% | 48.6% | -1.6% |
-| 主摄 | 42.8% | 41.7% | -1.1% |
-| 图片 | 94.2% | 93.7% | -0.5% |
-
-### 品牌分布（清洗后）
-
-小米74款、vivo73款、华为61款、真我52款、OPPO50款、苹果48款、三星40款、一加33款...共15个品牌
-
----
-
-## 2026-05-02 修改记录（P3+P4任务）
-
-### P3: LLM历史上下文限制
-
-**实现内容**：
-1. `backend/config.py` - 添加上下文配置项
-   - max_context_messages=10（传入LLM最大消息数）
-   - max_context_tokens=4000（上下文最大token数）
-   - max_message_length=500（单条消息最大字符数）
-
-2. `backend/services/llm.py` - 添加token估算和消息截断函数
-   - estimate_tokens(): 基于字符数估算token
-   - truncate_messages(): 按配置截断消息列表，保留系统消息
-
-3. `backend/services/recommend.py` - 使用统一上下文管理
-   - recommend()和compare()方法调用truncate_messages()
-
-4. `backend/services/intent.py` - 移除重复截断逻辑
-   - 使用llm.py提供的统一方法
-
-5. `backend/services/session.py` - 存储层配置
-   - MAX_STORED_MESSAGES=50（保留完整历史用于追溯）
-
-### P4: 收集真实手机图片URL
-
-**实现内容**：
-1. 整理60款手机型号清单（12个品牌）
-
-2. `backend/data/phone_images.json` - 图片URL映射文件
-   - 11款官方URL（Apple 7款 + 三星 4款）
-   - 31款本地图片路径
-   - 18款无图片（待补充）
-
-3. `backend/data/image_loader.py` - 图片映射加载器
-   - get_image_url(): 获取手机图片URL
-   - get_image_source(): 获取图片来源类型
-   - get_statistics(): 获取映射统计
-
-4. `backend/data/update_images.py` - 数据库迁移脚本
-   - 支持 --dry-run 预览模式
-   - 更新数据库image_url字段
-
-5. `frontend/src/components/PhoneCard.tsx` - 图片降级处理
-   - 添加DefaultPhoneIcon组件
-   - 图片加载失败时显示默认图标
-
-### 测试覆盖
-
-- `tests/test_llm_context.py` - 18个测试（token估算、消息截断）
-- `tests/test_image_loader.py` - 28个测试（图片加载器）
-- 全部96个测试通过
-
----
-
-## 2026-04-30 修改记录
-
-### 修复：多轮对话意图识别问题
-
-**问题**：用户追问"有没有便宜点的"时，系统无法理解上下文，返回价格=0的手机
-
-**根本原因**：
-1. `IntentService.recognize()` 方法没有接收历史消息参数
-2. `RetrievalService.search()` 没有过滤 price=0 的无效数据
-3. 数据库中有43条 price=0 的手机记录，且有图片，排序时排在前面
-
-**修复内容**：
-1. `backend/services/intent.py` - 添加 `history` 参数，支持多轮对话上下文
-2. `backend/services/retrieval.py` - 所有方法添加 `Phone.price > 0` 过滤
-3. `backend/api/routes/chat.py` - 传入历史消息给意图识别
-
-**验证结果**：
-- 第一轮："推荐3000元手机" → 返回 2549-2598 元
-- 第二轮："有没有便宜点的" → 返回 1049-1160 元 ✅
-
-### 进行中：对比功能型号匹配
-
-**问题**：用户输入"对比小米14和华为P60"，返回错误的手机
-
-**根本原因**：
-1. 型号匹配逻辑 `Phone.model.contains(model)` 过于简单
-2. "小米14" 提取核心词 "14" 后，匹配到 "Redmi Note 14"
-3. 需要更智能的型号匹配逻辑
-
-**当前状态**：已提交初步修复，但匹配逻辑仍需优化
-
----
-
-## 2026-05-01 修改记录
-
-### 修复：对比功能型号匹配问题
-
-**问题**：用户输入"对比小米14和华为P60"，返回错误的手机（"小米14"匹配到"Redmi Note 14"）
-
-**根本原因**：
-1. `get_phones_by_model()` 去掉品牌名后只剩数字"14"
-2. 数据库中所有小米系手机（含Redmi）品牌字段都是"小米"
-3. `Phone.model.contains("14")` 匹配到"Redmi Note 14"
-
-**修复方案**：三级匹配优先级
-1. 精确匹配完整型号 `Phone.model == model`
-2. 完整型号作为子串匹配 `Phone.model.contains(model)`
-3. 提取核心型号但必须同品牌 `Phone.brand == brand_prefix AND Phone.model.contains(model_core)`
-
-**验证结果**：
-- "小米14" → 正确匹配"小米14"（之前错误匹配"Redmi Note 14"）
-- "华为P60" → 匹配"P60 Pro"
-- "Redmi Note 14" → 正确匹配
-- 11个单元测试全部通过
-
----
-
-## 2026-05-02 修改记录
-
-### 新增：ISSUE-010 请求取消机制
-
-**实现内容**：
-1. `frontend/src/services/api.ts` - 添加 `abortCurrentRequest()` 函数
-2. `frontend/src/components/InputBar.tsx` - 发送中显示取消按钮
-3. `frontend/src/components/ChatWindow.tsx` - 处理取消逻辑和 AbortError
-
-**效果**：用户可在请求过程中点击"取消"按钮中断请求
-
-### 新增：ISSUE-013 Prompt注入防护
-
-**实现内容**：
-1. `backend/utils/security.py` - 安全工具模块
-   - `sanitize_input()`: 清理用户输入，移除控制字符，HTML转义
-   - `detect_injection_attempt()`: 检测15种注入攻击模式
-   - `validate_chat_input()`: 验证聊天输入
-   - `escape_for_prompt()`: 转义文本嵌入Prompt
-2. `backend/api/routes/chat.py` - 集成输入验证
-3. `tests/test_security.py` - 16个安全测试
-
-**效果**：阻止Prompt注入攻击，保护系统指令
-
-### 新增：ISSUE-016 日志记录
-
-**实现内容**：
-1. `backend/main.py` - 配置统一日志（控制台+文件）
-2. `backend/services/session.py` - 添加会话操作日志
-3. `backend/services/llm.py` - 添加LLM请求/响应日志
-
-**效果**：便于调试和问题追踪
-
-### 新增：ISSUE-020 Error Boundary
-
-**实现内容**：
-1. `frontend/src/components/ErrorBoundary.tsx` - 错误边界组件
-2. `frontend/src/App.tsx` - 包裹根组件
-
-**效果**：前端错误优雅降级，不白屏
-
-### 新增：Session内存泄漏修复
-
-**实现内容**：
-1. 已有TTL过期机制（30分钟）
-2. 已有定期清理任务（每5分钟）
-3. 新增 `/stats/sessions` 端点监控内存使用
-
-**效果**：防止长时间运行内存泄漏
-
----
-
-## Git 提交记录
-
-```
-7c846d1 fix: 改进型号匹配逻辑，支持部分型号名称匹配
-a1b2c3d fix: 修复多轮对话意图识别问题
-```
+| 决策 | 选择 | 原因 | 日期 |
+|------|------|------|------|
+| LLM 模型 | DeepSeek Chat | 国内可用、性价比高 | 2026-04-28 |
+| 流式通信 | SSE | 比 WebSocket 简单，FastAPI 原生支持 | 2026-04-28 |
+| 会话存储 | 内存字典 + TTL | 简单可靠，单实例足够 | 2026-04-28 |
+| 意图识别 | LLM + 规则兜底 | LLM 准确但可能失败，规则保底 | 2026-05-06 |
+| 追问策略 | 5 维度 + 痛点检测 | 覆盖核心需求维度，冲突检测提升体验 | 2026-05-06 |
 
 ---
 
 ## 启动命令
 
 ```bash
-# 后端
+# 后端（端口 8002）
 cd "D:\my project\phone-pick-assistant"
 .venv\Scripts\python.exe -m uvicorn backend.main:app --port 8002
 
-# 前端
+# 前端（端口 5173）
 cd frontend
 npm run dev
+
+# 测试
+.venv/Scripts/python.exe -m pytest tests/ -v
+cd frontend && npm test
 ```
+
+---
+
+## 相关文档
+
+- `README.md` — 项目说明、快速开始
+- `docs/TODO-NEXT.md` — 后续待办
+- `docs/FORMAL_VERSION_PLAN.md` — 正式版计划
+- `issues/` — 问题追踪（ISSUE-001 ~ ISSUE-035）

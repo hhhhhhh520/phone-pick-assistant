@@ -4,7 +4,6 @@ from backend.utils.security import (
     sanitize_input,
     detect_injection_attempt,
     validate_chat_input,
-    escape_for_prompt,
 )
 
 
@@ -103,16 +102,3 @@ class TestValidateChatInput:
         assert "<script>" not in message
 
 
-class TestEscapeForPrompt:
-    """Prompt转义测试"""
-
-    def test_braces_escaped(self):
-        """花括号被转义"""
-        result = escape_for_prompt("hello {world}")
-        assert "{{" in result
-        assert "}}" in result
-
-    def test_empty_input(self):
-        """空输入返回空字符串"""
-        assert escape_for_prompt("") == ""
-        assert escape_for_prompt(None) == ""

@@ -92,17 +92,27 @@ class TestHealthResponseFormat:
 class TestHealthAllComponentsHealthy:
     """测试所有组件正常的场景"""
 
-    def test_all_healthy_returns_healthy_status(self, client):
+    @patch("backend.models.domain.SessionLocal")
+    @patch("backend.services.llm.LLMService.health_check")
+    def test_all_healthy_returns_healthy_status(self, mock_health_check, mock_session_local, client):
         """所有组件正常时，status应为healthy"""
-        # 正常环境下数据库和LLM应该都是可用的
+        # Mock 数据库连接正常
+        mock_session = MagicMock()
+        mock_session.execute.return_value = None
+        mock_session.__enter__ = MagicMock(return_value=mock_session)
+        mock_session.__exit__ = MagicMock(return_value=False)
+        mock_session_local.return_value = mock_session
+
+        # Mock LLM 可用
+        mock_health_check.return_value = {
+            "status": "available",
+            "model": "deepseek-chat",
+        }
+
         response = client.get("/health")
         data = response.json()
 
-        db_healthy = data["components"]["database"]["status"] == "connected"
-        llm_healthy = data["components"]["llm"]["status"] == "available"
-
-        if db_healthy and llm_healthy:
-            assert data["status"] == "healthy"
+        assert data["status"] == "healthy", f"所有组件正常时status应为healthy，实际为 {data['status']}"
 
     def test_database_connected_has_latency(self, client):
         """数据库连接正常时应包含latency_ms"""
@@ -302,8 +312,6 @@ class TestHealthLatencyMeasurement:
     @patch("backend.models.domain.SessionLocal")
     def test_database_latency_measured(self, mock_session_local, client):
         """数据库延迟应被正确测量"""
-        import time
-
         mock_session = MagicMock()
         mock_session.execute.return_value = None
         mock_session.__enter__ = MagicMock(return_value=mock_session)
@@ -314,9 +322,9 @@ class TestHealthLatencyMeasurement:
         data = response.json()
 
         db = data["components"]["database"]
-        if db["status"] == "connected":
-            assert db["latency_ms"] is not None
-            assert db["latency_ms"] >= 0
+        assert db["status"] == "connected", f"Mock数据库应显示connected，实际为 {db['status']}"
+        assert db["latency_ms"] is not None, "数据库延迟不应为 None"
+        assert db["latency_ms"] >= 0, f"数据库延迟应 >= 0，实际为 {db['latency_ms']}"
 
 
 class TestHealthStatusConsistency:

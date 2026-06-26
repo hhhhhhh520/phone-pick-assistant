@@ -10,7 +10,7 @@ router = APIRouter(prefix="/api/phones", tags=["phones"])
 
 @router.get("", response_model=PhoneListResponse)
 async def list_phones(
-    brand: str = None,
+    brand: str = Query(None, description="手机品牌，支持中文如'小米'、'华为'等"),
     min_price: int = Query(None, ge=0),
     max_price: int = Query(None, ge=0),
     limit: int = Query(20, ge=1, le=100),

@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, Float, Boolean, create_eng
 from sqlalchemy.orm import declarative_base, sessionmaker
 from backend.config import get_settings
 import json
+import re
 
 Base = declarative_base()
 
@@ -38,8 +39,22 @@ class Phone(Base):
     camera_score = Column(Integer)  # 综合影像评分（缓存字段）
     features = Column(Text)  # 特性标签 JSON数组，如 '["游戏", "电竞"]'
     suitable_for = Column(Text)  # 适用人群 JSON数组，如 '["游戏玩家", "学生"]'
+    pros = Column(Text)  # 优点 JSON数组
+    cons = Column(Text)  # 缺点 JSON数组
     created_at = Column(String(30))
     updated_at = Column(String(30))
+
+    @staticmethod
+    def _parse_json_field(value, default=None):
+        """解析 JSON 字段，处理 None 和无效 JSON。"""
+        if default is None:
+            default = []
+        if not value:
+            return default
+        try:
+            return json.loads(value)
+        except (json.JSONDecodeError, TypeError):
+            return default
 
     def to_dict(self):
         return {
@@ -67,7 +82,11 @@ class Phone(Base):
             "charging": {"wired": self.charging_wired, "wireless": self.charging_wireless},
             "weight": self.weight,
             "url": self.url,
-            "imageUrl": self.image_url
+            "imageUrl": self.image_url,
+            "features": self._parse_json_field(self.features),
+            "suitable_for": self._parse_json_field(self.suitable_for),
+            "pros": self._parse_json_field(self.pros),
+            "cons": self._parse_json_field(self.cons),
         }
 
 
@@ -91,300 +110,19 @@ def init_db():
 
 # 安兔兔处理器跑分数据 (2026-05)
 # 数据来源: https://www.antutu.com/ranking/rank301.htm
-# 分数为 CPU + GPU 总分
-ANTUTU_SCORES = {
-    # Apple A系列 (来源: 安兔兔V11 iPhone榜单)
-    "A19 Pro": 2200000,
-    "A19": 2100000,
-    "A18 Pro": 1720000,
-    "A18": 1820000,
-    "A17 Pro": 1420000,
-    "A16": 1400000,
-    "A15": 1320000,
-    "A14": 1240000,
-    "A13": 1060000,
+# 数据现已从 backend/data/antutu_scores.json 延迟加载
+#
+# 通过 _get_antutu_data() 获取 (scores_dict, aliases_dict)
+# 模块级 ANTUTU_SCORES / _PROCESSOR_ALIASES 在首次导入时自动填充
 
-    # 顶级旗舰 (200万+)
-    "骁龙8 至尊版 Gen5": 2449060,
-    "骁龙8至尊版Gen5": 2449060,
-    "天玑9500": 2319961,
-    "骁龙8 至尊版": 1990417,
-    "骁龙8至尊版": 1990417,
-    "骁龙8 Gen 5": 1933243,
-    "骁龙8Gen5": 1933243,
-    "天玑9500s": 1852350,
-    "天玑9400+": 1797423,
-    "天玑9400": 1788839,
-    "玄戒O1": 1582587,
+def _get_antutu_data():
+    """延迟加载安兔兔跑分和别名数据（从 antutu_scores.json 配置文件）。"""
+    from backend.config import load_antutu_scores
+    return load_antutu_scores()
 
-    # 旗舰级 (130-150万)
-    "天玑9400e": 1499832,
-    "Exynos 2500": 1437726,
-    "骁龙8s Gen 4": 1416433,
-    "骁龙8sGen4": 1416433,
-    "天玑9300+": 1382983,
-    "骁龙8 Gen 3": 1372529,
-    "骁龙8Gen3": 1372529,
-    "天玑9300": 1344087,
-    "Exynos 2400": 1265238,
 
-    # 高端级 (90-125万)
-    "天玑8450": 1233216,
-    "天玑8400 满血版": 1232538,
-    "天玑8400-Max": 1193101,
-    "天玑8400-Ultra": 1153954,
-    "骁龙8s Gen 3": 1023936,
-    "骁龙8sGen3": 1023936,
-    "天玑9200+": 1022511,
-    "天玑9200": 1003162,
-    "骁龙8 Gen 2": 952809,
-    "骁龙8Gen2": 952809,
-    "Tensor G4": 925515,
-    "天玑8350-Ultimate": 907369,
-    "骁龙7+ Gen 3": 905324,
-    "骁龙7+Gen3": 905324,
-    "天玑9000+": 814697,
-    "天玑8350": 807642,
-    "Tensor G3": 800832,
-    "天玑8300-Ultra": 796852,
-    "天玑9000": 786290,
-    "骁龙8+ Gen 1": 782767,
-    "骁龙8+Gen1": 782767,
-    "Exynos 2200": 773051,
-    "骁龙7 Gen 4": 738579,
-    "骁龙7Gen4": 738579,
-    "骁龙8+ Gen 1 UC": 728272,
-
-    # 中高端 (60-70万)
-    "天玑8250": 681908,
-    "麒麟9020": 680418,
-    "骁龙7+ Gen 2": 672317,
-    "骁龙7+Gen2": 672317,
-    "天玑8200": 661580,
-    "天玑8200 Ultra": 661580,
-    "骁龙8 Gen 1": 655840,
-    "骁龙8Gen1": 655840,
-    "麒麟9020A": 647346,
-    "Tensor G2": 644730,
-    "骁龙888 Plus": 609011,
-    "骁龙888+": 609011,
-    "骁龙7 Gen 3": 607094,
-    "骁龙7Gen3": 607094,
-    "天玑8100-Max": 606490,
-    "天玑8100": 599131,
-    "骁龙888": 598064,
-    "骁龙870": 587845,
-    "骁龙865 Plus": 585852,
-    "Exynos 1480": 583238,
-    "麒麟9010": 573577,
-    "骁龙7s Gen 3": 572667,
-    "骁龙7sGen3": 572667,
-    "骁龙865": 555091,
-    "麒麟9000s": 542821,
-    "麒麟9000": 539852,
-    "麒麟9000E": 531347,
-    "天玑8000": 527011,
-    "骁龙6 Gen 4": 523312,
-    "骁龙6Gen4": 523312,
-
-    # 中端级 (40-52万)
-    "麒麟9010E": 516866,
-    "麒麟9010L": 515658,
-    "Tensor": 511865,
-    "麒麟9000S1": 510624,
-    "天玑1300": 505476,
-    "天玑7200-Ultra": 498161,
-    "天玑8050": 495553,
-    "天玑7200": 492978,
-    "Exynos 2100": 485315,
-    "天玑1200": 484364,
-    "麒麟990 5G": 480231,
-    "麒麟9000SL": 475243,
-    "天玑1100": 471293,
-    "麒麟990": 462066,
-    "Exynos 990": 457632,
-    "Exynos 1080": 449417,
-    "骁龙782G": 449076,
-    "骁龙855 Plus": 436738,
-    "骁龙7 Gen 1": 432428,
-    "骁龙7Gen1": 432428,
-    "骁龙855": 429777,
-    "天玑8020": 426891,
-    "麒麟990E": 422239,
-    "骁龙860": 417652,
-    "骁龙778G Plus": 416515,
-    "骁龙780G": 414162,
-    "Exynos 9825": 403546,
-    "天玑7300-Ultra": 403210,
-    "天玑1000+": 401736,
-    "骁龙778G": 400426,
-    "骁龙7s Gen 2": 399300,
-    "骁龙7sGen2": 399300,
-
-    # 中低端 (30-40万)
-    "Exynos 9820": 390207,
-    "骁龙6 Gen 3": 389396,
-    "骁龙6Gen3": 389396,
-    "天玑7300X": 387539,
-    "天玑7300 Energy": 383095,
-    "天玑1000L": 382750,
-    "天玑7300": 382424,
-    "Exynos 1380": 381081,
-    "麒麟8000": 380706,
-    "天玑7030": 372365,
-    "骁龙6 Gen 1": 367251,
-    "骁龙6Gen1": 367251,
-    "天玑1080": 366444,
-    "天玑7050": 365693,
-    "天玑1050": 358760,
-    "天玑920": 357755,
-    "麒麟8000A": 356304,
-    "麒麟980": 356139,
-    "麒麟985": 349667,
-    "天玑820": 347226,
-    "天玑900": 328482,
-    "Exynos 980": 327561,
-    "紫光展锐 T770": 325906,
-    "麒麟820": 320059,
-    "骁龙6s Gen 3": 319746,
-    "骁龙845": 317455,
-    "紫光展锐 T820": 317066,
-    "天玑7025-Ultra": 314572,
-    "天玑7025": 310293,
-    "紫光展锐 T760": 308508,
-    "骁龙768G": 307663,
-    "骁龙765G": 307327,
-    "Exynos 9810": 305096,
-    "骁龙695": 302952,
-    "Exynos 880": 299949,
-    "麒麟810": 292711,
-    "骁龙690": 290969,
-    "天玑930": 289054,
-
-    # 入门级 (<30万)
-    "骁龙720G": 282758,
-    "骁龙4 Gen 2": 282323,
-    "骁龙4Gen2": 282323,
-    "骁龙4 Gen 1": 280652,
-    "骁龙4Gen1": 280652,
-    "Exynos 1280": 279887,
-    "Exynos 1330": 276263,
-    "骁龙750G": 275764,
-    "骁龙480 Plus": 266376,
-    "骁龙480+": 266376,
-    "天玑800U": 264744,
-    "天玑6300": 264289,
-    "曦力G100-Ultimate": 261749,
-    "天玑810": 261680,
-    "骁龙730G": 261461,
-    "紫光展锐 T8200": 259435,
-    "Helio G200": 259315,
-    "曦力G100": 258867,
-    "骁龙480": 258298,
-    "紫光展锐 T765": 257842,
-    "Helio G99": 255902,
-    "Helio G95": 254586,
-    "骁龙4s Gen 2": 253265,
-    "骁龙835": 253008,
-    "天玑800": 252999,
-    "天玑6100+": 252768,
-    "Helio G99 Ultra": 252310,
-    "天玑700": 249313,
-    "曦力G100-Ultra": 248489,
-    "骁龙732G": 247948,
-    "天玑6080": 245724,
-    "Helio G90T": 243158,
-    "天玑6020": 241199,
-    "Exynos 8895": 237394,
-    "紫光展锐 T750": 234305,
-    "骁龙675": 232113,
-    "Helio G96": 231774,
-    "天玑720": 230095,
-    "天玑7020": 229931,
-    "骁龙712": 217055,
-    "骁龙680": 211189,
-    "麒麟970": 207795,
-    "骁龙710": 206611,
-    "紫光展锐 T7510": 201992,
-    "紫光展锐 T710": 197172,
-    "骁龙670": 191333,
-    "骁龙821": 190965,
-    "Exynos 8890": 190282,
-    "骁龙820": 190169,
-    "Helio P90": 184468,
-    "骁龙460": 182071,
-    "紫光展锐 T618": 180314,
-    "Helio G80": 179900,
-    "紫光展锐 T700": 179496,
-    "曦力G85": 178306,
-    "Helio P70": 171134,
-    "麒麟960": 170423,
-    "Helio G70": 170286,
-    "骁龙660": 169306,
-    "Helio P65": 168883,
-    "Helio G88": 168805,
-    "Exynos 7420": 168199,
-    "骁龙665": 166731,
-    "骁龙662": 166633,
-    "Helio P60": 165107,
-    "紫光展锐 T616": 164049,
-    "紫光展锐 T612": 163883,
-    "麒麟710": 163630,
-    "紫光展锐 T610": 163439,
-    "紫光展锐 T510": 162423,
-    "麒麟710A": 161615,
-    "Helio G81-Ultra": 161568,
-    "Exynos 9611": 154567,
-    "骁龙636": 150507,
-    "Exynos 9610": 149558,
-    "紫光展锐 T606": 146938,
-    "骁龙632": 133786,
-    "Helio X30": 132180,
-    "Exynos 7885": 131266,
-    "Exynos 7904": 118742,
-    "紫光展锐 T310": 118736,
-    "Exynos 850": 114963,
-    "骁龙630": 114761,
-    "Helio P35": 110931,
-    "Helio G37": 107823,
-    "Helio G35": 104597,
-    "Helio P25": 103227,
-    "Exynos 7880": 100504,
-    "紫光展锐 T603": 98218,
-    "Helio P23": 97454,
-    "JR510": 96399,
-    "骁龙439": 95471,
-    "Helio P22": 93591,
-    "麒麟950": 92650,
-    "Helio P20": 92612,
-    "紫光展锐 SC9863A": 89580,
-    "Helio G25": 89004,
-    "Helio G36": 86218,
-    "Exynos 7870": 81960,
-    "骁龙450": 81744,
-    "骁龙626": 79641,
-    "Helio P10": 77195,
-    "骁龙653": 76952,
-    "Exynos 7872": 72907,
-    "骁龙652": 71841,
-    "骁龙808": 71432,
-    "Helio A22": 67140,
-    "Helio A20": 65547,
-    "骁龙650": 64414,
-    "Helio X25": 59167,
-    "骁龙810": 58338,
-    "麒麟65x": 57283,
-    "Helio X20": 54852,
-    "骁龙625": 54314,
-    "Exynos 7570": 47943,
-    "Exynos 7580": 41847,
-    "骁龙617": 40174,
-    "骁龙435": 36900,
-    "骁龙430": 34599,
-    "MT6750": 30814,
-    "骁龙801AC": 28762,
-    "骁龙425": 25673,
-}
+# 模块级变量，保持向后兼容（首次导入时从JSON加载）
+ANTUTU_SCORES, _PROCESSOR_ALIASES = _get_antutu_data()
 
 # 处理器性能等级映射（基于安兔兔跑分）
 # 用于智能排序，数值越高性能越强
@@ -449,33 +187,129 @@ PROCESSOR_PERFORMANCE_TIER = {
 }
 
 
-def get_antutu_score(processor: str) -> int:
-    """
-    获取处理器的安兔兔跑分。
+# 品牌前缀映射（匹配前剥离）
+_BRAND_PREFIX_PATTERNS = [
+    "高通 ", "高通",
+    "联发科 ", "联发科",
+    "海思 ", "海思",
+    "三星 ", "三星",
+    "苹果 ", "苹果",
+    "华为 ", "华为",
+]
 
-    Args:
-        processor: 处理器名称
+
+def _normalize_processor(raw: str) -> str:
+    """预处理处理器字符串：剥离品牌前缀、规范化空格、应用别名。"""
+    if not raw:
+        return ""
+    s = raw.strip()
+
+    # 1. 剥离品牌前缀（中文 + 英文）
+    for prefix in _BRAND_PREFIX_PATTERNS:
+        if s.startswith(prefix):
+            s = s[len(prefix):].strip()
+            break
+    # 剥离英文品牌前缀
+    for eng_prefix in ("HUAWEI ", "HUAWEI", "Apple ", "Apple", "Samsung ", "Samsung"):
+        if s.startswith(eng_prefix):
+            s = s[len(eng_prefix):].strip()
+            break
+
+    # 2. 规范化空格：多个空格合并为一个
+    s = re.sub(r"\s+", " ", s).strip()
+
+    # 3. 移除中文与字母/数字之间的空格（如 "骁龙 8" -> "骁龙8", "天玑 9500+" -> "天玑9500+"）
+    s = re.sub(r"([一-鿿])\s+([A-Za-z0-9])", r"\1\2", s)
+    s = re.sub(r"([A-Za-z0-9])\s+([一-鿿])", r"\1\2", s)
+
+    # 4. 应用别名映射（在空格规范化之后）
+    _, aliases = _get_antutu_data()
+    if s in aliases:
+        s = aliases[s]
+
+    return s
+
+
+def _find_matching_key(scores: dict, processor: str) -> str | None:
+    """
+    在跑分字典中查找处理器的匹配键。
+
+    匹配策略（按优先级）：
+    1. 原始字符串直接匹配
+    2. 规范化后直接匹配
+    3. 去空格后完全相等匹配
+    4. 规范化+去空格后完全相等匹配
+    5. 模糊包含匹配（双向子串）
+    6. 规范化后再模糊包含匹配
+    7. 去空格后模糊包含匹配
 
     Returns:
-        安兔兔跑分，未知处理器返回0
+        匹配到的键，未匹配返回 None
     """
+    if not processor or not processor.strip():
+        return None
+
+    # 策略1: 原始字符串直接匹配
+    if processor in scores:
+        return processor
+
+    # 策略2: 规范化后直接匹配
+    normalized = _normalize_processor(processor)
+    if normalized and normalized in scores:
+        return normalized
+
+    # 策略3: 去空格后完全相等匹配
+    processor_no_space = processor.replace(" ", "")
+    for key in scores:
+        if key.replace(" ", "") == processor_no_space:
+            return key
+
+    # 策略4: 规范化+去空格后完全相等匹配
+    if normalized:
+        norm_no_space = normalized.replace(" ", "")
+        for key in scores:
+            if key.replace(" ", "") == norm_no_space:
+                return key
+
+    # 策略5: 模糊包含匹配（双向子串）
+    processor_lower = processor.lower()
+    for key in scores:
+        if processor_lower in key.lower() or key.lower() in processor_lower:
+            return key
+
+    # 策略6: 规范化后再模糊包含匹配
+    if normalized:
+        norm_lower = normalized.lower()
+        for key in scores:
+            if norm_lower in key.lower() or key.lower() in norm_lower:
+                return key
+
+    # 策略7: 去空格后模糊包含匹配（解决 "骁龙 8" vs "骁龙8" 类差异）
+    for key in scores:
+        kns = key.replace(" ", "").lower()
+        pns = (normalized.replace(" ", "") if normalized else processor_no_space).lower()
+        if pns in kns or kns in pns:
+            return key
+
+    return None
+
+
+def get_antutu_score(processor: str) -> int:
+    """获取处理器的安兔兔跑分，未知处理器返回0。"""
     if not processor:
         return 0
+    scores, _ = _get_antutu_data()
+    key = _find_matching_key(scores, processor)
+    return scores[key] if key else 0
 
-    # 直接匹配
-    if processor in ANTUTU_SCORES:
-        return ANTUTU_SCORES[processor]
 
-    # 去除空格后匹配
-    processor_no_space = processor.replace(" ", "")
-    for key, score in ANTUTU_SCORES.items():
-        if key.replace(" ", "") == processor_no_space:
-            return score
-
-    # 模糊匹配（处理器名称可能略有差异）
-    processor_lower = processor.lower()
-    for key, score in ANTUTU_SCORES.items():
-        if processor_lower in key.lower() or key.lower() in processor_lower:
-            return score
-
-    return 0
+def get_canonical_processor(processor: str) -> str:
+    """返回处理器的规范形式（跑分字典中的键），无法匹配则返回原始值。"""
+    if not processor:
+        return processor or ""
+    scores, _ = _get_antutu_data()
+    key = _find_matching_key(scores, processor)
+    if key:
+        return key
+    normalized = _normalize_processor(processor)
+    return normalized if normalized else processor

@@ -60,17 +60,3 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return this.props.children;
   }
 }
-
-export function ChatErrorBoundary({ children }: { children: ReactNode }): ReactNode {
-  return (
-    <ErrorBoundary
-      fallback={
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-          <p className="text-red-600">聊天组件出错，请刷新页面</p>
-        </div>
-      }
-    >
-      {children}
-    </ErrorBoundary>
-  );
-}

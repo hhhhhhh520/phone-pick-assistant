@@ -4,9 +4,10 @@ import { MessageItem } from './MessageItem';
 
 interface MessageListProps {
   messages: Message[];
+  onQuickReply?: (reply: string) => void;
 }
 
-export function MessageList({ messages }: MessageListProps) {
+export function MessageList({ messages, onQuickReply }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const userScrolledUp = useRef(false);
@@ -49,7 +50,7 @@ export function MessageList({ messages }: MessageListProps) {
       ) : (
         <>
           {messages.map((msg) => (
-            <MessageItem key={msg.id} message={msg} />
+            <MessageItem key={msg.id} message={msg} onQuickReply={onQuickReply} />
           ))}
           <div ref={bottomRef} />
         </>

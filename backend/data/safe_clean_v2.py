@@ -37,13 +37,13 @@ def safe_clean_model(model: str) -> tuple[str, list[str]]:
     if '，' in model:
         parts = model.split('，')
         model = parts[0].strip()
-        changes.append(f"移除中文逗号后内容")
+        changes.append("移除中文逗号后内容")
 
     # 2. 移除英文逗号后的广告文字
     if not changes and ',' in model:
         parts = model.split(',')
         model = parts[0].strip()
-        changes.append(f"移除英文逗号后内容")
+        changes.append("移除英文逗号后内容")
 
     # 3. 移除括号内的配置参数 - 精确匹配
     # 只匹配明确的存储配置格式，不匹配其他括号内容
@@ -64,13 +64,13 @@ def safe_clean_model(model: str) -> tuple[str, list[str]]:
     for pattern in config_patterns:
         if re.search(pattern, model):
             model = re.sub(pattern, '', model).strip()
-            changes.append(f"移除配置参数括号")
+            changes.append("移除配置参数括号")
             break
 
     # 安全检查: 如果清洗后太短，回退
     if len(model) < 3:
         model = original.split('，')[0].split(',')[0].strip()
-        changes.append(f"长度保护触发，回退")
+        changes.append("长度保护触发，回退")
 
     return model, changes
 

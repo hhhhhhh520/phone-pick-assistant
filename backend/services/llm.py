@@ -1,6 +1,7 @@
 import httpx
 import json
 import logging
+import re
 from backend.config import get_settings
 from typing import AsyncGenerator, List, Dict
 
@@ -9,10 +10,53 @@ logger = logging.getLogger(__name__)
 
 
 def estimate_tokens(text: str) -> int:
-    """估算文本的token数量（简化实现：字符数/2）"""
+    """Estimate token count. Uses tiktoken when available, with layered fallbacks."""
     if not text:
         return 0
+    try:
+        return _estimate_tiktoken(text)
+    except Exception:
+        try:
+            return _estimate_lang_aware(text)
+        except Exception:
+            return _estimate_simple(text)
+
+
+def _estimate_tiktoken(text: str) -> int:
+    import tiktoken
+    for enc_name in ["cl100k_base", "o200k_base"]:
+        try:
+            enc = tiktoken.get_encoding(enc_name)
+            return len(enc.encode(text))
+        except Exception:
+            continue
+    raise RuntimeError("No tiktoken encoding available")
+
+
+def _estimate_lang_aware(text: str) -> int:
+    chinese = len(re.findall(r'[一-鿿]', text))
+    english = len(re.findall(r'[a-zA-Z]', text))
+    other = len(text) - chinese - english
+    return int(chinese * 1.5 + english * 0.25 + other * 0.5)
+
+
+def _estimate_simple(text: str) -> int:
     return len(text) // 2
+
+
+def _detect_estimation_method() -> str:
+    """Detect which token estimation method is currently active."""
+    try:
+        import tiktoken
+        for enc_name in ["cl100k_base", "o200k_base"]:
+            try:
+                tiktoken.get_encoding(enc_name)
+                return "tiktoken"
+            except Exception:
+                continue
+        return "language-aware"
+    except Exception:
+        return "simple"
 
 
 def truncate_messages(
@@ -31,6 +75,7 @@ def truncate_messages(
     Returns:
         截断后的消息列表，保留系统消息
     """
+    est_method = _detect_estimation_method()
     max_tokens = max_tokens or settings.max_context_tokens
     max_messages = max_messages or settings.max_context_messages
 
@@ -44,7 +89,10 @@ def truncate_messages(
     # 按max_messages截断（保留最新的消息）
     if len(regular_messages) > max_messages:
         regular_messages = regular_messages[-max_messages:]
-        logger.info(f"Truncated messages: kept {max_messages} of {len(messages)} messages")
+        logger.info(
+            f"Truncated messages [{est_method}]: kept {max_messages} of "
+            f"{len(messages)} messages"
+        )
 
     # 按max_tokens截断
     result = system_messages + regular_messages
@@ -55,7 +103,10 @@ def truncate_messages(
         while regular_messages and total_tokens > max_tokens:
             removed = regular_messages.pop(0)
             total_tokens -= estimate_tokens(removed.get("content", ""))
-            logger.info(f"Removed message to fit token limit: {total_tokens} tokens remaining")
+            logger.info(
+                f"Removed message to fit token limit [{est_method}]: "
+                f"{total_tokens} tokens remaining"
+            )
         result = system_messages + regular_messages
 
     return result
@@ -151,32 +202,36 @@ class LLMService:
 
         logger.debug(f"LLM request: model={self.model}, messages={len(messages)}")
 
-        async with httpx.AsyncClient() as client:
-            async with client.stream(
-                "POST",
-                f"{self.base_url}/chat/completions",
-                headers={"Authorization": f"Bearer {self.api_key}"},
-                json={
-                    "model": self.model,
-                    "messages": messages,
-                    "max_tokens": self.max_tokens,
-                    "temperature": self.temperature,
-                    "stream": True
-                },
-                timeout=60.0
-            ) as response:
-                if response.status_code != 200:
-                    error_body = await response.aread()
-                    logger.error(f"LLM API error: {response.status_code}, {error_body}")
-                    raise LLMError(f"API error: {response.status_code}, {error_body.decode()}")
-                async for line in response.aiter_lines():
-                    if line.startswith("data: ") and line != "data: [DONE]":
-                        try:
-                            data = json.loads(line[6:])
-                            if data.get("choices") and data["choices"][0].get("delta", {}).get("content"):
-                                yield data["choices"][0]["delta"]["content"]
-                        except json.JSONDecodeError:
-                            continue
+        try:
+            async with httpx.AsyncClient() as client:
+                async with client.stream(
+                    "POST",
+                    f"{self.base_url}/chat/completions",
+                    headers={"Authorization": f"Bearer {self.api_key}"},
+                    json={
+                        "model": self.model,
+                        "messages": messages,
+                        "max_tokens": self.max_tokens,
+                        "temperature": self.temperature,
+                        "stream": True
+                    },
+                    timeout=60.0
+                ) as response:
+                    if response.status_code != 200:
+                        error_body = await response.aread()
+                        logger.error(f"LLM API error: {response.status_code}, {error_body}")
+                        raise LLMError(f"API error: {response.status_code}, {error_body.decode()}")
+                    async for line in response.aiter_lines():
+                        if line.startswith("data: ") and line != "data: [DONE]":
+                            try:
+                                data = json.loads(line[6:])
+                                if data.get("choices") and data["choices"][0].get("delta", {}).get("content"):
+                                    yield data["choices"][0]["delta"]["content"]
+                            except json.JSONDecodeError:
+                                continue
+        except Exception as e:
+            logger.error(f"LLM chat_stream error: {type(e).__name__}: {e}")
+            raise
 
     async def chat(self, messages: List[Dict], system_prompt: str = None) -> str:
         """非流式对话"""

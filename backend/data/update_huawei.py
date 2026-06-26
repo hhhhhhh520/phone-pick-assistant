@@ -9,7 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from sqlalchemy import text
-from backend.models.domain import SessionLocal, engine
+from backend.models.domain import SessionLocal
 
 
 # 华为机型数据补充规则
@@ -259,7 +259,8 @@ def update_huawei_data():
                         params[field] = value
 
                 if set_clauses:
-                    sql = f"UPDATE phones SET {', '.join(set_clauses)} WHERE id = :phone_id"
+                    # 字段名来自代码硬编码的 update_fields 字典，使用参数化查询防止注入
+                    sql = f"UPDATE phones SET {', '.join(set_clauses)} WHERE id = :phone_id"  # nosec B608
                     db.execute(text(sql), params)
                     stats["updated"] += 1
                     print(f"  更新: {model} -> {update_fields}")
@@ -267,7 +268,7 @@ def update_huawei_data():
                 stats["skipped"] += 1
 
         db.commit()
-        print(f"\n更新完成:")
+        print("\n更新完成:")
         print(f"  总数: {stats['total']}")
         print(f"  已更新: {stats['updated']}")
         print(f"  已跳过: {stats['skipped']}")

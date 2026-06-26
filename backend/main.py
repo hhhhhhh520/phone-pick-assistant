@@ -12,6 +12,7 @@ from backend.api.routes import chat, phones
 from backend.api.errors import ErrorCode, ErrorResponse
 from backend.services.llm import LLMError
 from pathlib import Path
+from contextlib import asynccontextmanager
 import asyncio
 import logging
 import sys
@@ -31,7 +32,32 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 logger.info(f"Starting application in {settings.app_env} mode")
 
-app = FastAPI(title="手机选购助手API", version="0.1.0")
+
+# 后台任务：定期清理过期会话
+async def cleanup_sessions_periodically():
+    """每5分钟清理一次过期会话"""
+    from backend.services.session import SessionService
+    session_service = SessionService()
+    while True:
+        await asyncio.sleep(300)  # 5分钟
+        try:
+            count = session_service.cleanup_expired_sessions()
+            if count > 0:
+                logger.info(f"Cleaned up {count} expired sessions")
+        except Exception as e:
+            logger.error(f"Session cleanup error: {e}")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """应用生命周期管理"""
+    # 启动时
+    asyncio.create_task(cleanup_sessions_periodically())
+    yield
+    # 关闭时（如需要可添加清理逻辑）
+
+
+app = FastAPI(title="手机选购助手API", version="0.1.0", lifespan=lifespan)
 
 # 静态文件服务 - 必须在 include_router 之前 mount
 IMAGES_DIR = Path(__file__).parent.parent / "images"
@@ -43,9 +69,12 @@ limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# CORS配置 - 开发环境和生产环境都使用白名单模式
+# 白名单通过环境变量 cors_origins 配置，默认允许本地开发端口
+# 注意：allow_origins=["*"] 与 allow_credentials=True 组合在浏览器中会报错
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.get_cors_origins(),
+    allow_origins=settings.get_cors_origins(),  # 统一使用白名单
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -133,7 +162,7 @@ async def session_stats():
 
     with _sessions_lock:
         total_sessions = len(sessions)
-        total_messages = sum(len(data[0]) for data in sessions.values())
+        total_messages = sum(len(data.session.messages) for data in sessions.values())
 
     return {
         "total_sessions": total_sessions,
@@ -142,28 +171,6 @@ async def session_stats():
     }
 
 
-# 后台任务：定期清理过期会话
-async def cleanup_sessions_periodically():
-    """每5分钟清理一次过期会话"""
-    from backend.services.session import SessionService
-    session_service = SessionService()
-    while True:
-        await asyncio.sleep(300)  # 5分钟
-        try:
-            count = session_service.cleanup_expired_sessions()
-            if count > 0:
-                logger.info(f"Cleaned up {count} expired sessions")
-        except Exception as e:
-            logger.error(f"Session cleanup error: {e}")
-
-
-@app.on_event("startup")
-async def startup_event():
-    """应用启动时启动后台任务"""
-    asyncio.create_task(cleanup_sessions_periodically())
-
-
-# ==================== 全局异常处理器 ====================
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request: Request, exc: StarletteHTTPException) -> JSONResponse:

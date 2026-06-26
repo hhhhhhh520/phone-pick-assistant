@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Message, Phone, SearchHistoryItem } from '../types';
+import type { Message, Phone, SearchHistoryItem, QuestionResponse } from '../types';
 import { chatStream, abortCurrentRequest } from '../services/api';
 import { MessageList } from './MessageList';
 import { InputBar } from './InputBar';
@@ -31,6 +31,7 @@ export function ChatWindow() {
   };
 
   const handleSend = async (content: string) => {
+    console.log('[ChatWindow] handleSend called:', { content, sessionId, timestamp: new Date().toISOString() });
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
@@ -56,8 +57,10 @@ export function ChatWindow() {
 
     try {
       for await (const event of chatStream(content, sessionId)) {
+        console.log('[ChatWindow] SSE event:', event.type, event.type === 'content' ? `chunk(${(event.data as string).length}chars)` : event.type === 'phones' ? `${(event.data as Phone[]).length} phones` : '');
         if (event.type === 'session') {
           // 保存服务器返回的 session_id
+          console.log('[ChatWindow] Received session_id from server:', event.data);
           saveSession(event.data as string);
         } else if (event.type === 'intent') {
           isCompare = (event.data as string) === 'compare';
@@ -74,6 +77,27 @@ export function ChatWindow() {
             prev.map((m) =>
               m.id === assistantMessage.id
                 ? { ...m, content: m.content + chunk }
+                : m
+            )
+          );
+        } else if (event.type === 'question') {
+          // 处理追问事件
+          const questionData = event.data as QuestionResponse & {
+            pain_point_type?: string;
+            pain_point_severity?: string;
+          };
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantMessage.id
+                ? {
+                    ...m,
+                    content: questionData.question,
+                    isQuestion: true,
+                    quickReplies: questionData.quick_replies,
+                    missingFields: questionData.missing_fields,
+                    painPointType: questionData.pain_point_type,
+                    painPointSeverity: questionData.pain_point_severity
+                  }
                 : m
             )
           );
@@ -129,6 +153,15 @@ export function ChatWindow() {
     setMessages((prev) => [...prev, userMessage, assistantMessage]);
   };
 
+  // 处理快捷回复点击
+  const handleQuickReply = (reply: string) => {
+    // 清除所有消息的快捷回复按钮，避免重复显示
+    setMessages((prev) =>
+      prev.map((m) => ({ ...m, quickReplies: undefined }))
+    );
+    handleSend(reply);
+  };
+
   return (
     <div className="h-screen flex flex-col bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-4 py-3">
@@ -141,7 +174,7 @@ export function ChatWindow() {
         onClear={clearHistory}
       />
 
-      <MessageList messages={messages} />
+      <MessageList messages={messages} onQuickReply={handleQuickReply} />
 
       <InputBar onSend={handleSend} onCancel={handleCancel} disabled={loading} />
     </div>

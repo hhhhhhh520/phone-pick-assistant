@@ -2,9 +2,9 @@
 """清洗型号名称脚本"""
 import sys
 sys.stdout.reconfigure(encoding='utf-8')
-import re
-from backend.api.dependencies import get_db
-from backend.models.domain import Phone
+import re  # noqa: E402
+from backend.api.dependencies import get_db  # noqa: E402
+from backend.models.domain import Phone  # noqa: E402
 
 def clean_model_name(brand, model):
     '''清洗型号名称 - 稳健版本'''

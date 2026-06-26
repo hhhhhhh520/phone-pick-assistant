@@ -121,22 +121,3 @@ def validate_chat_input(message: str) -> tuple[bool, str, Optional[str]]:
         return False, "", "消息内容无效"
 
     return True, sanitized, None
-
-
-def escape_for_prompt(text: str) -> str:
-    """
-    转义文本以便安全地嵌入Prompt
-
-    Args:
-        text: 需要转义的文本
-
-    Returns:
-        转义后的文本
-    """
-    if not text:
-        return ""
-
-    # 移除可能导致问题的特殊字符
-    text = text.replace("{", "{{").replace("}", "}}")
-
-    return text

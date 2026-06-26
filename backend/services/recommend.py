@@ -16,9 +16,36 @@ RECOMMEND_PROMPT = """你是一个专业的手机选购顾问。
 {phones}
 
 请根据用户需求，从上面的候选手机列表中推荐最合适的2-3款手机。
-重要：你只能推荐上面列表中的手机，不要推荐列表之外的手机。
+
+## 重要约束（违反任何一条都是不合格的输出）
+
+1. 你只能推荐上面列表中的手机，不要推荐列表之外的手机
+2. 必须输出完整的手机型号（品牌+型号全称），如 "vivo X200 Pro"、"小米14"，不要只写品牌名如 "vivo"、"小米"
+3. 型号名称必须与候选列表中的完全一致，包括空格和大小写
+4. **必须引用用户原话**：在推荐理由中，要引用用户在需求中明确提到的具体要求（用引号标注）
+5. **【最关键】每款推荐手机必须包含"潜在不足"段落**：如果候选数据中有"缺点:"字段，必须引用其中的内容；如果没有，则根据配置推断至少一个不足。缺少"潜在不足"的推荐是不合格的。
+
+## 输出格式要求
+
+请按以下格式输出：
+
+### 推荐列表
+1. **品牌 型号** - 价格元
+2. **品牌 型号** - 价格元
+3. **品牌 型号** - 价格元
+
+### 用户需求引用
+（引用用户原话，说明用户的具体需求是什么，例如：用户提到"拍照要好"、"预算3000左右"等）
+
+### 推荐理由与潜在不足
+对于每款推荐手机，必须包含以下两部分（缺一不可）：
+
+**品牌 型号**
+- 推荐理由：（说明如何满足用户需求）
+- 潜在不足：（必须指出至少一个缺点。优先引用候选数据中的"缺点:"字段；若无则根据配置推断，如：重量较大、续航一般、缺少长焦等。不可省略此项。）
 
 ## 场景匹配指南
+
 根据用户提到的使用场景，优先关注对应的手机特性：
 
 - **游戏场景**：优先推荐「特性」包含"游戏手机"、"高刷屏"的手机，或「适合」包含"游戏玩家"的手机
@@ -28,7 +55,6 @@ RECOMMEND_PROMPT = """你是一个专业的手机选购顾问。
 - **学生/性价比**：优先推荐「适合」包含"学生"或"性价比"的手机
 
 在推荐理由中，说明该手机如何满足用户提到的具体场景需求。
-
 说明推荐理由，用简洁自然的语言回答。
 """
 
@@ -81,6 +107,22 @@ class RecommendService:
                     parts.append(f"适合: {', '.join(suitable)}")
             except (json.JSONDecodeError, TypeError):
                 pass
+        # 添加优点
+        if p.pros:
+            try:
+                pros = json.loads(p.pros) if isinstance(p.pros, str) else p.pros
+                if pros:
+                    parts.append(f"优点: {', '.join(pros)}")
+            except (json.JSONDecodeError, TypeError):
+                pass
+        # 添加缺点
+        if p.cons:
+            try:
+                cons = json.loads(p.cons) if isinstance(p.cons, str) else p.cons
+                if cons:
+                    parts.append(f"缺点: {', '.join(cons)}")
+            except (json.JSONDecodeError, TypeError):
+                pass
         return ", ".join(parts)
 
     async def recommend(
@@ -94,7 +136,9 @@ class RecommendService:
             f"{i+1}. {self._format_phone(p)}"
             for i, p in enumerate(phones[:5])
         ])
-        prompt = RECOMMEND_PROMPT.format(user_need=user_need, phones=phones_info)
+        # 转义用户输入中的花括号，防止 str.format() KeyError DoS
+        safe_user_need = user_need.replace("{", "{{").replace("}", "}}")
+        prompt = RECOMMEND_PROMPT.format(user_need=safe_user_need, phones=phones_info)
 
         # 构建消息列表，包含历史
         messages = []
@@ -112,8 +156,33 @@ class RecommendService:
         if len(messages) < original_count:
             logger.info(f"recommend: truncated {original_count} -> {len(messages)} messages")
 
+        # 收集完整输出，检查是否包含缺点披露
+        full_content = ""
         async for chunk in self.llm.chat_stream(messages):
+            full_content += chunk
             yield chunk
+
+        # 后处理：如果 LLM 输出缺少缺点，自动补充
+        cons_keywords = ['不足', '缺点', '局限', '短板', '注意', '不过', '遗憾']
+        has_cons = any(kw in full_content for kw in cons_keywords)
+        logger.info(f"Post-process: content_len={len(full_content)}, has_cons={has_cons}")
+        if not has_cons:
+            # 从推荐的手机中提取 cons 数据
+            cons_lines = []
+            for p in phones[:5]:
+                if p.cons:
+                    try:
+                        cons_list = json.loads(p.cons) if isinstance(p.cons, str) else p.cons
+                        if cons_list:
+                            cons_lines.append(f"- **{p.brand} {p.model}**：{'、'.join(cons_list[:3])}")
+                    except (json.JSONDecodeError, TypeError):
+                        pass
+            if cons_lines:
+                cons_output = "\n\n### 潜在不足\n" + "\n".join(cons_lines)
+                logger.info(f"Post-process: adding cons for {len(cons_lines)} phones")
+                yield cons_output
+            else:
+                logger.info("Post-process: no cons data available")
 
     async def compare(
         self,

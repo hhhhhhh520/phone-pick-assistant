@@ -88,7 +88,15 @@ def test_list_phones_with_price_filter(client):
 
 
 def test_get_phone(client):
-    response = client.get("/api/phones/1")
+    """测试获取手机详情 - 使用数据库中实际存在的ID"""
+    # 先获取手机列表，取第一个有效ID
+    list_response = client.get("/api/phones?limit=1")
+    assert list_response.status_code == 200
+    phones = list_response.json()["phones"]
+    assert len(phones) > 0, "数据库中至少应有一款手机"
+
+    phone_id = phones[0]["id"]
+    response = client.get(f"/api/phones/{phone_id}")
     assert response.status_code == 200
     data = response.json()
     assert "id" in data

@@ -1,6 +1,6 @@
 import type { Phone } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8002';
 
 // AbortController 用于取消请求
 let currentController: AbortController | null = null;
@@ -21,13 +21,18 @@ export async function* chatStream(
 
   currentController = new AbortController();
 
+  const requestBody = JSON.stringify({ message, session_id: sessionId });
+  console.log('[API] Sending:', { message, session_id: sessionId, body: requestBody });
+
   const response = await fetch(`${API_BASE}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message, session_id: sessionId }),
+    body: requestBody,
     cache: 'no-store',
     signal: currentController.signal,
   });
+
+  console.log('[API] Response status:', response.status);
 
   if (!response.ok) {
     currentController = null;

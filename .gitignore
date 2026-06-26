@@ -1,10 +1,51 @@
 __pycache__/
 *.py[cod]
 .venv/
+
+# 环境变量（敏感信息）
 .env
+.env.local
+.env.production
+.env.*.local
+
+# 数据库
 *.db
+
+# 前端
 frontend/node_modules/
 frontend/dist/
+
+# 日志
 *.log
+logs/
+
+# 备份
+backups/
+*.db.gz
+*.db.bak
+
+# SSL证书
+nginx/ssl/*.pem
+nginx/ssl/*.key
+nginx/ssl/*.crt
+
+# IDE
 .idea/
 .vscode/
+
+# 测试覆盖率
+.coverage
+
+# 数据采集/分析产物
+antutu_urls.txt
+test_request.json
+backend/data/*_report.txt
+backend/data/*_report.md
+backend/data/_camera_analysis_output.txt
+data/antutu_articles/
+data/phone_reports/
+missing_data_report*.csv
+
+# 系统文件
+.DS_Store
+Thumbs.db

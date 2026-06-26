@@ -49,6 +49,11 @@ export interface Message {
   content: string;
   phones?: Phone[];
   isCompare?: boolean;  // 是否为对比消息
+  isQuestion?: boolean;  // 是否为追问消息
+  quickReplies?: string[];  // 快捷回复选项
+  missingFields?: string[];  // 缺失字段
+  painPointType?: string;  // 痛点追问类型 (battery, storage, camera, performance, screen)
+  painPointSeverity?: string;  // 痛点严重程度 (mild, moderate, severe)
   timestamp: Date;
 }
 
@@ -59,4 +64,11 @@ export interface SearchHistoryItem {
   query: string;
   phones: Phone[];
   timestamp: number;
+}
+
+// 追问响应
+export interface QuestionResponse {
+  question: string;
+  quick_replies: string[];
+  missing_fields: string[];
 }

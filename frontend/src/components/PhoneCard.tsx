@@ -129,16 +129,16 @@ export function PhoneCard({ phone, onClick }: PhoneCardProps) {
 
       <div className="grid grid-cols-2 gap-2 text-sm text-gray-600">
         <div>
-          <span className="text-gray-400">处理器:</span> {phone.processor}
+          <span className="text-gray-400">处理器:</span> {phone.processor || '-'}
         </div>
         <div>
-          <span className="text-gray-400">内存:</span> {phone.ram}GB
+          <span className="text-gray-400">内存:</span> {phone.ram ? `${phone.ram}GB` : '-'}
         </div>
         <div>
-          <span className="text-gray-400">存储:</span> {phone.storage}GB
+          <span className="text-gray-400">存储:</span> {phone.storage ? `${phone.storage}GB` : '-'}
         </div>
         <div>
-          <span className="text-gray-400">电池:</span> {phone.battery}mAh
+          <span className="text-gray-400">电池:</span> {phone.battery ? `${phone.battery}mAh` : '-'}
         </div>
       </div>
 
