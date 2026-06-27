@@ -27,12 +27,13 @@ export function QuickReplyButtons({ options, onSelect, disabled = false, isPainP
       }`;
 
   return (
-    <div className="mt-3 flex flex-wrap gap-2">
+    <div className="mt-3 flex flex-wrap gap-2" role="group" aria-label="快捷回复选项">
       {options.map((option, index) => (
         <button
           key={index}
           onClick={() => onSelect(option)}
           disabled={disabled}
+          aria-label={`快捷回复: ${option}`}
           className={`px-3 py-1.5 text-sm rounded-full border transition-all duration-200 flex items-center gap-1.5 ${buttonClass}`}
         >
           {isPainPoint && <span className="text-base">⚠️</span>}

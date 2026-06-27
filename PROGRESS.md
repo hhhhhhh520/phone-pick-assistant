@@ -1,6 +1,6 @@
 # 手机选购助手 - 项目进度
 
-> 创建时间: 2026-04-28 | 最后更新: 2026-06-25（含正则修复+脚本整理）
+> 创建时间: 2026-04-28 | 最后更新: 2026-06-27（审查修复13项）
 
 ## 项目概述
 
@@ -49,6 +49,41 @@
 | `llm.py` httpx 每次新建客户端 | `async with` 是 httpx 正确用法 |
 | `dependencies.py` 单例竞态 | FastAPI 单线程事件循环 |
 | `session.py` 模块级全局状态 | FastAPI 单例服务标准做法 |
+
+---
+
+## 2026-06-27 多维度审查修复（12 项，764+121 tests passed）
+
+5 个并行审查 Agent（架构、安全、前端、API、测试）发现 110 项 → 验证后 13 项真实问题 → 修复 12 项（#8 跳过）
+
+### 已修复
+
+| # | 类别 | 修复内容 | 改动文件 |
+|---|------|----------|----------|
+| 1 | 架构 | SSE 生成器加 try/except，异常时返回 error 事件 | chat.py |
+| 2 | 安全 | 系统提示词改用 system 角色，防止指令泄露 | intent.py, recommend.py |
+| 3 | 安全 | /health 缓存 LLM 结果 60 秒，防止 API 额度耗尽 | main.py |
+| 4 | 前端 | 6 个组件添加 ARIA 属性（无障碍） | InputBar, PhoneCard, QuickReplyButtons, MessageList, CompareTable, SearchHistory |
+| 5 | 前端 | 添加加载指示器（三个脉冲点动画） | ChatWindow, MessageList, MessageItem |
+| 6 | 测试 | `assert count == 353` 改为范围检查 `300-500` | test_data_completeness.py |
+| 7 | 测试 | 创建 conftest.py 提取共享 fixtures | conftest.py, test_chat_route.py, test_chat_flow.py |
+| 9 | API | 手机列表添加 offset 分页参数 | phones.py |
+| 10 | API | SSE 错误格式添加 code 字段 | chat.py |
+| 11 | 安全 | LLM 错误响应在生产环境隐藏 original_error | main.py |
+| 12 | 数据 | 安兔兔 A18/A18 Pro 分数修正 | antutu_scores.json, test_antutu_config.py |
+| 13 | 前端 | 消息 ID 改用 crypto.randomUUID() | ChatWindow.tsx |
+
+### 跳过
+
+| # | 原因 |
+|---|------|
+| 8 | threading.Lock → asyncio.Lock：锁操作微秒级，实际无性能影响；改动需修改 10+ 调用点和 10+ 测试文件，风险大于收益 |
+
+### 验证修复
+
+- 后端: 764 tests passed
+- 前端: 121 tests passed
+- 测试基础设施修复: rate limiter 双实例问题、health cache 测试隔离问题
 
 ---
 

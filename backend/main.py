@@ -59,6 +59,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="手机选购助手API", version="0.1.0", lifespan=lifespan)
 
+# Health check LLM 缓存
+_health_cache = {"result": None, "timestamp": 0}
+
+
+def _reset_health_cache():
+    """重置健康检查缓存（用于测试）"""
+    _health_cache["result"] = None
+    _health_cache["timestamp"] = 0
+
 # 静态文件服务 - 必须在 include_router 之前 mount
 IMAGES_DIR = Path(__file__).parent.parent / "images"
 if IMAGES_DIR.exists():
@@ -113,6 +122,11 @@ async def health():
     from sqlalchemy import text
     import time
 
+    # LLM 结果缓存（60秒有效）
+    now = time.time()
+    if _health_cache["result"] and now - _health_cache["timestamp"] < 60:
+        return _health_cache["result"]
+
     start_time = time.time()
     components = {}
 
@@ -128,7 +142,7 @@ async def health():
         db_status["error"] = str(e)[:100]
     components["database"] = db_status
 
-    # LLM服务检查
+    # LLM服务检查（使用缓存）
     llm_service = LLMService()
     llm_status = await llm_service.health_check()
     components["llm"] = llm_status
@@ -148,11 +162,14 @@ async def health():
         # 数据库异常：整体不健康
         overall_status = "unhealthy"
 
-    return {
+    result = {
         "status": overall_status,
         "latency_ms": total_latency,
         "components": components
     }
+    _health_cache["result"] = result
+    _health_cache["timestamp"] = time.time()
+    return result
 
 
 @app.get("/stats/sessions")
@@ -257,7 +274,7 @@ async def llm_exception_handler(request: Request, exc: LLMError) -> JSONResponse
     error = ErrorResponse(
         code=code,
         message=message,
-        detail={"original_error": error_message[:200]}  # 限制长度
+        detail={"original_error": error_message[:200]} if settings.app_env != "production" else None
     )
     return JSONResponse(
         status_code=503,

@@ -104,6 +104,10 @@ export function PhoneCard({ phone, onClick }: PhoneCardProps) {
     <div
       className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
       onClick={onClick}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.(); }}}
+      role="button"
+      tabIndex={0}
+      aria-label={`${phone.brand} ${phone.model} - ${phone.price}元`}
     >
       {/* 手机图片 */}
       <div className="mb-3 flex justify-center items-center h-24">
@@ -114,6 +118,8 @@ export function PhoneCard({ phone, onClick }: PhoneCardProps) {
             src={fullImageUrl!}
             alt={`${phone.brand} ${phone.model}`}
             className="w-24 h-24 object-contain"
+            loading="lazy"
+            decoding="async"
             onError={() => setImageError(true)}
           />
         )}

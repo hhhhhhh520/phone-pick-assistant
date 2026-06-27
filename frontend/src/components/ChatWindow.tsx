@@ -33,7 +33,7 @@ export function ChatWindow() {
   const handleSend = async (content: string) => {
     console.log('[ChatWindow] handleSend called:', { content, sessionId, timestamp: new Date().toISOString() });
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       role: 'user',
       content,
       timestamp: new Date(),
@@ -43,7 +43,7 @@ export function ChatWindow() {
     setLoading(true);
 
     const assistantMessage: Message = {
-      id: (Date.now() + 1).toString(),
+      id: crypto.randomUUID(),
       role: 'assistant',
       content: '',
       phones: [],
@@ -136,14 +136,14 @@ export function ChatWindow() {
   // 从历史记录恢复对话
   const handleHistorySelect = (item: SearchHistoryItem) => {
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: crypto.randomUUID(),
       role: 'user',
       content: item.query,
       timestamp: new Date(),
     };
 
     const assistantMessage: Message = {
-      id: (Date.now() + 1).toString(),
+      id: crypto.randomUUID(),
       role: 'assistant',
       content: '以下是之前的推荐结果：',
       phones: item.phones,
@@ -174,7 +174,7 @@ export function ChatWindow() {
         onClear={clearHistory}
       />
 
-      <MessageList messages={messages} onQuickReply={handleQuickReply} />
+      <MessageList messages={messages} onQuickReply={handleQuickReply} loading={loading} />
 
       <InputBar onSend={handleSend} onCancel={handleCancel} disabled={loading} />
     </div>

@@ -5,9 +5,10 @@ import { MessageItem } from './MessageItem';
 interface MessageListProps {
   messages: Message[];
   onQuickReply?: (reply: string) => void;
+  loading?: boolean;
 }
 
-export function MessageList({ messages, onQuickReply }: MessageListProps) {
+export function MessageList({ messages, onQuickReply, loading }: MessageListProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const userScrolledUp = useRef(false);
@@ -34,6 +35,9 @@ export function MessageList({ messages, onQuickReply }: MessageListProps) {
       ref={containerRef}
       onScroll={handleScroll}
       className="flex-1 overflow-y-auto p-4"
+      role="log"
+      aria-live="polite"
+      aria-label="消息列表"
     >
       {messages.length === 0 ? (
         <div className="h-full flex flex-col items-center justify-center text-gray-400">
@@ -49,8 +53,13 @@ export function MessageList({ messages, onQuickReply }: MessageListProps) {
         </div>
       ) : (
         <>
-          {messages.map((msg) => (
-            <MessageItem key={msg.id} message={msg} onQuickReply={onQuickReply} />
+          {messages.map((msg, index) => (
+            <MessageItem
+              key={msg.id}
+              message={msg}
+              onQuickReply={onQuickReply}
+              loading={loading && msg.role === 'assistant' && index === messages.length - 1}
+            />
           ))}
           <div ref={bottomRef} />
         </>

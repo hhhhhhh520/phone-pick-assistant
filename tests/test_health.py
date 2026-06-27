@@ -15,7 +15,14 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.main import app
+from backend.main import app, _reset_health_cache
+
+
+@pytest.fixture(autouse=True)
+def reset_health_cache():
+    """每个测试前重置健康检查缓存"""
+    _reset_health_cache()
+    yield
 
 
 @pytest.fixture

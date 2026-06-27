@@ -9,9 +9,9 @@ logger = logging.getLogger(__name__)
 settings = get_settings()
 
 
-RECOMMEND_PROMPT = """你是一个专业的手机选购顾问。
+RECOMMEND_SYSTEM_PROMPT = "你是一个专业的手机选购顾问。"
 
-用户需求: {user_need}
+RECOMMEND_PROMPT = """用户需求: {user_need}
 候选手机列表:
 {phones}
 
@@ -58,9 +58,9 @@ RECOMMEND_PROMPT = """你是一个专业的手机选购顾问。
 说明推荐理由，用简洁自然的语言回答。
 """
 
-COMPARE_PROMPT = """你是一个手机参数对比专家。
+COMPARE_SYSTEM_PROMPT = "你是一个手机参数对比专家。"
 
-用户想对比以下手机:
+COMPARE_PROMPT = """用户想对比以下手机:
 {phones}
 
 请从以下维度对比:
@@ -158,7 +158,7 @@ class RecommendService:
 
         # 收集完整输出，检查是否包含缺点披露
         full_content = ""
-        async for chunk in self.llm.chat_stream(messages):
+        async for chunk in self.llm.chat_stream(messages, system_prompt=RECOMMEND_SYSTEM_PROMPT):
             full_content += chunk
             yield chunk
 
@@ -212,5 +212,5 @@ class RecommendService:
         if len(messages) < original_count:
             logger.info(f"compare: truncated {original_count} -> {len(messages)} messages")
 
-        async for chunk in self.llm.chat_stream(messages):
+        async for chunk in self.llm.chat_stream(messages, system_prompt=COMPARE_SYSTEM_PROMPT):
             yield chunk

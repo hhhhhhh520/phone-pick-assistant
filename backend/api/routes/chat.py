@@ -61,7 +61,7 @@ async def chat(
         logger.warning(f"Invalid input rejected: {error}")
 
         async def error_response():
-            yield f"data: {json.dumps({'type': 'error', 'data': error}, ensure_ascii=False)}\n\n"
+            yield f"data: {json.dumps({'type': 'error', 'code': 'INVALID_INPUT', 'data': error}, ensure_ascii=False)}\n\n"
             yield f"data: {json.dumps({'type': 'done'})}\n\n"
 
         return StreamingResponse(error_response(), media_type="text/event-stream")
@@ -103,109 +103,114 @@ async def chat(
     logger.info(f"[PROFILE] After update: {user_profile.model_dump()}, is_complete={user_profile.is_complete()}")
 
     async def generate():
-        # 发送会话ID
-        yield f"data: {json.dumps({'type': 'session', 'data': session_id}, ensure_ascii=False)}\n\n"
+        try:
+            # 发送会话ID
+            yield f"data: {json.dumps({'type': 'session', 'data': session_id}, ensure_ascii=False)}\n\n"
 
-        # 发送意图信息
-        yield f"data: {json.dumps({'type': 'intent', 'data': intent_result.intent.value}, ensure_ascii=False)}\n\n"
+            # 发送意图信息
+            yield f"data: {json.dumps({'type': 'intent', 'data': intent_result.intent.value}, ensure_ascii=False)}\n\n"
 
-        # 判断是否需要追问
-        # 使用更新后的用户画像判断完整性
-        # 注意：intent_result.need_clarification 是基于更新前的画像计算的，不可靠
-        # 对比模式不需要追问，直接进入对比流程
-        need_clarification = (
-            intent_result.intent != IntentType.COMPARE and
-            not user_profile.is_complete() and not _is_explicit_request(intent_result)
-        )
-        logger.info(f"[DECISION] need_clarification={need_clarification}, is_complete={user_profile.is_complete()}, intent={intent_result.intent.value}, is_explicit={_is_explicit_request(intent_result)}")
+            # 判断是否需要追问
+            # 使用更新后的用户画像判断完整性
+            # 注意：intent_result.need_clarification 是基于更新前的画像计算的，不可靠
+            # 对比模式不需要追问，直接进入对比流程
+            need_clarification = (
+                intent_result.intent != IntentType.COMPARE and
+                not user_profile.is_complete() and not _is_explicit_request(intent_result)
+            )
+            logger.info(f"[DECISION] need_clarification={need_clarification}, is_complete={user_profile.is_complete()}, intent={intent_result.intent.value}, is_explicit={_is_explicit_request(intent_result)}")
 
-        if need_clarification:
-            # 需要追问用户补充信息
-            question_response = question_service.generate_full_response(user_profile)
+            if need_clarification:
+                # 需要追问用户补充信息
+                question_response = question_service.generate_full_response(user_profile)
 
-            # 发送追问事件
-            yield f"data: {json.dumps({'type': 'question', 'data': {
-                'question': question_response.question,
-                'quick_replies': question_response.quick_replies,
-                'missing_fields': question_response.missing_fields
-            }}, ensure_ascii=False)}\n\n"
+                # 发送追问事件
+                yield f"data: {json.dumps({'type': 'question', 'data': {
+                    'question': question_response.question,
+                    'quick_replies': question_response.quick_replies,
+                    'missing_fields': question_response.missing_fields
+                }}, ensure_ascii=False)}\n\n"
 
-            # 保存追问消息到会话
-            session_service.add_message(session_id, "assistant", question_response.question)
+                # 保存追问消息到会话
+                session_service.add_message(session_id, "assistant", question_response.question)
 
-        elif intent_result.intent == IntentType.COMPARE:
-            # 对比模式
-            phones = retrieval_service.get_phones_by_model(intent_result.phones_mentioned)
-            if len(phones) < 2:
-                phones = retrieval_service.get_all_phones(2)
+            elif intent_result.intent == IntentType.COMPARE:
+                # 对比模式
+                phones = retrieval_service.get_phones_by_model(intent_result.phones_mentioned)
+                if len(phones) < 2:
+                    phones = retrieval_service.get_all_phones(2)
 
-            # 发送手机信息
-            phones_data = [p.to_dict() for p in phones]
-            yield f"data: {json.dumps({'type': 'phones', 'data': phones_data}, ensure_ascii=False)}\n\n"
+                # 发送手机信息
+                phones_data = [p.to_dict() for p in phones]
+                yield f"data: {json.dumps({'type': 'phones', 'data': phones_data}, ensure_ascii=False)}\n\n"
 
-            # 收集完整回复
-            full_reply = ""
-            # 流式输出对比结果
-            async for chunk in recommend_service.compare(phones, history):
-                full_reply += chunk
-                yield f"data: {json.dumps({'type': 'content', 'data': chunk}, ensure_ascii=False)}\n\n"
+                # 收集完整回复
+                full_reply = ""
+                # 流式输出对比结果
+                async for chunk in recommend_service.compare(phones, history):
+                    full_reply += chunk
+                    yield f"data: {json.dumps({'type': 'content', 'data': chunk}, ensure_ascii=False)}\n\n"
 
-            # 保存助手回复到会话
-            session_service.add_message(session_id, "assistant", full_reply)
+                # 保存助手回复到会话
+                session_service.add_message(session_id, "assistant", full_reply)
 
-        else:
-            # 推荐/筛选模式
-            phones = retrieval_service.search(intent_result, limit=5)
-            if not phones:
-                phones = retrieval_service.get_all_phones(5)
+            else:
+                # 推荐/筛选模式
+                phones = retrieval_service.search(intent_result, limit=5)
+                if not phones:
+                    phones = retrieval_service.get_all_phones(5)
 
-            # 收集完整回复（cons 后处理已在 recommend_service.recommend() 中完成）
-            full_reply = ""
-            # 流式输出推荐结果
-            async for chunk in recommend_service.recommend(sanitized_message, phones, history):
-                full_reply += chunk
-                yield f"data: {json.dumps({'type': 'content', 'data': chunk}, ensure_ascii=False)}\n\n"
+                # 收集完整回复（cons 后处理已在 recommend_service.recommend() 中完成）
+                full_reply = ""
+                # 流式输出推荐结果
+                async for chunk in recommend_service.recommend(sanitized_message, phones, history):
+                    full_reply += chunk
+                    yield f"data: {json.dumps({'type': 'content', 'data': chunk}, ensure_ascii=False)}\n\n"
 
-            # 解析推荐的手机型号（使用 ModelParserService）
-            model_parser = ModelParserService()
-            recommended_models = model_parser.extract_recommended_models(full_reply, phones)
+                # 解析推荐的手机型号（使用 ModelParserService）
+                model_parser = ModelParserService()
+                recommended_models = model_parser.extract_recommended_models(full_reply, phones)
 
-            # 过滤只发送被推荐的手机（使用 ModelParserService 模糊匹配，处理品牌中英文差异）
-            if recommended_models:
-                original_count = len(phones)
-                recommended_phones = []
-                for p in phones:
-                    for model_name in recommended_models:
-                        if model_parser._fuzzy_match_model(model_name, p):
-                            recommended_phones.append(p)
-                            break
-                if recommended_phones:
-                    phones = recommended_phones
-                    logger.info(f"Filtered phones: {len(phones)} from {original_count}")
-                else:
-                    # 模糊匹配失败时回退到简单子串匹配
-                    logger.warning("Fuzzy match failed, falling back to substring match")
+                # 过滤只发送被推荐的手机（使用 ModelParserService 模糊匹配，处理品牌中英文差异）
+                if recommended_models:
+                    original_count = len(phones)
+                    recommended_phones = []
                     for p in phones:
                         for model_name in recommended_models:
-                            model_clean = model_name.replace('（推荐指数：⭐⭐⭐⭐⭐）', '').replace('（推荐指数：⭐⭐⭐⭐）', '').strip().lower()
-                            if p.model.lower() in model_clean or model_clean in f"{p.brand} {p.model}".lower():
+                            if model_parser._fuzzy_match_model(model_name, p):
                                 recommended_phones.append(p)
                                 break
                     if recommended_phones:
                         phones = recommended_phones
-                        logger.info(f"Filtered phones (fallback): {len(phones)} from {original_count}")
+                        logger.info(f"Filtered phones: {len(phones)} from {original_count}")
                     else:
-                        logger.warning(f"No phones matched from recommended_models: {recommended_models}")
-            else:
-                logger.info(f"No recommended_models extracted, sending all {len(phones)} phones")
+                        # 模糊匹配失败时回退到简单子串匹配
+                        logger.warning("Fuzzy match failed, falling back to substring match")
+                        for p in phones:
+                            for model_name in recommended_models:
+                                model_clean = model_name.replace('（推荐指数：⭐⭐⭐⭐⭐）', '').replace('（推荐指数：⭐⭐⭐⭐）', '').strip().lower()
+                                if p.model.lower() in model_clean or model_clean in f"{p.brand} {p.model}".lower():
+                                    recommended_phones.append(p)
+                                    break
+                        if recommended_phones:
+                            phones = recommended_phones
+                            logger.info(f"Filtered phones (fallback): {len(phones)} from {original_count}")
+                        else:
+                            logger.warning(f"No phones matched from recommended_models: {recommended_models}")
+                else:
+                    logger.info(f"No recommended_models extracted, sending all {len(phones)} phones")
 
-            # 发送手机信息（在内容之后发送，前端需要处理顺序）
-            phones_data = [p.to_dict() for p in phones]
-            yield f"data: {json.dumps({'type': 'phones', 'data': phones_data}, ensure_ascii=False)}\n\n"
+                # 发送手机信息（在内容之后发送，前端需要处理顺序）
+                phones_data = [p.to_dict() for p in phones]
+                yield f"data: {json.dumps({'type': 'phones', 'data': phones_data}, ensure_ascii=False)}\n\n"
 
-            # 保存助手回复到会话
-            session_service.add_message(session_id, "assistant", full_reply)
+                # 保存助手回复到会话
+                session_service.add_message(session_id, "assistant", full_reply)
 
-        yield f"data: {json.dumps({'type': 'done'})}\n\n"
+            yield f"data: {json.dumps({'type': 'done'})}\n\n"
+        except Exception as e:
+            logger.error(f"SSE generator error: {type(e).__name__}: {e}")
+            yield f"data: {json.dumps({'type': 'error', 'code': 'INTERNAL_ERROR', 'data': '服务处理异常，请重试'}, ensure_ascii=False)}\n\n"
+            yield f"data: {json.dumps({'type': 'done'})}\n\n"
 
     return StreamingResponse(generate(), media_type="text/event-stream")

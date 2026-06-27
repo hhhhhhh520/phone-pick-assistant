@@ -36,14 +36,14 @@ export function CompareTable({ phones }: CompareTableProps) {
 
   return (
     <div className="mt-4 overflow-x-auto">
-      <table className="w-full text-sm border-collapse">
+      <table className="w-full text-sm border-collapse" aria-label="手机对比表格">
         <thead>
           <tr className="bg-gray-50">
-            <th className="border border-gray-200 px-3 py-2 text-left text-gray-600 w-24">参数</th>
-            <th className="border border-gray-200 px-3 py-2 text-center text-gray-900 font-medium">
+            <th className="border border-gray-200 px-3 py-2 text-left text-gray-600 w-24" scope="col">参数</th>
+            <th className="border border-gray-200 px-3 py-2 text-center text-gray-900 font-medium" scope="col">
               {phone1.brand} {phone1.model}
             </th>
-            <th className="border border-gray-200 px-3 py-2 text-center text-gray-900 font-medium">
+            <th className="border border-gray-200 px-3 py-2 text-center text-gray-900 font-medium" scope="col">
               {phone2.brand} {phone2.model}
             </th>
           </tr>

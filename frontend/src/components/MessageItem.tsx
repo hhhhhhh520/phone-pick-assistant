@@ -6,9 +6,10 @@ import { QuickReplyButtons } from './QuickReplyButtons';
 interface MessageItemProps {
   message: Message;
   onQuickReply?: (reply: string) => void;
+  loading?: boolean;
 }
 
-export function MessageItem({ message, onQuickReply }: MessageItemProps) {
+export function MessageItem({ message, onQuickReply, loading }: MessageItemProps) {
   const isUser = message.role === 'user';
   const isCompare = message.isCompare ?? false;
   const isQuestion = message.isQuestion ?? false;
@@ -70,7 +71,15 @@ export function MessageItem({ message, onQuickReply }: MessageItemProps) {
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4`}>
       <div className={`max-w-[80%] ${getContainerClass()} px-4 py-3`}>
         {getPainPointTitle()}
-        <p className="whitespace-pre-wrap">{message.content}</p>
+        {loading && !message.content && !isQuestion ? (
+          <div className="flex gap-1 p-1" aria-label="正在生成回复">
+            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0ms'}} />
+            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '150ms'}} />
+            <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '300ms'}} />
+          </div>
+        ) : (
+          <p className="whitespace-pre-wrap">{message.content}</p>
+        )}
 
         {/* 快捷回复按钮 */}
         {isQuestion && message.quickReplies && message.quickReplies.length > 0 && (

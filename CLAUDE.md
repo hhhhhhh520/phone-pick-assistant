@@ -23,7 +23,7 @@ backend/                # FastAPI 后端
 └── data/phones.db      # SQLite（353 款手机/17 品牌）
 frontend/               # React 19 + Vite + TailwindCSS
 scripts/                # 数据处理/爬取工具脚本（非核心应用）
-tests/                  # pytest（759 passed）
+tests/                  # pytest（764 passed）
 ```
 
 ## 关键命令

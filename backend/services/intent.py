@@ -9,9 +9,9 @@ import re
 
 logger = logging.getLogger(__name__)
 
-INTENT_PROMPT = """你是一个手机选购助手。分析用户意图并提取关键信息。
+INTENT_SYSTEM_PROMPT = "你是一个手机选购助手。分析用户意图并提取关键信息。"
 
-{history_context}{profile_context}
+INTENT_PROMPT = """{history_context}{profile_context}
 用户输入: "{user_message}"
 
 返回JSON格式(不要有其他内容):
@@ -335,7 +335,7 @@ class IntentService:
             history_context=safe_history,
             profile_context=profile_context
         )
-        response = await self.llm.chat([{"role": "user", "content": prompt}])
+        response = await self.llm.chat([{"role": "user", "content": prompt}], system_prompt=INTENT_SYSTEM_PROMPT)
 
         try:
             data = self._extract_json_from_response(response)

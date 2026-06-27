@@ -10,67 +10,19 @@
 """
 import pytest
 import json
-import sys
-import os
 from unittest.mock import AsyncMock, MagicMock, patch
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from fastapi.testclient import TestClient
-from backend.main import app
 from backend.models.schemas import (
     IntentResult,
     IntentType,
     UserProfile,
     NeedLevel
 )
-from backend.services.session import SessionService, sessions, _sessions_lock
+from backend.services.session import SessionService
 from backend.services.question import QuestionService
 
-
-@pytest.fixture
-def client():
-    return TestClient(app)
-
-
-@pytest.fixture(autouse=True)
-def clear_sessions():
-    """每个测试前清空会话"""
-    with _sessions_lock:
-        sessions.clear()
-
-
-def _parse_sse_response(text: str) -> dict:
-    """
-    解析 SSE 响应，返回事件字典
-
-    Args:
-        text: SSE 响应文本
-
-    Returns:
-        dict: {event_type: parsed_data} 格式的事件字典
-        - session/intent: 值是字符串
-        - question/phones: 值是字典
-        - content: 值是字符串列表（累积所有 content）
-    """
-    events = {}
-    contents = []
-    for line in text.strip().split("\n"):
-        if line.startswith("data:"):
-            try:
-                data = json.loads(line[5:].strip())
-                event_type = data.get("type")
-                if event_type:
-                    if event_type == "content":
-                        # 累积所有 content
-                        contents.append(data.get("data", ""))
-                    else:
-                        events[event_type] = data.get("data", data)
-            except json.JSONDecodeError:
-                continue
-    if contents:
-        events["content"] = "".join(contents)
-    return events
+# 共享 fixtures 和 helpers 从 conftest.py 导入
+from tests.conftest import _parse_sse_response
 
 
 class TestMultiTurnChatFlow:

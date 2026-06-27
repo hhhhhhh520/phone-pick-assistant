@@ -17,6 +17,16 @@ from backend.api.errors import ErrorCode, ErrorResponse
 from backend.services.llm import LLMError
 
 
+@pytest.fixture(autouse=True)
+def reset_rate_limit():
+    """重置速率限制，避免测试间干扰"""
+    from backend.api.routes.chat import limiter as chat_limiter
+    if hasattr(app.state, 'limiter'):
+        app.state.limiter.reset()
+    chat_limiter.reset()
+    yield
+
+
 @pytest.fixture
 def client():
     return TestClient(app)

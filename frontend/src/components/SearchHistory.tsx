@@ -26,21 +26,23 @@ export function SearchHistory({ history, onSelect, onClear }: SearchHistoryProps
   };
 
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-2">
+    <div className="bg-white border-b border-gray-200 px-4 py-2" aria-label="搜索历史">
       <div className="flex items-center justify-between mb-2">
         <span className="text-sm text-gray-500">搜索历史</span>
         <button
           onClick={onClear}
+          aria-label="清空搜索历史"
           className="text-xs text-gray-400 hover:text-gray-600"
         >
           清空
         </button>
       </div>
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex gap-2 overflow-x-auto pb-1" role="list">
         {history.slice(0, 10).map((item) => (
           <button
             key={item.id}
             onClick={() => onSelect(item)}
+            aria-label={`${item.query} - ${formatTime(item.timestamp)}`}
             className="flex-shrink-0 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-full text-sm text-gray-700 transition-colors"
           >
             <span className="truncate max-w-[120px] inline-block">{item.query}</span>

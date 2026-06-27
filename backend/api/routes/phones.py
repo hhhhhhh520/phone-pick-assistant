@@ -14,6 +14,7 @@ async def list_phones(
     min_price: int = Query(None, ge=0),
     max_price: int = Query(None, ge=0),
     limit: int = Query(20, ge=1, le=100),
+    offset: int = Query(0, ge=0, description="分页偏移量"),
     db: Session = Depends(get_db)
 ):
     """获取手机列表"""
@@ -26,9 +27,9 @@ async def list_phones(
     if max_price is not None:
         query = query.filter(Phone.price <= max_price)
 
-    # 先计算总数，再应用limit
+    # 先计算总数，再应用offset和limit
     total = query.count()
-    phones = query.limit(limit).all()
+    phones = query.offset(offset).limit(limit).all()
 
     return PhoneListResponse(
         phones=[PhoneBrief(id=p.id, brand=p.brand, model=p.model, price=p.price) for p in phones],
