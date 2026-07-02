@@ -193,4 +193,28 @@ describe('CompareTable', () => {
       expect(cell).not.toHaveClass('font-medium');
     });
   });
+
+  // null 字段显示 '-' 而非 "nullGB" 等 (ISSUE-037)
+  it('displays "-" for null fields instead of "nullGB"', () => {
+    const nullPhone1 = createPhone({
+      id: 1,
+      ram: null as unknown as number,
+      storage: null as unknown as number,
+      battery: null as unknown as number,
+      weight: null as unknown as number,
+      charging: { wired: null as unknown as number, wireless: null as unknown as number },
+      camera: { main: null as unknown as number, ultra: null, telephoto: null, front: null },
+    });
+    const nullPhone2 = createPhone({ id: 2, model: 'Other' });
+
+    render(<CompareTable phones={[nullPhone1, nullPhone2]} />);
+
+    // 不应出现 "nullGB" / "nullmAh" / "nullW" / "nullg"
+    expect(screen.queryByText(/nullGB/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/nullmAh/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/nullW/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/nullg/i)).not.toBeInTheDocument();
+    // 应有 '-' 占位
+    expect(screen.getAllByText('-').length).toBeGreaterThan(0);
+  });
 });

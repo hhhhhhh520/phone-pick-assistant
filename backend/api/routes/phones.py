@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from sqlalchemy import asc, desc
 from backend.api.dependencies import get_db
 from backend.models.domain import Phone
 from backend.models.schemas import PhoneBrief, PhoneListResponse
@@ -15,10 +16,11 @@ async def list_phones(
     max_price: int = Query(None, ge=0),
     limit: int = Query(20, ge=1, le=100),
     offset: int = Query(0, ge=0, description="分页偏移量"),
+    sort: str = Query(None, description="排序：price_asc / price_desc", pattern="^(price_asc|price_desc)$"),
     db: Session = Depends(get_db)
 ):
     """获取手机列表"""
-    query = db.query(Phone)
+    query = db.query(Phone).filter(Phone.price > 0)
 
     if brand:
         query = query.filter(Phone.brand == brand)
@@ -27,12 +29,19 @@ async def list_phones(
     if max_price is not None:
         query = query.filter(Phone.price <= max_price)
 
-    # 先计算总数，再应用offset和limit
+    # 先计算总数，再应用排序和分页
     total = query.count()
+
+    # 排序 (ISSUE-043)：无效 sort 值由 pattern 自动 422
+    if sort == "price_asc":
+        query = query.order_by(asc(Phone.price))
+    elif sort == "price_desc":
+        query = query.order_by(desc(Phone.price))
+
     phones = query.offset(offset).limit(limit).all()
 
     return PhoneListResponse(
-        phones=[PhoneBrief(id=p.id, brand=p.brand, model=p.model, price=p.price) for p in phones],
+        phones=[PhoneBrief(id=p.id, brand=p.brand, model=p.model, price=p.price, imageUrl=p.image_url) for p in phones],
         total=total
     )
 

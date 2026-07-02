@@ -81,6 +81,13 @@ export function MessageItem({ message, onQuickReply, loading }: MessageItemProps
           <p className="whitespace-pre-wrap">{message.content}</p>
         )}
 
+        {/* 系统提示（独立灰色条，不污染 content）(ISSUE-036/039) */}
+        {message.notice && (
+          <div className="mt-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-700">
+            ⚠️ {message.notice}
+          </div>
+        )}
+
         {/* 快捷回复按钮 */}
         {isQuestion && message.quickReplies && message.quickReplies.length > 0 && (
           <QuickReplyButtons

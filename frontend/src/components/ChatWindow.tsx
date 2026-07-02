@@ -101,6 +101,25 @@ export function ChatWindow() {
                 : m
             )
           );
+        } else if (event.type === 'notice') {
+          // 系统提示（如"未找到匹配机型"），独立显示，不污染 content (ISSUE-036/039)
+          const noticeText = event.data as string;
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantMessage.id ? { ...m, notice: noticeText } : m
+            )
+          );
+        } else if (event.type === 'error') {
+          // 处理后端错误事件
+          const errorData = event.data as { code?: string; data?: string };
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantMessage.id
+                ? { ...m, content: errorData.data || '服务处理异常，请重试' }
+                : m
+            )
+          );
+          break;
         }
       }
 

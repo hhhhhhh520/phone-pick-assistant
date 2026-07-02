@@ -34,6 +34,24 @@ describe('PhoneCard', () => {
     expect(screen.getByText('iPhone 15')).toBeInTheDocument();
   });
 
+  // 型号去重：model 含品牌前缀时去掉前缀，避免与 brand 行重复 (ISSUE-038)
+  it('strips brand prefix from model when model starts with brand', () => {
+    const phone = createPhone({ brand: '小米', model: '小米15 Pro' });
+    render(<PhoneCard phone={phone} />);
+
+    expect(screen.getByText('小米')).toBeInTheDocument();
+    expect(screen.getByText('15 Pro')).toBeInTheDocument();
+    expect(screen.queryByText('小米15 Pro')).not.toBeInTheDocument();
+  });
+
+  // model 不以 brand 开头时保持原样 (ISSUE-038 null guard)
+  it('keeps model unchanged when it does not start with brand', () => {
+    const phone = createPhone({ brand: 'Apple', model: 'iPhone 15' });
+    render(<PhoneCard phone={phone} />);
+
+    expect(screen.getByText('iPhone 15')).toBeInTheDocument();
+  });
+
   // 渲染价格
   it('renders phone price with yen symbol', () => {
     const phone = createPhone({ price: 5999 });
@@ -139,6 +157,25 @@ describe('PhoneCard', () => {
     expect(img).toHaveAttribute('src', expect.stringContaining('/images/iphone15.jpg'));
   });
 
+  // 本地路径含 + 号需编码为 %2B，否则浏览器当作空格 → 404 (ISSUE-040)
+  it('encodes + sign in local image path to %2B', () => {
+    const phone = createPhone({ imageUrl: '/images/OPPO Reno15 Pro(12GB+256GB)_1.jpg' });
+    render(<PhoneCard phone={phone} />);
+
+    const img = document.querySelector('img');
+    expect(img).toHaveAttribute('src', expect.stringContaining('%2B'));
+    expect(img).toHaveAttribute('src', expect.not.stringContaining('+'));
+  });
+
+  // 已编码的 URL 不应被双重编码
+  it('does not double-encode already-encoded URL', () => {
+    const phone = createPhone({ imageUrl: '/images/phone%2025.jpg' });
+    render(<PhoneCard phone={phone} />);
+
+    const img = document.querySelector('img');
+    expect(img).toHaveAttribute('src', expect.not.stringContaining('%2520'));
+  });
+
   // 外部 URL 直接使用
   it('uses external URL directly', () => {
     const phone = createPhone({ imageUrl: 'https://example.com/phone.jpg' });
@@ -148,28 +185,14 @@ describe('PhoneCard', () => {
     expect(img).toHaveAttribute('src', 'https://example.com/phone.jpg');
   });
 
-  // 点击卡片触发 onClick 回调
-  it('calls onClick when card is clicked', () => {
-    const onClick = vi.fn();
-    const phone = createPhone();
-    render(<PhoneCard phone={phone} onClick={onClick} />);
-
-    // 点击卡片容器
-    const card = screen.getByText('iPhone 15').closest('div')?.parentElement?.parentElement;
-    fireEvent.click(card!);
-
-    expect(onClick).toHaveBeenCalledTimes(1);
-  });
-
-  // 无 onClick 时不报错
-  it('does not throw when clicked without onClick callback', () => {
+  // 卡片为纯展示，不应有 role=button 等交互伪装 (ISSUE-044)
+  it('does not render as interactive button (no misleading role)', () => {
     const phone = createPhone();
     render(<PhoneCard phone={phone} />);
 
-    const card = screen.getByText('iPhone 15').closest('div')?.parentElement?.parentElement;
-    expect(() => {
-      fireEvent.click(card!);
-    }).not.toThrow();
+    // 不应有 role=button（避免误导用户和辅助技术）
+    const interactive = document.querySelectorAll('[role="button"]');
+    expect(interactive).toHaveLength(0);
   });
 
   // 影像评分卡片渲染

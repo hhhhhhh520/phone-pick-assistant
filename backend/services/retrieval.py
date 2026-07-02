@@ -225,13 +225,17 @@ class RetrievalService:
                     )
                 )
             elif feature_lower == "拍照":
-                # 拍照场景：筛选 features 包含 '徕卡'/'哈苏'/'蔡司'
+                # 拍照场景：筛选 features 包含影像相关标签
                 # 或 suitable_for 包含 '摄影爱好者'
+                # 关键词扩展：旗舰机 features 用"影像""潜望长焦""大底"等表述 (ISSUE-036)
                 or_conditions.append(
                     or_(
                         Phone.features.contains("徕卡"),
                         Phone.features.contains("哈苏"),
                         Phone.features.contains("蔡司"),
+                        Phone.features.contains("影像"),
+                        Phone.features.contains("潜望长焦"),
+                        Phone.features.contains("大底"),
                         Phone.suitable_for.contains("摄影爱好者")
                     )
                 )
@@ -372,7 +376,60 @@ class RetrievalService:
 
         return phones[:limit]
 
-    def get_all_phones(self, limit: int = 20) -> List[Phone]:
+    def search_with_fallback(self, intent_result, limit: int = 10) -> tuple:
+        """分级回退检索，避免检索为空时丢弃用户意图 (ISSUE-036)
+
+        回退层级：
+        1. 正常 search（预算+品牌+场景全过滤 + 场景排序）
+        2. 放宽场景过滤，但【保留预算+品牌过滤】，仍按场景排序
+        3. 连预算+品牌过滤后都为空 → 返回空 + 告警
+
+        Returns:
+            (phones, notice): notice 为 None 表示无告警，非 None 为给用户的提示文案
+        """
+        # tier-1: 正常检索
+        phones = self.search(intent_result, limit)
+        if phones:
+            return phones, None
+
+        # tier-2: 放宽场景过滤，保留预算+品牌，按场景排序
+        query = self.db.query(Phone).filter(Phone.price > 0)
+        has_budget_filter = intent_result.budget_min > 0 or intent_result.budget_max < 100000
+        if has_budget_filter:
+            query = query.filter(
+                Phone.price >= intent_result.budget_min,
+                Phone.price <= intent_result.budget_max
+            )
+        if intent_result.brands:
+            query = query.filter(Phone.brand.in_(intent_result.brands))
+
+        candidates = query.all()
+        if candidates:
+            # 保留场景排序（_sort_by_scenario 不依赖过滤是否命中）
+            features_lower = [f.lower() for f in (intent_result.features or [])]
+            no_need_lower = [f.lower() for f in (intent_result.no_need_features or [])]
+            sorted_phones = self._sort_by_scenario(candidates, features_lower, no_need_lower)
+            feature_desc = "、".join(intent_result.features) if intent_result.features else ""
+            if feature_desc:
+                # 按 has_budget_filter 措辞，避免无预算时误报"该价位" (ISSUE-036)
+                scope = "该价位" if has_budget_filter else "当前"
+                notice = f"未找到完全匹配「{feature_desc}」的机型，已为您推荐{scope}其他热门手机"
+            else:
+                notice = None
+            return sorted_phones[:limit], notice
+
+        # tier-3: 连预算+品牌过滤后都空 → 真无数据，告警
+        if has_budget_filter and intent_result.brands:
+            notice = "该价位该品牌暂无机型数据，请调整预算或品牌后重试"
+        elif has_budget_filter:
+            notice = "该价位暂无机型数据，请调整预算后重试"
+        elif intent_result.brands:
+            notice = "该品牌暂无机型数据，请调整品牌后重试"
+        else:
+            notice = "暂无机型数据，请调整筛选条件后重试"
+        return [], notice
+
+
         """获取所有手机，优先返回有图片的"""
         return self.db.query(Phone).filter(
             Phone.price > 0  # 过滤无效价格

@@ -15,7 +15,7 @@ import os
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from backend.main import app, _reset_health_cache
+from backend.main import app, _reset_health_cache, _set_llm_health
 
 
 @pytest.fixture(autouse=True)
@@ -86,13 +86,14 @@ class TestHealthResponseFormat:
 
     def test_llm_component_fields(self, client):
         """LLM组件字段验证"""
+        _set_llm_health("available", model="deepseek-chat")
         response = client.get("/health")
         data = response.json()
 
         llm = data["components"]["llm"]
-        assert llm["status"] in ["available", "error"]
+        assert llm["status"] in ["available", "unavailable", "unknown", "error"]
         assert "model" in llm
-        if llm["status"] == "error":
+        if llm["status"] in ("unavailable", "error"):
             assert "error" in llm
 
 
@@ -100,8 +101,7 @@ class TestHealthAllComponentsHealthy:
     """测试所有组件正常的场景"""
 
     @patch("backend.models.domain.SessionLocal")
-    @patch("backend.services.llm.LLMService.health_check")
-    def test_all_healthy_returns_healthy_status(self, mock_health_check, mock_session_local, client):
+    def test_all_healthy_returns_healthy_status(self, mock_session_local, client):
         """所有组件正常时，status应为healthy"""
         # Mock 数据库连接正常
         mock_session = MagicMock()
@@ -110,11 +110,8 @@ class TestHealthAllComponentsHealthy:
         mock_session.__exit__ = MagicMock(return_value=False)
         mock_session_local.return_value = mock_session
 
-        # Mock LLM 可用
-        mock_health_check.return_value = {
-            "status": "available",
-            "model": "deepseek-chat",
-        }
+        # 设置 LLM 健康缓存（后台刷新结果，请求读缓存）(ISSUE-042)
+        _set_llm_health("available", model="deepseek-chat")
 
         response = client.get("/health")
         data = response.json()
@@ -134,6 +131,7 @@ class TestHealthAllComponentsHealthy:
 
     def test_llm_available_shows_model(self, client):
         """LLM可用时应显示模型名称"""
+        _set_llm_health("available", model="deepseek-chat")
         response = client.get("/health")
         data = response.json()
 
@@ -196,14 +194,9 @@ class TestHealthDatabaseError:
 class TestHealthLLMError:
     """测试LLM异常场景"""
 
-    @patch("backend.services.llm.LLMService.health_check")
-    def test_llm_error_returns_degraded(self, mock_health_check, client):
+    def test_llm_error_returns_degraded(self, client):
         """LLM异常但数据库正常时，status应为degraded"""
-        mock_health_check.return_value = {
-            "status": "error",
-            "model": "deepseek-chat",
-            "error": "API Key无效或已过期"
-        }
+        _set_llm_health("unavailable", model="deepseek-chat", error="API Key无效或已过期")
 
         response = client.get("/health")
         data = response.json()
@@ -212,52 +205,37 @@ class TestHealthLLMError:
         if data["components"]["database"]["status"] == "connected":
             assert data["status"] == "degraded"
 
-    @patch("backend.services.llm.LLMService.health_check")
-    def test_llm_connection_error(self, mock_health_check, client):
+    def test_llm_connection_error(self, client):
         """LLM连接失败"""
-        mock_health_check.return_value = {
-            "status": "error",
-            "model": "deepseek-chat",
-            "error": "无法连接到API服务"
-        }
+        _set_llm_health("unavailable", model="deepseek-chat", error="无法连接到API服务")
 
         response = client.get("/health")
         data = response.json()
 
         llm = data["components"]["llm"]
-        assert llm["status"] == "error"
+        assert llm["status"] == "unavailable"
         assert "无法连接" in llm["error"]
 
-    @patch("backend.services.llm.LLMService.health_check")
-    def test_llm_timeout_error(self, mock_health_check, client):
+    def test_llm_timeout_error(self, client):
         """LLM超时错误"""
-        mock_health_check.return_value = {
-            "status": "error",
-            "model": "deepseek-chat",
-            "error": "API连接超时"
-        }
+        _set_llm_health("unavailable", model="deepseek-chat", error="API连接超时")
 
         response = client.get("/health")
         data = response.json()
 
         llm = data["components"]["llm"]
-        assert llm["status"] == "error"
+        assert llm["status"] == "unavailable"
         assert "超时" in llm["error"]
 
-    @patch("backend.services.llm.LLMService.health_check")
-    def test_llm_auth_error(self, mock_health_check, client):
+    def test_llm_auth_error(self, client):
         """LLM认证错误"""
-        mock_health_check.return_value = {
-            "status": "error",
-            "model": "deepseek-chat",
-            "error": "API Key无效或已过期"
-        }
+        _set_llm_health("unavailable", model="deepseek-chat", error="API Key无效或已过期")
 
         response = client.get("/health")
         data = response.json()
 
         llm = data["components"]["llm"]
-        assert llm["status"] == "error"
+        assert llm["status"] == "unavailable"
         assert "API Key" in llm["error"]
 
 
@@ -265,9 +243,8 @@ class TestHealthPartialDegradation:
     """测试部分降级场景"""
 
     @patch("backend.models.domain.SessionLocal")
-    @patch("backend.services.llm.LLMService.health_check")
     def test_both_components_error_returns_unhealthy(
-        self, mock_health_check, mock_session_local, client
+        self, mock_session_local, client
     ):
         """数据库和LLM都异常时，status应为unhealthy"""
         # 模拟数据库错误
@@ -277,26 +254,17 @@ class TestHealthPartialDegradation:
         mock_session.__exit__ = MagicMock(return_value=False)
         mock_session_local.return_value = mock_session
 
-        # 模拟LLM错误
-        mock_health_check.return_value = {
-            "status": "error",
-            "model": "deepseek-chat",
-            "error": "API Error"
-        }
+        # 模拟LLM错误（设置缓存）
+        _set_llm_health("unavailable", model="deepseek-chat", error="API Error")
 
         response = client.get("/health")
         data = response.json()
 
         assert data["status"] == "unhealthy"
 
-    @patch("backend.services.llm.LLMService.health_check")
-    def test_llm_rate_limit_treated_as_available(self, mock_health_check, client):
+    def test_llm_rate_limit_treated_as_available(self, client):
         """LLM速率限制应视为可用（degraded而非unhealthy）"""
-        mock_health_check.return_value = {
-            "status": "available",
-            "model": "deepseek-chat",
-            "error": "API速率受限，但服务可达"
-        }
+        _set_llm_health("available", model="deepseek-chat", error="API速率受限，但服务可达")
 
         response = client.get("/health")
         data = response.json()
@@ -353,3 +321,37 @@ class TestHealthStatusConsistency:
         else:
             # 数据库异常
             assert data["status"] == "unhealthy"
+
+
+class TestHealthNonBlocking:
+    """测试 /health 不阻塞等待 LLM (ISSUE-042)
+
+    改后台异步刷新后，/health 请求应读缓存立即返回，不等待 LLM 响应。
+    """
+
+    def test_health_does_not_call_llm_service(self, client):
+        """/health 请求不应同步调用 LLMService.health_check（读缓存）"""
+        with patch("backend.services.llm.LLMService.health_check", new_callable=AsyncMock) as mock_check:
+            _set_llm_health("available", model="deepseek-chat")
+            response = client.get("/health")
+            # /health 不应同步调 LLM（后台任务才调）
+            mock_check.assert_not_called()
+            assert response.status_code == 200
+
+    def test_health_response_fast_without_llm_call(self, client):
+        """无 LLM 调用时，/health 应快速返回（<500ms，仅 DB 检查）"""
+        _set_llm_health("available", model="deepseek-chat")
+        response = client.get("/health")
+        data = response.json()
+        # 仅 DB 检查 + 读缓存，应在 500ms 内
+        assert data["latency_ms"] < 500, f"/health 应快速返回，实际 {data['latency_ms']}ms"
+
+    def test_health_returns_unknown_when_cache_not_refreshed(self, client):
+        """启动初期 LLM 缓存未刷新时，status 为 unknown（不阻塞等待）"""
+        # _reset_health_cache 已在 fixture 重置 _llm_health 为 unknown
+        response = client.get("/health")
+        data = response.json()
+        llm = data["components"]["llm"]
+        assert llm["status"] == "unknown"
+        # 仍应快速返回，不等待 LLM
+        assert data["latency_ms"] < 500

@@ -4,6 +4,12 @@ interface CompareTableProps {
   phones: Phone[];
 }
 
+// 格式化带单位的字段：null/undefined 显示 '-'，避免 "nullGB" 等脏数据 (ISSUE-037)
+const formatUnit = (value: number | string | null | undefined, unit: string): string => {
+  if (value === null || value === undefined || value === '') return '-';
+  return `${value}${unit}`;
+};
+
 export function CompareTable({ phones }: CompareTableProps) {
   if (phones.length < 2) {
     return null;
@@ -20,18 +26,25 @@ export function CompareTable({ phones }: CompareTableProps) {
   // 格式化价格
   const formatPrice = (price: number) => `¥${price.toLocaleString()}`;
 
+  // 格式化屏幕：size/refresh 任一缺失显示 '-'
+  const formatScreen = (screen: Phone['screen']): string => {
+    if (!screen || screen.size === null || screen.size === undefined) return '-';
+    const refreshPart = screen.refresh ? ` ${screen.refresh}Hz` : '';
+    return `${screen.size}"${refreshPart}`;
+  };
+
   const rows = [
     { label: '品牌', value1: phone1.brand, value2: phone2.brand },
     { label: '型号', value1: phone1.model, value2: phone2.model },
     { label: '价格', value1: formatPrice(phone1.price), value2: formatPrice(phone2.price), highlight: isDifferent(phone1.price, phone2.price) },
-    { label: '处理器', value1: phone1.processor, value2: phone2.processor, highlight: isDifferent(phone1.processor, phone2.processor) },
-    { label: '内存', value1: `${phone1.ram}GB`, value2: `${phone2.ram}GB`, highlight: isDifferent(phone1.ram, phone2.ram) },
-    { label: '存储', value1: `${phone1.storage}GB`, value2: `${phone2.storage}GB`, highlight: isDifferent(phone1.storage, phone2.storage) },
-    { label: '屏幕', value1: `${phone1.screen.size}" ${phone1.screen.refresh}Hz`, value2: `${phone2.screen.size}" ${phone2.screen.refresh}Hz`, highlight: isDifferent(phone1.screen.size, phone2.screen.size) || isDifferent(phone1.screen.refresh, phone2.screen.refresh) },
-    { label: '电池', value1: `${phone1.battery}mAh`, value2: `${phone2.battery}mAh`, highlight: isDifferent(phone1.battery, phone2.battery) },
-    { label: '主摄', value1: `${phone1.camera.main}MP`, value2: `${phone2.camera.main}MP`, highlight: isDifferent(phone1.camera.main, phone2.camera.main) },
-    { label: '快充', value1: `${phone1.charging.wired}W`, value2: `${phone2.charging.wired}W`, highlight: isDifferent(phone1.charging.wired, phone2.charging.wired) },
-    { label: '重量', value1: `${phone1.weight}g`, value2: `${phone2.weight}g`, highlight: isDifferent(phone1.weight, phone2.weight) },
+    { label: '处理器', value1: phone1.processor || '-', value2: phone2.processor || '-', highlight: isDifferent(phone1.processor, phone2.processor) },
+    { label: '内存', value1: formatUnit(phone1.ram, 'GB'), value2: formatUnit(phone2.ram, 'GB'), highlight: isDifferent(phone1.ram, phone2.ram) },
+    { label: '存储', value1: formatUnit(phone1.storage, 'GB'), value2: formatUnit(phone2.storage, 'GB'), highlight: isDifferent(phone1.storage, phone2.storage) },
+    { label: '屏幕', value1: formatScreen(phone1.screen), value2: formatScreen(phone2.screen), highlight: isDifferent(phone1.screen?.size, phone2.screen?.size) || isDifferent(phone1.screen?.refresh, phone2.screen?.refresh) },
+    { label: '电池', value1: formatUnit(phone1.battery, 'mAh'), value2: formatUnit(phone2.battery, 'mAh'), highlight: isDifferent(phone1.battery, phone2.battery) },
+    { label: '主摄', value1: formatUnit(phone1.camera?.main, 'MP'), value2: formatUnit(phone2.camera?.main, 'MP'), highlight: isDifferent(phone1.camera?.main, phone2.camera?.main) },
+    { label: '快充', value1: formatUnit(phone1.charging?.wired, 'W'), value2: formatUnit(phone2.charging?.wired, 'W'), highlight: isDifferent(phone1.charging?.wired, phone2.charging?.wired) },
+    { label: '重量', value1: formatUnit(phone1.weight, 'g'), value2: formatUnit(phone2.weight, 'g'), highlight: isDifferent(phone1.weight, phone2.weight) },
   ];
 
   return (

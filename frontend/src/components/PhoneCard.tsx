@@ -3,7 +3,6 @@ import type { Phone, CameraScoring } from '../types';
 
 interface PhoneCardProps {
   phone: Phone;
-  onClick?: () => void;
 }
 
 // API基础地址
@@ -85,28 +84,32 @@ function DefaultPhoneIcon() {
   );
 }
 
-export function PhoneCard({ phone, onClick }: PhoneCardProps) {
+export function PhoneCard({ phone }: PhoneCardProps) {
   const [imageError, setImageError] = useState(false);
 
   // 处理图片URL：本地路径需要拼接API地址，外部URL直接使用
   const getFullImageUrl = (url: string | undefined): string | null => {
     if (!url) return null;
-    // 外部URL（如三星官方图片）直接使用
+    // 外部URL（如中关村在线图床）直接使用，不重复编码
     if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    // 本地路径拼接API地址
-    return `${API_BASE}${url}`;
+    // 本地路径拼接API地址；文件名含 + (如 12GB+256GB) 需编码为 %2B，否则浏览器当作空格 → 404
+    // 已含 % 视为已编码，跳过避免双重编码
+    const encoded = url.includes('%') ? url : encodeURI(url).replace(/\+/g, '%2B');
+    return `${API_BASE}${encoded}`;
   };
 
   const fullImageUrl = getFullImageUrl(phone.imageUrl);
   const showDefaultIcon = !fullImageUrl || imageError;
 
+  // 型号去重：model 字段常含品牌前缀（如"小米15 Pro"），避免与 brand 行重复显示 (ISSUE-038)
+  // null guard：brand/model 可能为空字符串或 undefined
+  const displayModel = phone.model
+    ? (phone.brand && phone.model.startsWith(phone.brand) ? phone.model.slice(phone.brand.length).trim() || phone.model : phone.model)
+    : '-';
+
   return (
     <div
-      className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer"
-      onClick={onClick}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.(); }}}
-      role="button"
-      tabIndex={0}
+      className="bg-white rounded-lg border border-gray-200 p-4"
       aria-label={`${phone.brand} ${phone.model} - ${phone.price}元`}
     >
       {/* 手机图片 */}
@@ -128,7 +131,7 @@ export function PhoneCard({ phone, onClick }: PhoneCardProps) {
       <div className="flex justify-between items-start mb-2">
         <div>
           <span className="text-sm text-gray-500">{phone.brand}</span>
-          <h3 className="font-medium text-gray-900">{phone.model}</h3>
+          <h3 className="font-medium text-gray-900">{displayModel}</h3>
         </div>
         <span className="text-lg font-semibold text-blue-600">¥{phone.price}</span>
       </div>

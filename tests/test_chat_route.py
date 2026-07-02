@@ -116,7 +116,7 @@ class TestChatRecommendFlow:
 
             # Mock retrieval
             mock_retrieval = MagicMock()
-            mock_retrieval.search.return_value = mock_phones
+            mock_retrieval.search_with_fallback.return_value = (mock_phones, None)
             mock_retrieval_cls.return_value = mock_retrieval
 
             # Mock recommend
@@ -154,7 +154,7 @@ class TestChatRecommendFlow:
             mock_intent_cls.return_value = mock_intent
 
             mock_retrieval = MagicMock()
-            mock_retrieval.search.return_value = mock_phones
+            mock_retrieval.search_with_fallback.return_value = (mock_phones, None)
             mock_retrieval_cls.return_value = mock_retrieval
 
             mock_recommend = AsyncMock()
@@ -171,6 +171,47 @@ class TestChatRecommendFlow:
             # 不应该有 question 事件
             assert "question" not in events
             assert "content" in events
+
+    def test_recommend_tier2_notice_emitted_with_content(self, client):
+        """tier-2 回退（phones 非空 + notice 非空）应同时发 notice 和 content (ISSUE-036 测试缺口)
+
+        场景放宽命中时：notice 提示"未找到完全匹配"，仍调 LLM 推荐，发 phones + content
+        """
+        mock_phones = [_make_phone("小米", "小米15", 4999), _make_phone("华为", "Mate70", 4999)]
+
+        with patch("backend.api.routes.chat.IntentService") as mock_intent_cls, \
+             patch("backend.api.routes.chat.RecommendService") as mock_recommend_cls, \
+             patch("backend.api.routes.chat.RetrievalService") as mock_retrieval_cls:
+            mock_intent = AsyncMock()
+            mock_intent.recognize.return_value = _make_intent(
+                IntentType.RECOMMEND, budget_max=5000, features=["拍照"]
+            )
+            mock_intent_cls.return_value = mock_intent
+
+            mock_retrieval = MagicMock()
+            # tier-2：phones 非空 + notice 非空
+            mock_retrieval.search_with_fallback.return_value = (
+                mock_phones,
+                "未找到完全匹配「拍照」的机型，已为您推荐该价位其他热门手机"
+            )
+            mock_retrieval_cls.return_value = mock_retrieval
+
+            mock_recommend = AsyncMock()
+
+            async def mock_recommend_gen(message, phones, history):
+                yield "推荐小米15和Mate70"
+
+            mock_recommend.recommend = mock_recommend_gen
+            mock_recommend_cls.return_value = mock_recommend
+
+            response = client.post("/api/chat", json={"message": "推荐拍照手机5000元"})
+            events = _parse_sse_response(response.text)
+
+            # 应同时有 notice（放宽提示）和 content（LLM 推荐）和 phones
+            assert "notice" in events
+            assert "content" in events
+            assert "phones" in events
+            assert "未找到完全匹配" in events["notice"]
 
 
 class TestChatCompareFlow:
@@ -209,33 +250,71 @@ class TestChatCompareFlow:
             assert "content" in events
             assert "done" in events
 
-    def test_compare_fallback_when_less_than_two_phones(self, client):
-        """对比时找不到两台手机，回退到全部手机"""
+    def test_compare_not_found_returns_notice(self, client):
+        """对比时找不到两台手机，不回退到全库，发 notice 提示 (ISSUE-039)
+
+        旧行为：静默回退到 get_all_phones(2) 对比无关机型，误导用户
+        新行为：发 notice 告知"未找到机型"，不调 compare()（避免 LLM 幻觉）
+        """
         with patch("backend.api.routes.chat.IntentService") as mock_intent_cls, \
              patch("backend.api.routes.chat.RecommendService") as mock_recommend_cls, \
              patch("backend.api.routes.chat.RetrievalService") as mock_retrieval_cls:
             mock_intent = AsyncMock()
-            mock_intent.recognize.return_value = _make_intent(IntentType.COMPARE)
+            mock_intent.recognize.return_value = _make_intent(
+                IntentType.COMPARE, phones_mentioned=["钢铁侠手机", "蜘蛛侠手机"]
+            )
             mock_intent_cls.return_value = mock_intent
 
             mock_retrieval = MagicMock()
-            mock_retrieval.get_phones_by_model.return_value = [_make_phone()]  # 只找到 1 台
-            mock_retrieval.get_all_phones.return_value = [_make_phone(), _make_phone("vivo", "X200", 4299)]
+            # 两台都找不到
+            mock_retrieval.get_phones_by_model.return_value = []
             mock_retrieval_cls.return_value = mock_retrieval
 
             mock_recommend = AsyncMock()
-
-            async def mock_compare_gen(phones, history):
-                yield "对比结果"
-
-            mock_recommend.compare = mock_compare_gen
             mock_recommend_cls.return_value = mock_recommend
 
-            response = client.post("/api/chat", json={"message": "对比手机"})
+            response = client.post("/api/chat", json={"message": "对比钢铁侠和蜘蛛侠"})
             events = _parse_sse_response(response.text)
 
-            assert "phones" in events
-            assert "content" in events
+            # 应发 notice 提示，而非回退对比
+            assert "notice" in events
+            assert "未找到" in events["notice"] or "机型" in events["notice"]
+            # 不应调用 compare（避免 LLM 对空列表产生幻觉）
+            mock_recommend.compare.assert_not_called()
+            # 不应发送 phones 事件
+            assert "phones" not in events
+
+    def test_compare_fuzzy_match_not_false_missing(self, client):
+        """模糊命中的型号不应误报"未找到" (ISSUE-039)
+
+        用户输入"小米14"模糊命中库里"小米14 Ultra"，missing 检测用子串回判，
+        不应把"小米14"误判为 missing。仅真正找不到的型号才进 notice。
+        """
+        with patch("backend.api.routes.chat.IntentService") as mock_intent_cls, \
+             patch("backend.api.routes.chat.RecommendService") as mock_recommend_cls, \
+             patch("backend.api.routes.chat.RetrievalService") as mock_retrieval_cls:
+            mock_intent = AsyncMock()
+            mock_intent.recognize.return_value = _make_intent(
+                IntentType.COMPARE, phones_mentioned=["小米14", "钢铁侠手机"]
+            )
+            mock_intent_cls.return_value = mock_intent
+
+            mock_retrieval = MagicMock()
+            # "小米14" 模糊命中"小米14 Ultra"，"钢铁侠" 找不到 → 只找到 1 台
+            fuzzy_phone = _make_phone("小米", "小米14 Ultra", 4699)
+            mock_retrieval.get_phones_by_model.return_value = [fuzzy_phone]
+            mock_retrieval_cls.return_value = mock_retrieval
+
+            mock_recommend = AsyncMock()
+            mock_recommend_cls.return_value = mock_recommend
+
+            response = client.post("/api/chat", json={"message": "对比小米14和钢铁侠"})
+            events = _parse_sse_response(response.text)
+
+            assert "notice" in events
+            # notice 应只提到真正未找到的"钢铁侠"，不应误报"小米14"
+            assert "钢铁侠" in events["notice"]
+            assert "小米14" not in events["notice"], f"模糊命中的型号不应误报 missing：{events['notice']}"
 
 
 class TestChatClarificationFlow:
@@ -307,7 +386,7 @@ class TestChatSSEFormat:
             mock_intent_cls.return_value = mock_intent
 
             mock_retrieval = MagicMock()
-            mock_retrieval.search.return_value = mock_phones
+            mock_retrieval.search_with_fallback.return_value = (mock_phones, None)
             mock_retrieval_cls.return_value = mock_retrieval
 
             mock_recommend = AsyncMock()

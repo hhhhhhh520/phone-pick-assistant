@@ -54,6 +54,7 @@ export interface Message {
   missingFields?: string[];  // 缺失字段
   painPointType?: string;  // 痛点追问类型 (battery, storage, camera, performance, screen)
   painPointSeverity?: string;  // 痛点严重程度 (mild, moderate, severe)
+  notice?: string;  // 系统提示（如"未找到匹配机型"），独立灰色提示条，不写入会话历史 (ISSUE-036/039)
   timestamp: Date;
 }
 

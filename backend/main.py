@@ -16,6 +16,7 @@ from contextlib import asynccontextmanager
 import asyncio
 import logging
 import sys
+import time
 
 settings = get_settings()
 
@@ -48,25 +49,65 @@ async def cleanup_sessions_periodically():
             logger.error(f"Session cleanup error: {e}")
 
 
+async def refresh_llm_health_periodically():
+    """后台周期性刷新 LLM 健康状态，请求读缓存不阻塞 (ISSUE-042)
+
+    启动后立即首次检查，之后每 _LLM_REFRESH_INTERVAL 秒刷新一次。
+    /health 请求永远读 _llm_health 缓存，不等待 LLM 响应。
+    """
+    from backend.services.llm import LLMService
+    while True:
+        try:
+            llm_service = LLMService()
+            status = await llm_service.health_check()
+            _llm_health["status"] = status.get("status", "unknown")
+            _llm_health["model"] = status.get("model")
+            _llm_health["error"] = status.get("error")
+            _llm_health["last_check"] = time.time()
+        except Exception as e:
+            _llm_health["status"] = "unavailable"
+            _llm_health["error"] = str(e)[:100]
+            _llm_health["last_check"] = time.time()
+            logger.error(f"LLM health refresh error: {e}")
+        await asyncio.sleep(_LLM_REFRESH_INTERVAL)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
     # 启动时
     asyncio.create_task(cleanup_sessions_periodically())
+    asyncio.create_task(refresh_llm_health_periodically())
     yield
     # 关闭时（如需要可添加清理逻辑）
 
 
 app = FastAPI(title="手机选购助手API", version="0.1.0", lifespan=lifespan)
 
-# Health check LLM 缓存
+# Health check LLM 状态缓存：后台异步刷新，请求永远读缓存，避免阻塞 (ISSUE-042)
+# _llm_health: {"status": "available"|"unavailable"|"unknown", "model": str, "error": str|None, "last_check": float}
+_llm_health = {"status": "unknown", "model": None, "error": None, "last_check": 0}
+# _health_cache: 完整 /health 响应缓存（短时，避免连 DB 检查也每次都做）
 _health_cache = {"result": None, "timestamp": 0}
+_LLM_REFRESH_INTERVAL = 60  # 秒，LLM 健康后台刷新间隔
 
 
 def _reset_health_cache():
     """重置健康检查缓存（用于测试）"""
     _health_cache["result"] = None
     _health_cache["timestamp"] = 0
+    _llm_health["status"] = "unknown"
+    _llm_health["model"] = None
+    _llm_health["error"] = None
+    _llm_health["last_check"] = 0
+
+
+def _set_llm_health(status: str, model: str = None, error: str = None):
+    """设置 LLM 健康缓存（用于测试，模拟后台刷新结果）"""
+    _llm_health["status"] = status
+    _llm_health["model"] = model
+    _llm_health["error"] = error
+    _llm_health["last_check"] = time.time()
 
 # 静态文件服务 - 必须在 include_router 之前 mount
 IMAGES_DIR = Path(__file__).parent.parent / "images"
@@ -116,21 +157,22 @@ async def health():
     - healthy: 所有组件正常
     - degraded: 部分组件异常（如LLM不可用但数据库正常）
     - unhealthy: 关键组件异常（数据库不可用）
+
+    性能：LLM 状态由后台任务周期性刷新（refresh_llm_health_periodically），
+    请求永远读缓存不阻塞，避免同步等待 LLM 响应 (ISSUE-042)。
     """
     from backend.models.domain import SessionLocal
-    from backend.services.llm import LLMService
     from sqlalchemy import text
-    import time
 
-    # LLM 结果缓存（60秒有效）
+    # 短时整体响应缓存（5秒，避免连 DB 检查也每次都做）
     now = time.time()
-    if _health_cache["result"] and now - _health_cache["timestamp"] < 60:
+    if _health_cache["result"] and now - _health_cache["timestamp"] < 5:
         return _health_cache["result"]
 
     start_time = time.time()
     components = {}
 
-    # 数据库检查
+    # 数据库检查（实时，~2ms）
     db_status = {"status": "connected", "latency_ms": None}
     try:
         db_start = time.time()
@@ -142,16 +184,18 @@ async def health():
         db_status["error"] = str(e)[:100]
     components["database"] = db_status
 
-    # LLM服务检查（使用缓存）
-    llm_service = LLMService()
-    llm_status = await llm_service.health_check()
-    components["llm"] = llm_status
+    # LLM 状态读缓存（后台异步刷新，请求不阻塞）
+    components["llm"] = {
+        "status": _llm_health["status"],
+        "model": _llm_health["model"],
+        "error": _llm_health["error"],
+    }
 
     # 计算整体状态
     total_latency = round((time.time() - start_time) * 1000, 2)
 
     db_healthy = db_status["status"] == "connected"
-    llm_healthy = llm_status["status"] == "available"
+    llm_healthy = _llm_health["status"] == "available"
 
     if db_healthy and llm_healthy:
         overall_status = "healthy"

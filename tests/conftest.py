@@ -64,7 +64,7 @@ def _make_phone(brand="小米", model="小米14", price=3999, **kwargs):
     return p
 
 
-def _make_intent(intent_type=IntentType.RECOMMEND, budget_max=5000, features=None):
+def _make_intent(intent_type=IntentType.RECOMMEND, budget_max=5000, features=None, phones_mentioned=None):
     """创建测试用 IntentResult"""
     return IntentResult(
         intent=intent_type,
@@ -73,9 +73,7 @@ def _make_intent(intent_type=IntentType.RECOMMEND, budget_max=5000, features=Non
         brands=[],
         features=features or ["游戏"],
         no_need_features=[],
-        phones_mentioned=[],
+        phones_mentioned=phones_mentioned or [],
         need_clarification=False,
         reset_profile=False,
-        pain_point=None,
-        pain_point_question=None,
     )

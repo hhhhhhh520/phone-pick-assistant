@@ -29,10 +29,12 @@ class ChatRequest(BaseModel):
 
 
 class PhoneBrief(BaseModel):
+    """列表接口精简字段，含 imageUrl 供前端卡片展示 (ISSUE-041)"""
     id: int
     brand: str
     model: str
     price: int
+    imageUrl: Optional[str] = None
 
 
 class PhoneListResponse(BaseModel):

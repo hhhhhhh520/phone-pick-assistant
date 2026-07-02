@@ -61,7 +61,8 @@ export function MessageList({ messages, onQuickReply, loading }: MessageListProp
               loading={loading && msg.role === 'assistant' && index === messages.length - 1}
             />
           ))}
-          <div ref={bottomRef} />
+          {/* 滚动锚点：aria-hidden 防止被辅助技术/计数逻辑误计为消息 (ISSUE-045) */}
+          <div ref={bottomRef} aria-hidden="true" style={{ height: 0 }} />
         </>
       )}
     </div>
