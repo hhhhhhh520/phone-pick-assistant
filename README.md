@@ -78,7 +78,7 @@ npm run dev
 | 接口 | 方法 | 说明 |
 |------|------|------|
 | `/api/chat` | POST | 对话接口(SSE)，限流20/min |
-| `/api/phones` | GET | 手机列表，支持品牌/价格过滤、offset分页 |
+| `/api/phones` | GET | 手机列表，支持品牌/价格过滤、offset分页、sort排序(price_asc/price_desc) |
 | `/api/phones/{id}` | GET | 手机详情 |
 | `/health` | GET | 健康检查 |
 | `/stats/sessions` | GET | 会话统计 |
