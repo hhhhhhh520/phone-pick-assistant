@@ -1,6 +1,6 @@
 # 手机选购助手 - 项目进度
 
-> 创建时间: 2026-04-28 | 最后更新: 2026-07-02（无头浏览器实测 + 10项修复）
+> 创建时间: 2026-04-28 | 最后更新: 2026-09-06（审查问题批量修复 + 测试离线化）
 
 ## 项目概述
 
@@ -20,6 +20,51 @@
 | P3 | 前端无测试 | 缺少组件测试和 E2E 测试 | — |
 | P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
 | P6 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
+
+## 2026-09-06 审查遗留问题批量修复（15 项 + 2 个新发现）
+
+对前几轮审查报告中"标了该修但未修"的项 + 本轮新发现的问题做批量修复。后端 796 tests + 前端 125 tests 全过，`npm run build` 修复后可用，真实服务冒烟通过。
+
+### 重要发现：测试套件此前依赖 DeepSeek 账户余额
+
+19 个测试（chat_route/chat_flow/errors）会打真实 LLM API。**2026-09-06 当天 DeepSeek 账户余额耗尽（402 Insufficient Balance），这 19 个测试全部变红**。顺带暴露一个生产 bug：intent.recognize 的 `await self.llm.chat(...)` 没有 try/except，LLM 不可达时 `/api/chat` 直接 503，"规则兜底"只在 JSON 解析失败时生效。
+
+### 修复清单
+
+| # | 修复 | 改动 |
+|---|------|------|
+| A | **LLM 不可达降级**：网络错误/402/超时自动走规则兜底，/api/chat 始终 200 SSE（真实服务冒烟验证） | intent.py |
+| B | **测试套件离线化**：conftest 新增 `offline_llm` autouse fixture 阻断 chat_stream 真实调用，套件 24.9s→2.3s 且不再依赖账户余额 | conftest.py |
+| C | **重写 19 个失效 mock**：`patch("chat.IntentService")` 对 DI 单例无效（历史全靠真实 API 通过），改用 FastAPI `dependency_overrides` | test_chat_route.py, test_errors.py |
+| D | **INTENT_PROMPT 预算示例值 10000→100000**：此前示例与规则矛盾，LLM 照抄会静默过滤掉万元以上 17 款机型并跳过追问 | intent.py |
+| E | **红米品牌独立映射**：兜底路径此前把"红米"映射成"小米"，丢失全部 20 款红米 | intent.py |
+| F | **注入检测不回显命中内容**（H8）：防止攻击者探测规则库 | security.py |
+| G | **去掉入站 html.escape**：转义污染 LLM 上下文和"引用原话"功能；XSS 由 React 输出转义负责 | security.py |
+| H | **/api/phones 限流 60/min**（H5）：防全库爬取 | phones.py |
+| I | **sqlite URL 锚定项目根**：此前相对 CWD 解析，错误目录启动会静默新建空库（根目录现存 2 个 0 字节假库为证），/health 照常通过 | config.py |
+| J | **移除死配置 max_message_length**（与 security 的 2000 矛盾且无人引用） | config.py |
+| K | **日志轮转 + httpx 降噪**：FileHandler→RotatingFileHandler(10MB×3)，httpx 降到 WARNING（此前每次 LLM 调用打印上游 URL） | main.py |
+| L | **retrieval.py 孤儿死代码清理**：ISSUE-036 删 get_all_phones 时漏删的方法体 | retrieval.py |
+| M | **前端清理**：删除未用 getPhones/getPhone、生产 console.log；组件卸载中止流式请求；camera 类型补齐后端 5 个影像字段；修复存量 build 报错（CompareTable.test null 类型、PhoneCard.test 未用 import）——**`npm run build` 此前就是坏的** | frontend/src |
+| N | **数据资产备份进 git**：新增 export/import 脚对，phones_export.json（295KB/353 款）入 git；恢复演练通过（导出→重建→再导出逐字节一致） | scripts/ |
+| O | **仓库卫生**：删除 2 个 0 字节假 phones.db；3 个 missing_data_report*.csv 移出版本控制（.gitignore 早已声明却一直被跟踪） | — |
+
+### 新发现并修复的数据质量问题
+
+| 列 | 脏数据 | 处理 |
+|----|--------|------|
+| screen_size | 129 条爬虫残留（'6.75英寸纠错'、'6.67英寸主屏分辨率：1604x720px'）| 119 条提取数值 + 10 条置 NULL（clean_screen_storage.py） |
+| storage | 5 条（'256GB'、'未知'） | 3 条提取数值 + 2 条置 NULL |
+
+### 新增测试
+
+- `tests/test_review_fixes_0906.py`：17 个针对性测试（LLM 降级、红米检索端到端、限流 429、URL 锚定、死代码清理等）
+- test_security.py 新增注入不回显测试；test_chat_route/test_errors 重写为真正生效的 mock
+
+### 待办更新
+
+- ~~REVIEW_REPORT H5/H8~~ 已修；中文注入防御（C8）维持"暂不做"决策
+- **提醒：DeepSeek 账户余额已耗尽，线上 LLM 功能当前处于规则兜底降级模式，需充值恢复**
 
 ---
 

@@ -4,26 +4,28 @@
 
 ```
 backend/                # FastAPI 后端
-├── main.py             # 入口 + CORS + 生命周期
-├── config.py           # Settings (pydantic-settings)
+├── main.py             # 入口 + CORS + 生命周期（日志轮转 RotatingFileHandler）
+├── config.py           # Settings (pydantic-settings)，sqlite URL 锚定项目根
 ├── api/routes/chat.py  # 核心聊天路由（SSE 流式）
-├── api/routes/phones.py # 手机列表/详情 API
+├── api/routes/phones.py # 手机列表/详情 API（60/min 限流）
 ├── api/dependencies.py # 服务单例（DI）
 ├── models/domain.py    # SQLAlchemy ORM + AnTuTu 跑分
 ├── models/schemas.py   # Pydantic 模型（IntentResult, UserProfile）
 ├── services/           # 业务逻辑层
-│   ├── intent.py       # LLM 意图识别 + 规则兜底
+│   ├── intent.py       # LLM 意图识别 + 规则兜底（含 LLM 网络错误兜底）
 │   ├── recommend.py    # LLM 推荐生成（SSE 流式）
 │   ├── retrieval.py    # 数据库检索 + 场景排序
 │   ├── session.py      # 内存会话管理（TTL 30min）
 │   ├── llm.py          # DeepSeek API 客户端
 │   ├── question.py     # 追问生成 + 痛点检测
 │   └── model_parser.py # 推荐型号解析
-├── utils/security.py   # Prompt 注入防护 + XSS 防御
+├── utils/security.py   # Prompt 注入防护（拒绝时不回显命中内容）
 └── data/phones.db      # SQLite（353 款手机/17 品牌）
+                        # phones_export.json 为全量 JSON 副本（git 内备份）
+                        # 导出/恢复: scripts/export_phones_json.py / import_phones_json.py
 frontend/               # React 19 + Vite + TailwindCSS
 scripts/                # 数据处理/爬取工具脚本（非核心应用）
-tests/                  # pytest（778 passed）
+tests/                  # pytest（796 passed，离线运行，不依赖 LLM API）
 ```
 
 ## 关键命令
@@ -47,12 +49,15 @@ cd frontend && npm run build
 
 - **推荐流水线**: 意图识别 → 需求画像 → 完整性检查 → 分级回退检索 → LLM 推荐
 - **SSE 事件流**: session → intent → (notice) → question/phones → content → done
+- **LLM 不可达降级**: intent.recognize 网络错误（超时/限流/欠费 402）自动走规则兜底，/api/chat 始终 200 SSE，不会 503
 - **分级回退检索** (`retrieval.search_with_fallback`): tier-1 全过滤 → tier-2 放宽场景但保留预算+品牌+场景排序 → tier-3 空结果+告警。**禁止回退到 `get_all_phones` 丢预算**（ISSUE-036）
 - **对比型号找不到**: 发 `notice` 事件提示，**不调 `compare([])`** 避免 LLM 幻觉（ISSUE-039）
 - **会话管理**: 内存字典 + threading.Lock，TTL 30 分钟，后台清理 5 分钟
 - **LLM 调用**: DeepSeek Chat，流式输出，规则兜底（LLM 失败时）
 - **/health**: LLM 状态由后台任务异步刷新（60s），请求读 `_llm_health` 缓存不阻塞，HTTP 永远 200（ISSUE-042）
 - **场景排序**: 游戏→AnTuTu 跑分、拍照→主摄+影像品牌、续航→电池容量
+- **测试隔离**: conftest 的 `offline_llm` autouse fixture 阻断 LLMService.chat_stream 真实网络调用，套件离线且行为确定；替换 chat 路由服务用 `override_chat_services`（DI 单例对模块级 patch 免疫）
+- **数据库路径**: sqlite URL 统一锚定项目根（config._normalize_sqlite_url），与启动 CWD 无关
 
 ## 开发规范
 
