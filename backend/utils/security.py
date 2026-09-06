@@ -2,7 +2,6 @@
 安全工具模块 - 防止Prompt注入攻击
 """
 import re
-import html
 from typing import Optional
 
 
@@ -48,7 +47,11 @@ MAX_INPUT_LENGTH = 2000
 
 def sanitize_input(user_input: str) -> str:
     """
-    清理用户输入，防止Prompt注入
+    清理用户输入（长度限制 + 控制字符过滤）
+
+    注意：这里不做 HTML 转义。转义会破坏 LLM 上下文和"引用用户原话"功能
+    （用户会看到 &quot; 等实体）；XSS 由前端 React 的自动转义负责。
+    防止Prompt注入靠 detect_injection_attempt + 长度/控制字符限制。
 
     Args:
         user_input: 用户原始输入
@@ -69,9 +72,6 @@ def sanitize_input(user_input: str) -> str:
         if char.isprintable() or char in '\n\t'
     )
 
-    # HTML转义（防止XSS）
-    user_input = html.escape(user_input)
-
     return user_input.strip()
 
 
@@ -83,7 +83,10 @@ def detect_injection_attempt(user_input: str) -> tuple[bool, Optional[str]]:
         user_input: 用户输入
 
     Returns:
-        (是否检测到攻击, 匹配的模式描述)
+        (是否检测到攻击, 模式类别描述)
+
+        描述只返回固定的类别文案，不回显命中内容——
+        回显具体匹配片段会让攻击者据此探测规则库 (REVIEW_REPORT H8)
     """
     if not user_input:
         return False, None
@@ -91,7 +94,7 @@ def detect_injection_attempt(user_input: str) -> tuple[bool, Optional[str]]:
     for pattern in COMPILED_PATTERNS:
         match = pattern.search(user_input)
         if match:
-            return True, f"检测到可疑模式: {match.group()}"
+            return True, "可疑模式"
 
     return False, None
 

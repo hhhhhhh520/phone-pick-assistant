@@ -20,7 +20,6 @@ class Settings(BaseSettings):
     # LLM上下文配置
     max_context_messages: int = 10  # 传入LLM的最大消息数
     max_context_tokens: int = 4000  # 上下文最大token数
-    max_message_length: int = 500  # 单条消息最大字符数
 
     # 安兔兔跑分配置文件路径（相对于项目根目录）
     antutu_scores_path: str = "backend/data/antutu_scores.json"
@@ -54,13 +53,33 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 
 
+def _normalize_sqlite_url(url: str) -> str:
+    """把相对的 sqlite 路径锚定到项目根目录
+
+    sqlite URL 中的相对路径是相对进程 CWD 解析的：从非项目根目录启动时，
+    SQLAlchemy 会静默新建一个空库（/health 照常通过），
+    表现为"353 款手机凭空消失"。锚定到项目根后与 CWD 无关。
+    """
+    prefix = "sqlite:///"
+    if not url.startswith(prefix):
+        return url
+    path = url[len(prefix):]
+    if not path or path == ":memory:" or os.path.isabs(path):
+        return url
+    abs_path = (Path(__file__).parent.parent / path).as_posix()
+    return f"sqlite:///{abs_path}"
+
+
 @lru_cache
 def get_settings() -> Settings:
     """获取配置单例，根据环境自动加载对应的 .env 文件"""
     env_file = Settings.get_env_file()
     if env_file:
-        return Settings(_env_file=str(env_file))
-    return Settings()
+        settings = Settings(_env_file=str(env_file))
+    else:
+        settings = Settings()
+    settings.database_url = _normalize_sqlite_url(settings.database_url)
+    return settings
 
 
 def get_project_root() -> Path:

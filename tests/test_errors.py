@@ -6,7 +6,7 @@
 
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, AsyncMock
 import sys
 import os
 
@@ -143,24 +143,43 @@ class TestValidationErrors:
 
 
 class TestLLMErrors:
-    """测试 LLM 服务错误处理"""
+    """测试 LLM 服务错误处理
+
+    注意：RecommendService 走 api/dependencies.py 的 DI 单例，
+    patch("backend.services.recommend.LLMService") 对路由使用的实例不生效，
+    这里用 conftest.override_chat_services（FastAPI dependency_overrides）注入
+    会抛 LLMError 的推荐服务，验证 SSE 流中的错误事件。
+    """
+
+    @staticmethod
+    def _make_raising_recommend(error_message: str):
+        """构造 recommend() 迭代即抛 LLMError 的 mock 推荐服务"""
+        from backend.services.intent import IntentResult, IntentType
+        from tests.conftest import _make_intent, override_chat_services
+
+        mock_intent = AsyncMock()
+        mock_intent.recognize.return_value = _make_intent(
+            IntentType.RECOMMEND, budget_max=5000, features=["游戏"]
+        )
+
+        mock_recommend = MagicMock()
+
+        async def raising_gen(*args, **kwargs):
+            raise LLMError(error_message)
+            yield  # pragma: no cover
+
+        mock_recommend.recommend = raising_gen
+        return override_chat_services(intent=mock_intent, recommend=mock_recommend)
 
     def test_llm_error_format(self, client):
-        """LLM 错误应返回 ErrorResponse 格式"""
-        with patch("backend.services.recommend.LLMService") as MockLLMService:
-            # 模拟 LLM 服务抛出错误
-            from backend.services.llm import LLMService
-
-            mock_instance = MagicMock(spec=LLMService)
-            mock_instance.chat_stream.side_effect = LLMError("API error: 500")
-            MockLLMService.return_value = mock_instance
-
+        """LLM 错误应通过 SSE error 事件返回，HTTP 保持 200"""
+        with self._make_raising_recommend("API error: 500"):
             response = client.post(
                 "/api/chat",
                 json={"message": "推荐一款手机"}
             )
 
-            # SSE 响应应在流中返回错误
+            # SSE 响应本身 HTTP 200，错误通过 error 事件传递
             assert response.status_code == 200
 
             # 检查响应内容包含错误
@@ -170,13 +189,7 @@ class TestLLMErrors:
 
     def test_llm_timeout_error(self, client):
         """LLM 超时应返回包含超时信息的错误"""
-        with patch("backend.services.recommend.LLMService") as MockLLMService:
-            from backend.services.llm import LLMService
-
-            mock_instance = MagicMock(spec=LLMService)
-            mock_instance.chat_stream.side_effect = LLMError("Request timeout")
-            MockLLMService.return_value = mock_instance
-
+        with self._make_raising_recommend("Request timeout"):
             response = client.post(
                 "/api/chat",
                 json={"message": "推荐一款手机"}
@@ -189,13 +202,7 @@ class TestLLMErrors:
 
     def test_llm_rate_limited_error(self, client):
         """LLM 限流应返回包含限流信息的错误"""
-        with patch("backend.services.recommend.LLMService") as MockLLMService:
-            from backend.services.llm import LLMService
-
-            mock_instance = MagicMock(spec=LLMService)
-            mock_instance.chat_stream.side_effect = LLMError("Rate limit exceeded")
-            MockLLMService.return_value = mock_instance
-
+        with self._make_raising_recommend("Rate limit exceeded"):
             response = client.post(
                 "/api/chat",
                 json={"message": "推荐一款手机"}

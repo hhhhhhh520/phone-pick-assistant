@@ -90,7 +90,7 @@ async def chat(
 
     # 识别意图（传入历史上下文和用户画像，用于需求完整性判断）
     intent_result = await intent_service.recognize(sanitized_message, history, user_profile)
-    logger.info(f"[INTENT] intent={intent_result.intent.value}, features={intent_result.features}, no_need={intent_result.no_need_features}, reset={intent_result.reset_profile}, need_clarification={intent_result.need_clarification}")
+    logger.info(f"[INTENT] intent={intent_result.intent.value}, budget=[{intent_result.budget_min},{intent_result.budget_max}], features={intent_result.features}, no_need={intent_result.no_need_features}, reset={intent_result.reset_profile}, need_clarification={intent_result.need_clarification}")
 
     # 检查是否需要重置状态
     if intent_result.reset_profile:

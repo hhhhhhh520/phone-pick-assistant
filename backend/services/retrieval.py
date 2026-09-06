@@ -428,14 +428,3 @@ class RetrievalService:
         else:
             notice = "暂无机型数据，请调整筛选条件后重试"
         return [], notice
-
-
-        """获取所有手机，优先返回有图片的"""
-        return self.db.query(Phone).filter(
-            Phone.price > 0  # 过滤无效价格
-        ).order_by(
-            case(
-                (Phone.image_url.isnot(None), 0),
-                else_=1
-            )
-        ).limit(limit).all()

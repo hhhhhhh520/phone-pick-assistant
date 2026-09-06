@@ -18,7 +18,7 @@ INTENT_PROMPT = """{history_context}{profile_context}
 {{
   "intent": "recommend或compare或filter",
   "budget_min": 0,
-  "budget_max": 10000,
+  "budget_max": 100000,
   "brands": ["品牌列表"],
   "features": ["功能需求列表"],
   "no_need_features": ["明确不需要的功能"],
@@ -214,7 +214,9 @@ class IntentService:
         brand_keywords = [
             ("苹果", ["苹果", "iphone", "iPhone"]),
             ("华为", ["华为", "huawei", "Huawei"]),
-            ("小米", ["小米", "红米", "xiaomi", "Xiaomi", "redmi", "Redmi"]),
+            # 红米在数据库中是独立品牌，映射成"小米"会丢掉全部红米机型 (REVIEW_REPORT C4)
+            ("小米", ["小米", "xiaomi", "Xiaomi"]),
+            ("红米", ["红米", "redmi", "Redmi"]),
             ("OPPO", ["oppo", "OPPO", "欧珀"]),
             ("vivo", ["vivo", "VIVO", "维沃"]),
             ("荣耀", ["荣耀", "honor", "Honor"]),
@@ -335,7 +337,13 @@ class IntentService:
             history_context=safe_history,
             profile_context=profile_context
         )
-        response = await self.llm.chat([{"role": "user", "content": prompt}], system_prompt=INTENT_SYSTEM_PROMPT)
+        response = None
+        try:
+            response = await self.llm.chat([{"role": "user", "content": prompt}], system_prompt=INTENT_SYSTEM_PROMPT)
+        except Exception as e:
+            # LLM 不可达（网络错误/限流/欠费等）时走规则兜底，而不是让 /api/chat 503
+            logger.warning(f"Intent LLM call failed ({type(e).__name__}), falling back to rule-based recognition")
+            return self._fallback_intent_recognition(user_message, user_profile)
 
         try:
             data = self._extract_json_from_response(response)

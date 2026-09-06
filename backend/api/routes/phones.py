@@ -1,6 +1,8 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy.orm import Session
 from sqlalchemy import asc, desc
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 from backend.api.dependencies import get_db
 from backend.models.domain import Phone
 from backend.models.schemas import PhoneBrief, PhoneListResponse
@@ -8,9 +10,14 @@ from backend.services.camera_score import camera_scoring_service
 
 router = APIRouter(prefix="/api/phones", tags=["phones"])
 
+# Rate limiter 实例（列表/详情 60/min，防止全库爬取和评分计算被刷）
+limiter = Limiter(key_func=get_remote_address)
+
 
 @router.get("", response_model=PhoneListResponse)
+@limiter.limit("60/minute")
 async def list_phones(
+    request: Request,
     brand: str = Query(None, description="手机品牌，支持中文如'小米'、'华为'等"),
     min_price: int = Query(None, ge=0),
     max_price: int = Query(None, ge=0),
@@ -47,7 +54,8 @@ async def list_phones(
 
 
 @router.get("/{phone_id}")
-async def get_phone(phone_id: int, db: Session = Depends(get_db)):
+@limiter.limit("60/minute")
+async def get_phone(phone_id: int, request: Request, db: Session = Depends(get_db)):
     """获取手机详情"""
     phone = db.query(Phone).filter(Phone.id == phone_id).first()
     if not phone:

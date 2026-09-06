@@ -11,6 +11,7 @@ from backend.config import get_settings
 from backend.api.routes import chat, phones
 from backend.api.errors import ErrorCode, ErrorResponse
 from backend.services.llm import LLMError
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from contextlib import asynccontextmanager
 import asyncio
@@ -26,9 +27,12 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     handlers=[
         logging.StreamHandler(sys.stdout),
-        logging.FileHandler("app.log", encoding="utf-8"),
+        RotatingFileHandler("app.log", maxBytes=10 * 1024 * 1024, backupCount=3, encoding="utf-8"),
     ],
 )
+
+# httpx 的 INFO 日志每次 LLM 调用都打印上游 URL，降噪到 WARNING
+logging.getLogger("httpx").setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
 logger.info(f"Starting application in {settings.app_env} mode")
