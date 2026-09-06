@@ -3,10 +3,32 @@ import json
 import logging
 import re
 from backend.config import get_settings
-from typing import AsyncGenerator, List, Dict
+from typing import AsyncGenerator, List, Dict, Optional
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
+
+ANTHROPIC_VERSION = "2023-06-01"
+
+
+def extract_anthropic_text_delta(line: str) -> Optional[str]:
+    """从 Anthropic Messages SSE 的 data 行提取正文增量
+
+    只认 content_block_delta 事件里的 text_delta；thinking_delta（思考过程）、
+    message_start/message_stop 等一律返回 None，保证思考内容不进用户回复。
+    """
+    if not line.startswith("data: "):
+        return None
+    try:
+        data = json.loads(line[6:])
+    except json.JSONDecodeError:
+        return None
+    if data.get("type") != "content_block_delta":
+        return None
+    delta = data.get("delta") or {}
+    if delta.get("type") == "text_delta":
+        return delta.get("text") or None
+    return None
 
 
 def estimate_tokens(text: str) -> int:
@@ -119,8 +141,9 @@ class LLMError(Exception):
 
 class LLMService:
     def __init__(self):
-        self.api_key = settings.deepseek_api_key
-        self.base_url = settings.deepseek_base_url
+        self.api_key = settings.llm_api_key
+        self.base_url = settings.llm_base_url
+        self.protocol = settings.llm_api_protocol.lower()
         self.model = settings.llm_model
         self.max_tokens = settings.llm_max_tokens
         self.temperature = settings.llm_temperature
@@ -135,19 +158,27 @@ class LLMService:
         Returns:
             dict: {"status": "available"|"error", "model": str, "error": str|None}
         """
+        if self.protocol == "anthropic":
+            url = f"{self.base_url}/v1/messages"
+            payload: Dict = {
+                "model": self.model,
+                "messages": [{"role": "user", "content": "hi"}],
+                "max_tokens": 1,
+                "stream": False,
+            }
+            headers = {"Authorization": f"Bearer {self.api_key}", "anthropic-version": ANTHROPIC_VERSION}
+        else:
+            url = f"{self.base_url}/chat/completions"
+            payload = {
+                "model": self.model,
+                "messages": [{"role": "user", "content": "hi"}],
+                "max_tokens": 1,  # 最小化token消耗
+                "stream": False
+            }
+            headers = {"Authorization": f"Bearer {self.api_key}"}
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.post(
-                    f"{self.base_url}/chat/completions",
-                    headers={"Authorization": f"Bearer {self.api_key}"},
-                    json={
-                        "model": self.model,
-                        "messages": [{"role": "user", "content": "hi"}],
-                        "max_tokens": 1,  # 最小化token消耗
-                        "stream": False
-                    },
-                    timeout=10.0  # 健康检查使用较短超时
-                )
+                response = await client.post(url, headers=headers, json=payload, timeout=10.0)
 
                 if response.status_code == 200:
                     return {
@@ -196,12 +227,84 @@ class LLMService:
             }
 
     async def chat_stream(self, messages: List[Dict], system_prompt: str = None) -> AsyncGenerator[str, None]:
-        """流式对话"""
+        """流式对话（按 llm_api_protocol 分发到对应协议实现）"""
         if system_prompt:
             messages = [{"role": "system", "content": system_prompt}] + messages
 
-        logger.debug(f"LLM request: model={self.model}, messages={len(messages)}")
+        logger.debug(f"LLM request: protocol={self.protocol}, model={self.model}, messages={len(messages)}")
 
+        if self.protocol == "anthropic":
+            async for chunk in self._chat_stream_anthropic(messages):
+                yield chunk
+        else:
+            async for chunk in self._chat_stream_openai(messages):
+                yield chunk
+
+    @staticmethod
+    def _split_system_messages(messages: List[Dict]) -> tuple:
+        """拆出 system 消息（Anthropic 协议要求 system 是顶层字段），并合并相邻同角色消息
+
+        Anthropic Messages API 不接受连续同角色消息（如历史末尾的 user
+        再追加一条 user 角色 prompt），合并既满足协议又保持语义。
+        """
+        system_parts = [m.get("content", "") for m in messages if m.get("role") == "system"]
+        rest = [m for m in messages if m.get("role") != "system"]
+
+        merged: List[Dict] = []
+        for msg in rest:
+            if merged and merged[-1].get("role") == msg.get("role"):
+                merged[-1]["content"] = merged[-1].get("content", "") + "\n\n" + msg.get("content", "")
+            else:
+                merged.append(dict(msg))
+        system_text = "\n\n".join(p for p in system_parts if p)
+        return (system_text or None), merged
+
+    @staticmethod
+    def _build_anthropic_payload(messages: List[Dict], max_tokens: int, temperature: float, model: str, stream: bool) -> Dict:
+        system, msgs = LLMService._split_system_messages(messages)
+        payload: Dict = {
+            "model": model,
+            "max_tokens": max_tokens,
+            "temperature": temperature,
+            "stream": stream,
+            "messages": msgs,
+        }
+        if system:
+            payload["system"] = system
+        return payload
+
+    async def _chat_stream_anthropic(self, messages: List[Dict]) -> AsyncGenerator[str, None]:
+        """Anthropic Messages 协议流式（火山方舟编程套餐等），过滤 thinking 增量只输出正文"""
+        payload = self._build_anthropic_payload(messages, self.max_tokens, self.temperature, self.model, True)
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "anthropic-version": ANTHROPIC_VERSION,
+        }
+        try:
+            async with httpx.AsyncClient() as client:
+                async with client.stream(
+                    "POST",
+                    f"{self.base_url}/v1/messages",
+                    headers=headers,
+                    json=payload,
+                    timeout=60.0
+                ) as response:
+                    if response.status_code != 200:
+                        error_body = await response.aread()
+                        logger.error(f"LLM API error: {response.status_code}, {error_body}")
+                        raise LLMError(f"API error: {response.status_code}, {error_body.decode()}")
+                    async for line in response.aiter_lines():
+                        delta = extract_anthropic_text_delta(line)
+                        if delta:
+                            yield delta
+        except LLMError:
+            raise
+        except Exception as e:
+            logger.error(f"LLM anthropic_stream error: {type(e).__name__}: {e}")
+            raise
+
+    async def _chat_stream_openai(self, messages: List[Dict]) -> AsyncGenerator[str, None]:
+        """OpenAI 兼容协议流式（DeepSeek 等）"""
         try:
             async with httpx.AsyncClient() as client:
                 async with client.stream(

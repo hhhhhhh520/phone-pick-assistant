@@ -4,7 +4,7 @@ AI对话式手机选购助手，支持需求推荐、参数对比、预算筛选
 
 ## 技术栈
 
-- **后端**: FastAPI + SQLAlchemy + SQLite + DeepSeek API
+- **后端**: FastAPI + SQLAlchemy + SQLite + LLM API（OpenAI/Anthropic 双协议，当前接入火山方舟）
 - **前端**: React 19 + Vite + TailwindCSS + TypeScript
 - **通信**: SSE流式输出
 
@@ -28,7 +28,7 @@ pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 # 配置环境变量
 cp .env.example .env
-# 编辑 .env 填入 DEEPSEEK_API_KEY
+# 编辑 .env 填入 LLM_API_KEY（支持 DeepSeek 或火山方舟，见 .env.example 注释）
 
 # 初始化数据库
 python -m backend.data.seed

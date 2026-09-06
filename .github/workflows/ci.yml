@@ -36,7 +36,8 @@ jobs:
 
       - name: Run backend tests
         env:
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # 测试已离线隔离（conftest.offline_llm），无需真实 Key，仅过配置必填校验
+          LLM_API_KEY: dummy-key-for-ci
         run: |
           pytest tests/ -v --tb=short
 

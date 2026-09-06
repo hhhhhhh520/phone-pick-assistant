@@ -21,6 +21,27 @@
 | P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
 | P6 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
 
+## 2026-09-06 LLM 切换火山方舟（Anthropic 协议适配器）
+
+DeepSeek 账户欠费后，切换到火山方舟编程套餐。**注意：方舟编程套餐 key（ark-xxx）只支持 Anthropic 协议**（OpenAI 兼容端点 /api/v3 会报 AuthenticationError），实测可用端点为 `https://ark.cn-beijing.volces.com/api/plan/v1/messages`，模型名 `ark-code-latest`（Claude Code 配置里的 `[1m]` 后缀是上下文标注，不带）。
+
+### 改动
+
+| 项 | 内容 |
+|----|------|
+| llm.py | 新增 Anthropic Messages 协议适配器：SSE 解析只放行 text_delta（**thinking 增量过滤**）；system 消息拆为顶层字段；相邻同角色消息合并（Anthropic 协议要求）；health_check 双协议分支 |
+| config.py | 配置字段 `DEEPSEEK_*` → 中性 `LLM_*`，新增 `LLM_API_PROTOCOL`（openai \| anthropic），DeepSeek 用户改回 .env 即可切回 |
+| .env | 接入 Ark（LLM_MAX_TOKENS 提到 4096，思考过程占用输出预算） |
+| CI | 测试已离线化，DEEPSEEK_API_KEY secret 依赖移除（dummy key 过必填校验） |
+
+### 验证
+
+- 后端 810 tests 全过（新增 14 个适配器测试：SSE 解析/消息合并/负载构建/协议分发/字段迁移）
+- 真实服务冒烟：/health `healthy`（llm available, ark-code-latest）；完整推荐流程 SSE 正常，输出含推荐列表/需求引用/潜在不足，thinking 零泄漏，tier-2 回退 notice 正常触发
+- 实测后端模型为 glm-5-3-flash（方舟套餐路由）
+
+---
+
 ## 2026-09-06 审查遗留问题批量修复（15 项 + 2 个新发现）
 
 对前几轮审查报告中"标了该修但未修"的项 + 本轮新发现的问题做批量修复。后端 796 tests + 前端 125 tests 全过，`npm run build` 修复后可用，真实服务冒烟通过。

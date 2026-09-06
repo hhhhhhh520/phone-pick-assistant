@@ -9,8 +9,10 @@ logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
-    deepseek_api_key: str
-    deepseek_base_url: str = "https://api.deepseek.com/v1"
+    # LLM 配置（协议可切换：openai 兼容 / anthropic 兼容）
+    llm_api_key: str
+    llm_base_url: str = "https://api.deepseek.com/v1"
+    llm_api_protocol: str = "openai"  # openai | anthropic
     database_url: str = "sqlite:///./data/phones.db"
     app_env: str = "development"
     log_level: str = "INFO"

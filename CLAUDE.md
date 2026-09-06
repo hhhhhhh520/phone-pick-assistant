@@ -16,7 +16,7 @@ backend/                # FastAPI 后端
 │   ├── recommend.py    # LLM 推荐生成（SSE 流式）
 │   ├── retrieval.py    # 数据库检索 + 场景排序
 │   ├── session.py      # 内存会话管理（TTL 30min）
-│   ├── llm.py          # DeepSeek API 客户端
+│   ├── llm.py          # LLM 客户端（OpenAI/Anthropic 双协议）
 │   ├── question.py     # 追问生成 + 痛点检测
 │   └── model_parser.py # 推荐型号解析
 ├── utils/security.py   # Prompt 注入防护（拒绝时不回显命中内容）
@@ -53,7 +53,7 @@ cd frontend && npm run build
 - **分级回退检索** (`retrieval.search_with_fallback`): tier-1 全过滤 → tier-2 放宽场景但保留预算+品牌+场景排序 → tier-3 空结果+告警。**禁止回退到 `get_all_phones` 丢预算**（ISSUE-036）
 - **对比型号找不到**: 发 `notice` 事件提示，**不调 `compare([])`** 避免 LLM 幻觉（ISSUE-039）
 - **会话管理**: 内存字典 + threading.Lock，TTL 30 分钟，后台清理 5 分钟
-- **LLM 调用**: DeepSeek Chat，流式输出，规则兜底（LLM 失败时）
+- **LLM 调用**: 双协议客户端（`LLM_API_PROTOCOL`: openai=DeepSeek 等 / anthropic=火山方舟编程套餐），当前接入 Ark `ark-code-latest`（Anthropic Messages，thinking 增量已过滤）；流式输出；LLM 不可达时规则兜底
 - **/health**: LLM 状态由后台任务异步刷新（60s），请求读 `_llm_health` 缓存不阻塞，HTTP 永远 200（ISSUE-042）
 - **场景排序**: 游戏→AnTuTu 跑分、拍照→主摄+影像品牌、续航→电池容量
 - **测试隔离**: conftest 的 `offline_llm` autouse fixture 阻断 LLMService.chat_stream 真实网络调用，套件离线且行为确定；替换 chat 路由服务用 `override_chat_services`（DI 单例对模块级 patch 免疫）
@@ -70,7 +70,7 @@ cd frontend && npm run build
 
 - SQLite 单文件数据库，不适合高并发
 - 会话存储在内存中，重启丢失
-- LLM 依赖 DeepSeek API，需要网络连接
+- LLM 依赖外部 API（当前火山方舟），需要网络连接；欠费/断网时自动降级规则兜底
 
 ## 相关文档
 

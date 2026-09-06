@@ -171,7 +171,7 @@ class TestDatabaseUrlNormalization:
         """max_message_length 从未被引用且与 security 的 2000 矛盾，已移除"""
         from backend.config import Settings
 
-        assert not hasattr(Settings, "max_message_length")
+        assert "max_message_length" not in Settings.model_fields
 
 
 # ============================================================================
