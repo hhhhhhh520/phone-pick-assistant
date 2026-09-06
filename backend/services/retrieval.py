@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from backend.models.domain import Phone, get_antutu_score
 from typing import List, Optional
-from sqlalchemy import case, or_
+from sqlalchemy import case, or_, func
 import re
 
 from backend.services.camera_score import camera_scoring_service
@@ -147,16 +147,22 @@ class RetrievalService:
         ).limit(limit).all()
 
     def get_phones_by_model(self, models: List[str]) -> List[Phone]:
-        """按型号查找，优先返回有图片且价格有效的"""
+        """按型号查找，优先返回有图片且价格有效的
+
+        匹配对空格不敏感（"华为Mate60" 能命中库内 "HUAWEI Mate 60"）。
+        """
         phones = []
         for model in models:
+            core_no_space = model.replace(" ", "")
+
             # 优先级1: 精确匹配完整型号（如"小米14"）
             phone = self.db.query(Phone).filter(
                 Phone.price > 0,
                 Phone.model == model
             ).first()
 
-            # 优先级2: 完整型号作为子串匹配（如"小米14"匹配"小米14 Ultra"）
+            # 优先级2: 完整型号作为子串匹配（如"小米14"匹配"小米14 Ultra"），
+            # 原样未中再做去空格归一化匹配（如"HUAWEI Mate 60" vs "华为Mate60"）
             if not phone:
                 phone = self.db.query(Phone).filter(
                     Phone.price > 0,
@@ -170,7 +176,20 @@ class RetrievalService:
                     Phone.price
                 ).first()
 
-            # 优先级3: 提取核心型号匹配（如"小米14" -> "14"，但必须同品牌）
+            if not phone:
+                phone = self.db.query(Phone).filter(
+                    Phone.price > 0,
+                    func.replace(Phone.model, " ", "").contains(core_no_space)
+                ).order_by(
+                    case(
+                        (Phone.image_url.isnot(None), 0),
+                        else_=1
+                    ),
+                    Phone.price
+                ).first()
+
+            # 优先级3: 提取核心型号匹配（如"小米14" -> "14"，但必须同品牌），
+            # 同样做去空格归一化（"华为Mate60" -> brand=华为 + "Mate60" 命中 "HUAWEI Mate 60"）
             if not phone:
                 # 提取品牌和核心型号
                 brand_prefix = None
@@ -182,11 +201,11 @@ class RetrievalService:
                         break
 
                 if brand_prefix and model_core:
-                    # 必须同时匹配品牌和核心型号
+                    core_no_space = model_core.replace(" ", "")
                     phone = self.db.query(Phone).filter(
                         Phone.price > 0,
                         Phone.brand == brand_prefix,
-                        Phone.model.contains(model_core)
+                        func.replace(Phone.model, " ", "").contains(core_no_space)
                     ).order_by(
                         case(
                             (Phone.image_url.isnot(None), 0),

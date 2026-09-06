@@ -29,7 +29,8 @@ INTENT_PROMPT = """{history_context}{profile_context}
 intent说明:
 - recommend: 用户想要推荐手机
 - compare: 用户想对比两款手机
-- filter: 用户想按条件筛选
+- filter: 用户想按条件筛选/列举（如"只看华为"、"3000元以内有哪些"、"筛选续航长的"、"列一下比比"）
+  - 判定要点：出现"只看"、"有哪些"、"筛选"、"过滤"、"列一下"等明确列举诉求时判为 filter，即使句式像推荐
 
 reset_profile说明（重要）:
 - 如果用户说"选个新手机"、"重新推荐"、"换个手机"、"我想选个新手机"、"我要选一台新的"、"不要之前的推荐"、"重新来"、"换一个手机"、"重新选一个"、"从头开始"等表示重新开始的意图，设置为 true
@@ -37,8 +38,10 @@ reset_profile说明（重要）:
 - 关键判断：用户是否想完全重新开始（清空之前的所有需求）
 
 预算提取规则（重要）:
-- "三千价位" → budget_min=2500, budget_max=3500
-- "五千价位" → budget_min=4500, budget_max=5500
+- "三千价位"/"三千左右"/"三千元" → budget_min=2500, budget_max=3500（±500 区间）
+- "三千以内"/"三千以下"/"2000以内" → budget_min=0, budget_max=该数值（上限语义，不要±500）
+- "四千到五千"/"4000-5000" → budget_min=4000, budget_max=5000（原样区间）
+- "一万以上"/"5000以上" → budget_min=该数值, budget_max=100000（下限语义）
 - "一万以内" → budget_min=0, budget_max=10000
 - 如果用户说具体价格如"3000元左右"，设置 ±500 的范围
 - 如果没有明确预算，保持 budget_min=0, budget_max=100000
@@ -151,19 +154,24 @@ class IntentService:
             "五": 5, "六": 6, "七": 7, "八": 8, "九": 9, "十": 10
         }
 
-        # 匹配中文数字 + 千价位："三千价位"、"两千元"
-        chinese_thousand = re.search(r'([一二两三四五六七八九十])千[元价位]*', message)
+        # 匹配中文数字 + 千："三千价位"、"两千元"、"三千以内"
+        chinese_thousand = re.search(r'([一二两三四五六七八九十])千[元价位]*?(以内|以下|以内)?', message)
         if chinese_thousand:
             chinese_num = chinese_thousand.group(1)
             base = chinese_to_digit.get(chinese_num, 0) * 1000
+            # "三千以内/以下" 是上限语义；"三千/三千价位" 才是 ±500 区间
+            if chinese_thousand.group(2):
+                return 0, base
             budget_min = base - 500
             budget_max = base + 500
             return budget_min, budget_max
 
         # 匹配 "X千价位"、"X千元" 等（阿拉伯数字）
-        thousand_match = re.search(r'(\d)千[元价位]*', message)
+        thousand_match = re.search(r'(\d)千[元价位]*?(以内|以下)?', message)
         if thousand_match:
             base = int(thousand_match.group(1)) * 1000
+            if thousand_match.group(2):
+                return 0, base
             budget_min = base - 500
             budget_max = base + 500
             return budget_min, budget_max

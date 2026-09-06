@@ -9,6 +9,9 @@ from typing import Optional
 DANGEROUS_PATTERNS = [
     # 角色扮演/身份欺骗
     r"ignore\s+(previous|all|above)\s+(instructions?|prompts?|rules?)",
+    # 变体：中间插词（"ignore all previous instructions"）或换动词（disregard/dismiss）
+    r"ignore\s+(?:all\s+|the\s+)?(?:previous|prior|above|earlier)\s+(?:instructions?|prompts?|rules?|messages?|directions?)",
+    r"(?:disregard|dismiss|forget)\s+(?:all\s+|the\s+)?(?:previous|prior|above|earlier)\s+(?:instructions?|prompts?|rules?|messages?|context)",
     r"you\s+are\s+(now|a)\s+",
     r"act\s+as\s+(if\s+you\s+are\s+)?a?\s*",
     r"pretend\s+(to\s+be|you\s+are)\s+",

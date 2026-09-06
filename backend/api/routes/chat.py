@@ -113,9 +113,10 @@ async def chat(
             # 判断是否需要追问
             # 使用更新后的用户画像判断完整性
             # 注意：intent_result.need_clarification 是基于更新前的画像计算的，不可靠
-            # 对比模式不需要追问，直接进入对比流程
+            # 对比/筛选模式不需要追问，直接进入各自流程
+            # （filter 自带明确的品牌/预算条件，再追问"游戏需求"反而答非所问）
             need_clarification = (
-                intent_result.intent != IntentType.COMPARE and
+                intent_result.intent not in (IntentType.COMPARE, IntentType.FILTER) and
                 (
                     intent_result.pain_point_detected or
                     (not user_profile.is_complete() and not _is_explicit_request(intent_result))
