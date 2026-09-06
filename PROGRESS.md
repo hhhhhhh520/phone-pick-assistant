@@ -258,4 +258,4 @@ cd frontend && npm test
 - `README.md` — 项目说明、快速开始
 - `docs/TODO-NEXT.md` — 后续待办
 - `docs/FORMAL_VERSION_PLAN.md` — 正式版计划
-- `issues/` — 问题追踪（ISSUE-001 ~ ISSUE-035）
+- `issues/` — 问题追踪（ISSUE-001 ~ ISSUE-045）
