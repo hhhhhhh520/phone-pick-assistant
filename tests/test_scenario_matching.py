@@ -294,8 +294,13 @@ class TestCameraScenario:
         assert any(m in models for m in ["小米14 Ultra", "P60 Pro", "Find X7 Ultra"]), \
             f"应包含影像旗舰，实际返回: {models}"
 
-    def test_camera_sorts_by_camera_pixels(self, db_session):
-        """测试拍照场景应按相机像素排序"""
+    def test_camera_sorts_by_camera_score(self, db_session):
+        """拍照场景应按影像评分降序（2026-09-06 起像素仅作同分次键）
+
+        旧行为按裸像素排序，会让 1.08亿像素老机型压过 5000万大底新机。
+        """
+        from backend.services.camera_score import camera_scoring_service
+
         service = RetrievalService(db_session)
 
         intent = IntentResult(
@@ -305,11 +310,11 @@ class TestCameraScenario:
 
         phones = service.search(intent, limit=5)
 
-        # 验证主摄像素递减排序
-        pixels = [p.camera_main or 0 for p in phones]
-        for i in range(len(pixels) - 1):
-            assert pixels[i] >= pixels[i + 1], \
-                f"拍照场景应按主摄像素降序，实际: {pixels}"
+        # 验证影像评分递减排序
+        scores = [camera_scoring_service.calc_total_score(p)["total"] for p in phones]
+        for i in range(len(scores) - 1):
+            assert scores[i] >= scores[i + 1], \
+                f"拍照场景应按影像评分降序，实际: {scores}"
 
     def test_camera_excludes_non_photography_phones(self, db_session):
         """测试拍照场景应包含专业影像手机"""

@@ -411,10 +411,12 @@ class TestPerformanceSorting:
 
 
 class TestCameraSorting:
-    """retrieval.py按拍照排序使用camera_main整数值"""
+    """retrieval.py按拍照排序使用影像评分（2026-09-06 起，像素为次键）"""
 
-    def test_photo_sort_by_camera_mp_descending(self, test_db_session):
-        """拍照场景：按主摄像素降序（高像素在前）"""
+    def test_photo_sort_by_camera_score(self, test_db_session):
+        """拍照场景：按影像评分降序；像素不再是唯一依据"""
+        from backend.services.camera_score import camera_scoring_service
+
         phones_data = [
             Phone(brand="红米", model="中像素", price=1999,
                   processor="骁龙695", ram=8, camera_main=6400, features=""),
@@ -429,15 +431,14 @@ class TestCameraSorting:
         service = RetrievalService(test_db_session)
         sorted_phones = service._sort_by_scenario(phones_data, ["拍照"])
 
-        # 高像素在前
+        # 排序键是影像评分，结果必须评分递减
+        scores = [camera_scoring_service.calc_total_score(p)["total"] for p in sorted_phones]
+        assert scores == sorted(scores, reverse=True), (
+            f"应按影像评分降序，实际评分序列: {scores}"
+        )
+        # 评分与像素双高的机型仍是第一
         assert sorted_phones[0].model == "高像素", (
-            f"20000万像素应排第一，实际: {sorted_phones[0].model}"
-        )
-        assert sorted_phones[1].model == "中像素", (
-            f"6400万像素应排第二，实际: {sorted_phones[1].model}"
-        )
-        assert sorted_phones[2].model == "低像素", (
-            f"4800万像素应排第三，实际: {sorted_phones[2].model}"
+            f"20000万像素+旗舰芯片应排第一，实际: {sorted_phones[0].model}"
         )
 
     def test_photo_sort_null_camera_main_treated_as_zero(self, test_db_session):

@@ -14,17 +14,39 @@
 
 from typing import TYPE_CHECKING
 
+from backend.models.domain import get_antutu_score
 from backend.services.camera_score_config import (
-    get_chip_score,
+    get_score_level,
     get_sensor_score,
     get_telephoto_score,
     get_ois_score,
     get_algorithm_score,
-    get_score_level,
 )
 
 if TYPE_CHECKING:
     from backend.models.domain import Phone
+
+
+# 芯片算力分档：按安兔兔实际跑分划分（而非芯片名精确匹配配置表）。
+# 名字匹配对新款/别名芯片会整体失效并冤枉为入门档（如"骁龙8 至尊版 Gen5"
+# 不在配置表中实得 10/30，实际跑分 244 万全场最高）；跑分匹配在
+# domain.get_antutu_score 已有 7 层模糊策略且覆盖全库，按跑分分档还
+# 自带"年代惩罚"——老芯片跑分低，拍照排序自然靠后。
+CHIP_SCORE_BY_ANTUTU = [
+    (2_000_000, 30),  # 顶级旗舰：200万+
+    (1_300_000, 25),  # 旗舰级：130-200万
+    (900_000, 22),    # 高端级：90-130万
+    (600_000, 18),    # 中高端：60-90万
+    (400_000, 14),    # 中端：40-60万
+    (0, 10),          # 入门：<40万
+]
+
+
+def _chip_score_from_antutu(score: int) -> int:
+    for threshold, points in CHIP_SCORE_BY_ANTUTU:
+        if score >= threshold:
+            return points
+    return 10
 
 
 class CameraScoringService:
@@ -34,7 +56,8 @@ class CameraScoringService:
         """
         计算芯片算力分（满分30分）
 
-        基于处理器安兔兔跑分等级评分，如有独立影像芯片可获得额外加成。
+        基于处理器安兔兔跑分分档评分（未匹配跑分按入门档），如有独立影像芯片
+        可获得额外加成。
 
         Args:
             phone: Phone 模型实例
@@ -43,15 +66,11 @@ class CameraScoringService:
             芯片算力评分（满分30分）
         """
         processor = phone.processor or ""
+        base_score = _chip_score_from_antutu(get_antutu_score(processor) if processor else 0)
         # Phone 模型暂无影像芯片字段，使用默认值
         has_image_chip = False
-        image_chip_name = None
 
-        return get_chip_score(
-            chip_name=processor,
-            has_image_chip=has_image_chip,
-            image_chip_name=image_chip_name
-        )
+        return min(base_score, 30)
 
     def calc_hardware_score(self, phone: "Phone") -> int:
         """

@@ -55,7 +55,8 @@ cd frontend && npm run build
 - **会话管理**: 内存字典 + threading.Lock，TTL 30 分钟，后台清理 5 分钟
 - **LLM 调用**: 双协议客户端（`LLM_API_PROTOCOL`: openai=DeepSeek 等 / anthropic=火山方舟编程套餐），当前接入 Ark `ark-code-latest`（Anthropic Messages，thinking 增量已过滤）；流式输出；LLM 不可达时规则兜底
 - **/health**: LLM 状态由后台任务异步刷新（60s），请求读 `_llm_health` 缓存不阻塞，HTTP 永远 200（ISSUE-042）
-- **场景排序**: 游戏→AnTuTu 跑分、拍照→主摄+影像品牌、续航→电池容量
+- **场景排序**: 游戏→AnTuTu 跑分、拍照→影像评分(评分服务，像素仅次键)→裸像素会让老高像素机型压过新大底、续航→电池容量；芯片算力分按安兔兔跑分分档而非芯片名精确匹配
+- **影像评分**: `camera_score` 列为批量计算的缓存（`enrich_camera_data.py` 入库）；"影像"标签下放规则=主摄≥1亿或有明确传感器型号
 - **测试隔离**: conftest 的 `offline_llm` autouse fixture 阻断 LLMService.chat_stream 真实网络调用，套件离线且行为确定；替换 chat 路由服务用 `override_chat_services`（DI 单例对模块级 patch 免疫）
 - **数据库路径**: sqlite URL 统一锚定项目根（config._normalize_sqlite_url），与启动 CWD 无关
 

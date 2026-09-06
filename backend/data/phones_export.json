@@ -22,7 +22,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 4520,
   "charging": {
@@ -65,7 +65,7 @@
    "telephotoType": "直立长焦",
    "hasOis": true,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 69
   },
   "battery": 4300,
   "charging": {
@@ -79,7 +79,8 @@
    "高刷屏",
    "旗舰芯片",
    "折叠屏",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -108,7 +109,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 60
   },
   "battery": 7025,
   "charging": {
@@ -152,7 +153,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 40
   },
   "battery": 5100,
   "charging": {
@@ -201,7 +202,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 40
   },
   "battery": 5800,
   "charging": {
@@ -244,7 +245,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 44
   },
   "battery": 7000,
   "charging": {
@@ -294,7 +295,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 40
   },
   "battery": 4300,
   "charging": {
@@ -334,7 +335,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 52
   },
   "battery": 6200,
   "charging": {
@@ -384,7 +385,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 52
   },
   "battery": 6500,
   "charging": {
@@ -433,7 +434,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 52
   },
   "battery": 6500,
   "charging": {
@@ -476,7 +477,7 @@
    "telephotoType": "直立长焦",
    "hasOis": true,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 4600,
   "charging": {
@@ -488,7 +489,8 @@
   "imageUrl": "/images/OPPO Reno 12(12GB256GB)_1.jpg",
   "features": [
    "高刷屏",
-   "快充"
+   "快充",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -523,7 +525,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 6000,
   "charging": {
@@ -566,7 +568,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 6000,
   "charging": {
@@ -609,7 +611,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5500,
   "charging": {
@@ -652,7 +654,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 55
   },
   "battery": 6000,
   "charging": {
@@ -696,7 +698,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 7600,
   "charging": {
@@ -749,7 +751,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 52
   },
   "battery": 5000,
   "charging": {
@@ -793,7 +795,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 60
   },
   "battery": 6500,
   "charging": {
@@ -840,7 +842,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 60
   },
   "battery": 6500,
   "charging": {
@@ -884,7 +886,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 60
   },
   "battery": 6600,
   "charging": {
@@ -929,7 +931,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 67
   },
   "battery": 5700,
   "charging": {
@@ -942,7 +944,8 @@
   "features": [
    "高刷屏",
    "旗舰芯片",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -979,7 +982,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 67
   },
   "battery": 6510,
   "charging": {
@@ -993,7 +996,8 @@
    "高刷屏",
    "旗舰芯片",
    "大存储",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -1027,7 +1031,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 6000,
   "charging": {
@@ -1070,7 +1074,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 7300,
   "charging": {
@@ -1121,7 +1125,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 7000,
   "charging": {
@@ -1172,7 +1176,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -1213,7 +1217,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 3700,
   "charging": {
@@ -1255,7 +1259,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 3700,
   "charging": {
@@ -1298,7 +1302,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4000,
   "charging": {
@@ -1339,7 +1343,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4400,
   "charging": {
@@ -1383,7 +1387,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 4400,
   "charging": {
@@ -1426,7 +1430,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5600,
   "charging": {
@@ -1441,7 +1445,8 @@
    "折叠屏",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -1470,7 +1475,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5060,
   "charging": {
@@ -1512,7 +1517,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 5600,
   "charging": {
@@ -1553,7 +1558,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 63
   },
   "battery": 4815,
   "charging": {
@@ -1567,7 +1572,8 @@
    "高刷屏",
    "旗舰芯片",
    "快充",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -1596,7 +1602,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 4520,
   "charging": {
@@ -1636,7 +1642,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 64
   },
   "battery": 5200,
   "charging": {
@@ -1650,7 +1656,8 @@
    "高刷屏",
    "快充",
    "大存储",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -1679,7 +1686,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 4400,
   "charging": {
@@ -1720,7 +1727,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 6620,
   "charging": {
@@ -1762,7 +1769,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 8500,
   "charging": {
@@ -1805,7 +1812,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 55
   },
   "battery": 5100,
   "charging": {
@@ -1851,7 +1858,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 5500,
   "charging": {
@@ -1897,7 +1904,7 @@
    "telephotoType": "无",
    "hasOis": true,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 5000,
   "charging": {
@@ -1912,7 +1919,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -1950,7 +1958,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 55
   },
   "battery": 6000,
   "charging": {
@@ -2003,7 +2011,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 60
   },
   "battery": 7560,
   "charging": {
@@ -2047,7 +2055,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 40
   },
   "battery": 5800,
   "charging": {
@@ -2090,7 +2098,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 5100,
   "charging": {
@@ -2103,7 +2111,8 @@
   "features": [
    "高刷屏",
    "快充",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [
    "学生党"
@@ -2141,7 +2150,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 40
   },
   "battery": 6200,
   "charging": {
@@ -2185,7 +2194,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 7000,
   "charging": {
@@ -2229,7 +2238,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 7560,
   "charging": {
@@ -2273,7 +2282,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 52
   },
   "battery": 7550,
   "charging": {
@@ -2326,7 +2335,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 5000,
   "charging": {
@@ -2376,7 +2385,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 5000,
   "charging": {
@@ -2420,7 +2429,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 60
   },
   "battery": 4600,
   "charging": {
@@ -2472,7 +2481,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 60
   },
   "battery": 4820,
   "charging": {
@@ -2521,7 +2530,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 70
   },
   "battery": 5000,
   "charging": {
@@ -2535,7 +2544,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -2571,7 +2581,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 60
   },
   "battery": 4880,
   "charging": {
@@ -2622,7 +2632,7 @@
    "telephotoType": "双潜望",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 90
   },
   "battery": 5300,
   "charging": {
@@ -2636,7 +2646,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -2673,7 +2684,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 72
   },
   "battery": 6100,
   "charging": {
@@ -2688,7 +2699,8 @@
    "游戏手机",
    "大存储",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -2725,7 +2737,7 @@
    "telephotoType": "双潜望",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 90
   },
   "battery": 6000,
   "charging": {
@@ -2739,7 +2751,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -2775,7 +2788,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 55
   },
   "battery": 6300,
   "charging": {
@@ -2825,7 +2838,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 70
   },
   "battery": 6800,
   "charging": {
@@ -2840,7 +2853,8 @@
    "游戏手机",
    "大存储",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -2876,7 +2890,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 4500,
   "charging": {
@@ -2918,7 +2932,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 55
   },
   "battery": 4700,
   "charging": {
@@ -2970,7 +2984,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 55
   },
   "battery": 6000,
   "charging": {
@@ -3023,7 +3037,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 7000,
   "charging": {
@@ -3072,7 +3086,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5500,
   "charging": {
@@ -3117,7 +3131,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 5000,
   "charging": {
@@ -3170,7 +3184,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -3210,7 +3224,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 5000,
   "charging": {
@@ -3253,7 +3267,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 4500,
   "charging": {
@@ -3295,7 +3309,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5110,
   "charging": {
@@ -3338,7 +3352,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 4520,
   "charging": {
@@ -3351,7 +3365,8 @@
   "features": [
    "高刷屏",
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -3380,7 +3395,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4200,
   "charging": {
@@ -3420,7 +3435,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4310,
   "charging": {
@@ -3463,7 +3478,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 4800,
   "charging": {
@@ -3505,7 +3520,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5200,
   "charging": {
@@ -3550,7 +3565,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 5000,
   "charging": {
@@ -3594,7 +3609,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 6000,
   "charging": {
@@ -3636,7 +3651,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -3679,7 +3694,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 6720,
   "charging": {
@@ -3724,7 +3739,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4500,
   "charging": {
@@ -3764,7 +3779,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 4000,
   "charging": {
@@ -3807,7 +3822,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 4700,
   "charging": {
@@ -3850,7 +3865,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": null,
   "charging": {
@@ -3891,7 +3906,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": null,
   "charging": {
@@ -3931,7 +3946,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "鹰眼",
-   "score": null
+   "score": 48
   },
   "battery": 5150,
   "charging": {
@@ -3975,7 +3990,7 @@
    "telephotoType": "无",
    "hasOis": true,
    "imageBrand": "鹰眼",
-   "score": null
+   "score": 46
   },
   "battery": 4800,
   "charging": {
@@ -3989,7 +4004,8 @@
    "高刷屏",
    "旗舰芯片",
    "折叠屏",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -4018,7 +4034,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "鹰眼",
-   "score": null
+   "score": 60
   },
   "battery": 5600,
   "charging": {
@@ -4033,7 +4049,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -4062,7 +4079,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "鹰眼",
-   "score": null
+   "score": 53
   },
   "battery": 5850,
   "charging": {
@@ -4077,7 +4094,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -4106,7 +4124,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "鹰眼",
-   "score": null
+   "score": 53
   },
   "battery": 8000,
   "charging": {
@@ -4121,7 +4139,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -4150,7 +4169,7 @@
    "telephotoType": "无",
    "hasOis": true,
    "imageBrand": "原色",
-   "score": null
+   "score": 37
   },
   "battery": 6600,
   "charging": {
@@ -4162,7 +4181,8 @@
   "imageUrl": null,
   "features": [
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [
    "学生党"
@@ -4193,7 +4213,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5510,
   "charging": {
@@ -4237,7 +4257,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -4280,7 +4300,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 5750,
   "charging": {
@@ -4318,7 +4338,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 67
   },
   "battery": 7500,
   "charging": {
@@ -4329,7 +4349,8 @@
   "url": null,
   "imageUrl": "images\\OPPO Find X9 Pro(12GB256GB)_1.jpg",
   "features": [
-   "旗舰芯片"
+   "旗舰芯片",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -4367,7 +4388,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7560,
   "charging": {
@@ -4418,7 +4439,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 8500,
   "charging": {
@@ -4461,7 +4482,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 4720,
   "charging": {
@@ -4501,7 +4522,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 6620,
   "charging": {
@@ -4541,7 +4562,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 6000,
   "charging": {
@@ -4579,7 +4600,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 5500,
   "charging": {
@@ -4617,7 +4638,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 60
   },
   "battery": 6000,
   "charging": {
@@ -4627,7 +4648,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\HUAWEI Mate 80 Pro Max(16GB512GB)_1.png",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -4655,7 +4678,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 5750,
   "charging": {
@@ -4693,7 +4716,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 6500,
   "charging": {
@@ -4731,7 +4754,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5000,
   "charging": {
@@ -4769,7 +4792,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 6100,
   "charging": {
@@ -4809,7 +4832,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 6500,
   "charging": {
@@ -4847,7 +4870,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5600,
   "charging": {
@@ -4885,7 +4908,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5300,
   "charging": {
@@ -4923,7 +4946,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 5525,
   "charging": {
@@ -4961,7 +4984,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5500,
   "charging": {
@@ -4999,7 +5022,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 60
   },
   "battery": 5700,
   "charging": {
@@ -5009,7 +5032,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\HUAWEI Mate 70 Pro+(16GB512GB)_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5037,7 +5062,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 4900,
   "charging": {
@@ -5075,7 +5100,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 4750,
   "charging": {
@@ -5113,7 +5138,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 5700,
   "charging": {
@@ -5151,7 +5176,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5050,
   "charging": {
@@ -5189,7 +5214,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 4200,
   "charging": {
@@ -5227,7 +5252,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 6500,
   "charging": {
@@ -5265,7 +5290,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 6620,
   "charging": {
@@ -5305,7 +5330,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5500,
   "charging": {
@@ -5345,7 +5370,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 60
   },
   "battery": 6000,
   "charging": {
@@ -5355,7 +5380,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\HUAWEI Mate 80 Pro Max 风驰版(16GB512GB)_1.png",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5383,7 +5410,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 63
   },
   "battery": 5700,
   "charging": {
@@ -5393,7 +5420,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\华为Pura 80 Ultra（16GB512GB）_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5421,7 +5450,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 5500,
   "charging": {
@@ -5461,7 +5490,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 4500,
   "charging": {
@@ -5499,7 +5528,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 49
   },
   "battery": 5060,
   "charging": {
@@ -5537,7 +5566,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": null,
   "charging": {
@@ -5575,7 +5604,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5110,
   "charging": {
@@ -5618,7 +5647,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 4400,
   "charging": {
@@ -5659,7 +5688,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 8600,
   "charging": {
@@ -5712,7 +5741,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 6620,
   "charging": {
@@ -5752,7 +5781,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 57
   },
   "battery": null,
   "charging": {
@@ -5762,7 +5791,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\苹果iPhone 17 Pro Max（256GB）_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5790,7 +5821,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 57
   },
   "battery": null,
   "charging": {
@@ -5800,7 +5831,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\苹果iPhone 17 Pro（256GB）_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5828,7 +5861,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": null,
   "charging": {
@@ -5866,7 +5899,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 52
   },
   "battery": null,
   "charging": {
@@ -5876,7 +5909,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\苹果iPhone 16 Pro Max（256GB）_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5904,7 +5939,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 52
   },
   "battery": null,
   "charging": {
@@ -5914,7 +5949,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\苹果iPhone 16 Pro（128GB）_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5942,7 +5979,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 52
   },
   "battery": null,
   "charging": {
@@ -5952,7 +5989,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\苹果iPhone 15 Pro Max（256GB）_1.png",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -5980,7 +6019,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 3279,
   "charging": {
@@ -6018,7 +6057,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": null,
   "charging": {
@@ -6056,7 +6095,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 52
   },
   "battery": null,
   "charging": {
@@ -6066,7 +6105,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\苹果iPhone 15 Pro（128GB）_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [],
   "pros": [],
   "cons": []
@@ -6094,7 +6135,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": null,
   "charging": {
@@ -6132,7 +6173,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": null,
   "charging": {
@@ -6170,7 +6211,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": null,
   "charging": {
@@ -6208,7 +6249,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 3279,
   "charging": {
@@ -6246,7 +6287,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 9000,
   "charging": {
@@ -6299,7 +6340,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 63
   },
   "battery": 6600,
   "charging": {
@@ -6314,7 +6355,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -6349,7 +6391,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 67
   },
   "battery": 7500,
   "charging": {
@@ -6361,7 +6403,8 @@
   "imageUrl": "images\\小米17 Pro Max（12GB512GB）_1.png",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -6390,7 +6433,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 60
   },
   "battery": 7000,
   "charging": {
@@ -6438,7 +6481,7 @@
    "telephotoType": "直立长焦",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 67
   },
   "battery": 5400,
   "charging": {
@@ -6450,7 +6493,8 @@
   "imageUrl": "images\\小米15(12GB256GB)_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -6488,7 +6532,7 @@
    "telephotoType": "直立长焦",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 67
   },
   "battery": 4610,
   "charging": {
@@ -6500,7 +6544,8 @@
   "imageUrl": "images\\小米14(8GB256GB)_1.png",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -6538,7 +6583,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 52
   },
   "battery": 4500,
   "charging": {
@@ -6586,7 +6631,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 4780,
   "charging": {
@@ -6598,7 +6643,8 @@
   "imageUrl": "images\\小米10S（8GB128GB全网通5G版）_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -6627,7 +6673,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 4780,
   "charging": {
@@ -6639,7 +6685,8 @@
   "imageUrl": "images\\小米10（8GB128GB全网通）_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -6668,7 +6715,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 4600,
   "charging": {
@@ -6680,7 +6727,8 @@
   "imageUrl": "images\\小米11（8GB128GB全网通5G版）_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -6709,7 +6757,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 4500,
   "charging": {
@@ -6750,7 +6798,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 4500,
   "charging": {
@@ -6762,7 +6810,8 @@
   "imageUrl": "images\\小米MIX 4（12GB256GB全网通5G版）_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -6791,7 +6840,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 4860,
   "charging": {
@@ -6832,7 +6881,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 4500,
   "charging": {
@@ -6873,7 +6922,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 4600,
   "charging": {
@@ -6916,7 +6965,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 55
   },
   "battery": 5165,
   "charging": {
@@ -6966,7 +7015,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 44
   },
   "battery": 4250,
   "charging": {
@@ -7006,7 +7055,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 48
   },
   "battery": 4500,
   "charging": {
@@ -7053,7 +7102,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": null
+   "score": 55
   },
   "battery": 6100,
   "charging": {
@@ -7097,7 +7146,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 6000,
   "charging": {
@@ -7109,7 +7158,8 @@
   "imageUrl": "images\\OPPO Find N6(12GB256GB)_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -7144,7 +7194,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 68
   },
   "battery": 7050,
   "charging": {
@@ -7158,7 +7208,8 @@
    "高刷屏",
    "旗舰芯片",
    "快充",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -7194,7 +7245,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 6200,
   "charging": {
@@ -7238,7 +7289,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 60
   },
   "battery": 7025,
   "charging": {
@@ -7285,7 +7336,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 65
   },
   "battery": 6100,
   "charging": {
@@ -7297,7 +7348,8 @@
   "imageUrl": "images\\OPPO Find X8 Ultra(12GB256GB)_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -7333,7 +7385,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 6000,
   "charging": {
@@ -7379,7 +7431,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 5700,
   "charging": {
@@ -7427,7 +7479,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 60
   },
   "battery": 5630,
   "charging": {
@@ -7438,7 +7490,8 @@
   "url": null,
   "imageUrl": "images\\OPPO Find X8(16GB1TB)_1.png",
   "features": [
-   "旗舰芯片"
+   "旗舰芯片",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -7476,7 +7529,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 5000,
   "charging": {
@@ -7516,7 +7569,7 @@
    "telephotoType": "双潜望",
    "hasOis": true,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 85
   },
   "battery": 5000,
   "charging": {
@@ -7528,7 +7581,8 @@
   "imageUrl": "images\\OPPO Find X7 Ultra(12GB256GB)_1.png",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -7565,7 +7619,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 5600,
   "charging": {
@@ -7606,7 +7660,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 62
   },
   "battery": 5000,
   "charging": {
@@ -7618,7 +7672,8 @@
   "imageUrl": "images\\OPPO Find X6 Pro（12GB256GB）_1.png",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -7647,7 +7702,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 44
   },
   "battery": 5000,
   "charging": {
@@ -7691,7 +7746,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 5600,
   "charging": {
@@ -7731,7 +7786,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 5000,
   "charging": {
@@ -7769,7 +7824,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 4520,
   "charging": {
@@ -7812,7 +7867,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 6000,
   "charging": {
@@ -7852,7 +7907,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 44
   },
   "battery": 4500,
   "charging": {
@@ -7892,7 +7947,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 4800,
   "charging": {
@@ -7933,7 +7988,7 @@
    "telephotoType": "双潜望",
    "hasOis": true,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 82
   },
   "battery": 5910,
   "charging": {
@@ -7944,7 +7999,8 @@
   "url": null,
   "imageUrl": "images\\OPPO Find X8 Pro(12GB256GB)_1.png",
   "features": [
-   "旗舰芯片"
+   "旗舰芯片",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -7973,7 +8029,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 52
   },
   "battery": 4800,
   "charging": {
@@ -8014,7 +8070,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 57
   },
   "battery": 4680,
   "charging": {
@@ -8026,7 +8082,8 @@
   "imageUrl": "images\\OPPO Find N3（12GB512GB）_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -8055,7 +8112,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 5500,
   "charging": {
@@ -8103,7 +8160,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 40
   },
   "battery": 5000,
   "charging": {
@@ -8143,7 +8200,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 60
   },
   "battery": 6040,
   "charging": {
@@ -8188,7 +8245,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 52
   },
   "battery": 6500,
   "charging": {
@@ -8229,7 +8286,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 60
   },
   "battery": 7100,
   "charging": {
@@ -8275,7 +8332,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 8200,
   "charging": {
@@ -8321,7 +8378,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 60
   },
   "battery": 6500,
   "charging": {
@@ -8362,7 +8419,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 62
   },
   "battery": 6000,
   "charging": {
@@ -8374,7 +8431,8 @@
   "imageUrl": "images\\vivo X200 Ultra（12GB256GB）_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -8411,7 +8469,7 @@
    "telephotoType": "直立长焦",
    "hasOis": true,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 67
   },
   "battery": 5800,
   "charging": {
@@ -8422,7 +8480,8 @@
   "url": null,
   "imageUrl": "images\\vivo X200(16GB1TB)_1.jpg",
   "features": [
-   "旗舰芯片"
+   "旗舰芯片",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -8451,7 +8510,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 55
   },
   "battery": 6200,
   "charging": {
@@ -8498,7 +8557,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 48
   },
   "battery": 6500,
   "charging": {
@@ -8543,7 +8602,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 55
   },
   "battery": 6000,
   "charging": {
@@ -8591,7 +8650,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 55
   },
   "battery": 5000,
   "charging": {
@@ -8640,7 +8699,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 6500,
   "charging": {
@@ -8680,7 +8739,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 55
   },
   "battery": 6500,
   "charging": {
@@ -8720,7 +8779,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 55
   },
   "battery": 5100,
   "charging": {
@@ -8768,7 +8827,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 55
   },
   "battery": 5700,
   "charging": {
@@ -8817,7 +8876,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 70
   },
   "battery": 5400,
   "charging": {
@@ -8828,7 +8887,8 @@
   "url": null,
   "imageUrl": "images\\vivo X100 Pro（12GB256GB）_1.jpg",
   "features": [
-   "旗舰芯片"
+   "旗舰芯片",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -8865,7 +8925,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 48
   },
   "battery": 6000,
   "charging": {
@@ -8905,7 +8965,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 6500,
   "charging": {
@@ -8952,7 +9012,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 48
   },
   "battery": 6500,
   "charging": {
@@ -9001,7 +9061,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 65
   },
   "battery": 5500,
   "charging": {
@@ -9013,7 +9073,8 @@
   "imageUrl": "images\\vivo X100 Ultra(12GB256GB)_1.jpg",
   "features": [
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -9049,7 +9110,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 52
   },
   "battery": 6500,
   "charging": {
@@ -9090,7 +9151,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 7300,
   "charging": {
@@ -9138,7 +9199,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 40
   },
   "battery": 6000,
   "charging": {
@@ -9178,7 +9239,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 48
   },
   "battery": 5000,
   "charging": {
@@ -9218,7 +9279,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "蔡司",
-   "score": null
+   "score": 60
   },
   "battery": 5700,
   "charging": {
@@ -9231,7 +9292,8 @@
   "features": [
    "旗舰芯片",
    "折叠屏",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -9267,7 +9329,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 8000,
   "charging": {
@@ -9318,7 +9380,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7000,
   "charging": {
@@ -9369,7 +9431,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7000,
   "charging": {
@@ -9410,7 +9472,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6500,
   "charging": {
@@ -9461,7 +9523,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7200,
   "charging": {
@@ -9508,7 +9570,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 7200,
   "charging": {
@@ -9559,7 +9621,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 7000,
   "charging": {
@@ -9604,7 +9666,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7000,
   "charging": {
@@ -9654,7 +9716,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5400,
   "charging": {
@@ -9705,7 +9767,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 5000,
   "charging": {
@@ -9751,7 +9813,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 7000,
   "charging": {
@@ -9802,7 +9864,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5240,
   "charging": {
@@ -9846,7 +9908,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5800,
   "charging": {
@@ -9887,7 +9949,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 7000,
   "charging": {
@@ -9931,7 +9993,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -9973,7 +10035,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 5000,
   "charging": {
@@ -10018,7 +10080,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5500,
   "charging": {
@@ -10069,7 +10131,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -10079,7 +10141,9 @@
   "weight": null,
   "url": null,
   "imageUrl": "images\\真我12(12GB512GB)_1.jpg",
-  "features": [],
+  "features": [
+   "影像"
+  ],
   "suitable_for": [
    "学生党"
   ],
@@ -10109,7 +10173,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6500,
   "charging": {
@@ -10159,7 +10223,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -10199,7 +10263,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -10239,7 +10303,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -10279,7 +10343,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -10319,7 +10383,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -10359,7 +10423,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -10399,7 +10463,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -10439,7 +10503,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 7000,
   "charging": {
@@ -10479,7 +10543,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -10519,7 +10583,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 5000,
   "charging": {
@@ -10560,7 +10624,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4310,
   "charging": {
@@ -10600,7 +10664,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "鹰眼",
-   "score": null
+   "score": 37
   },
   "battery": 6000,
   "charging": {
@@ -10640,7 +10704,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 5000,
   "charging": {
@@ -10680,7 +10744,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -10720,7 +10784,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": null,
   "charging": {
@@ -10760,7 +10824,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 45
   },
   "battery": 8500,
   "charging": {
@@ -10803,7 +10867,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5000,
   "charging": {
@@ -10817,7 +10881,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -10846,7 +10911,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 52
   },
   "battery": 5000,
   "charging": {
@@ -10860,7 +10925,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -10889,7 +10955,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 52
   },
   "battery": 5000,
   "charging": {
@@ -10903,7 +10969,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -10932,7 +10999,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4400,
   "charging": {
@@ -10945,7 +11012,8 @@
   "features": [
    "高刷屏",
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -10974,7 +11042,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 49
   },
   "battery": 5000,
   "charging": {
@@ -10988,7 +11056,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -11017,7 +11086,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4300,
   "charging": {
@@ -11059,7 +11128,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4000,
   "charging": {
@@ -11101,7 +11170,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4400,
   "charging": {
@@ -11144,7 +11213,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4400,
   "charging": {
@@ -11157,7 +11226,8 @@
   "features": [
    "高刷屏",
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -11186,7 +11256,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4000,
   "charging": {
@@ -11228,7 +11298,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 3900,
   "charging": {
@@ -11270,7 +11340,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -11311,7 +11381,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4900,
   "charging": {
@@ -11353,7 +11423,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4400,
   "charging": {
@@ -11396,7 +11466,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 4300,
   "charging": {
@@ -11439,7 +11509,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -11480,7 +11550,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 3700,
   "charging": {
@@ -11523,7 +11593,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "XMAGE",
-   "score": null
+   "score": 53
   },
   "battery": 6000,
   "charging": {
@@ -11565,7 +11635,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7100,
   "charging": {
@@ -11609,7 +11679,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 7550,
   "charging": {
@@ -11655,7 +11725,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7410,
   "charging": {
@@ -11698,7 +11768,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 7000,
   "charging": {
@@ -11741,7 +11811,7 @@
    "telephotoType": "无",
    "hasOis": true,
    "imageBrand": "原色",
-   "score": null
+   "score": 50
   },
   "battery": 6550,
   "charging": {
@@ -11756,7 +11826,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [
    "学生党"
@@ -11787,7 +11858,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5500,
   "charging": {
@@ -11830,7 +11901,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 6550,
   "charging": {
@@ -11874,7 +11945,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 8550,
   "charging": {
@@ -11926,7 +11997,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 7000,
   "charging": {
@@ -11976,7 +12047,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5000,
   "charging": {
@@ -12022,7 +12093,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 7560,
   "charging": {
@@ -12068,7 +12139,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5100,
   "charging": {
@@ -12081,7 +12152,8 @@
   "features": [
    "高刷屏",
    "快充",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [
    "学生党"
@@ -12112,7 +12184,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5800,
   "charging": {
@@ -12155,7 +12227,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 6550,
   "charging": {
@@ -12206,7 +12278,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6000,
   "charging": {
@@ -12250,7 +12322,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7410,
   "charging": {
@@ -12293,7 +12365,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7000,
   "charging": {
@@ -12344,7 +12416,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7400,
   "charging": {
@@ -12395,7 +12467,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 9020,
   "charging": {
@@ -12446,7 +12518,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7500,
   "charging": {
@@ -12496,7 +12568,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 6500,
   "charging": {
@@ -12539,7 +12611,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 7620,
   "charging": {
@@ -12585,7 +12657,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 8000,
   "charging": {
@@ -12637,7 +12709,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 7200,
   "charging": {
@@ -12680,7 +12752,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 6000,
   "charging": {
@@ -12724,7 +12796,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6150,
   "charging": {
@@ -12776,7 +12848,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6100,
   "charging": {
@@ -12822,7 +12894,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 6000,
   "charging": {
@@ -12875,7 +12947,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 7000,
   "charging": {
@@ -12929,7 +13001,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5000,
   "charging": {
@@ -12982,7 +13054,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5160,
   "charging": {
@@ -13028,7 +13100,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5100,
   "charging": {
@@ -13080,7 +13152,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 6400,
   "charging": {
@@ -13126,7 +13198,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 7500,
   "charging": {
@@ -13178,7 +13250,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 8300,
   "charging": {
@@ -13229,7 +13301,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 7800,
   "charging": {
@@ -13273,7 +13345,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 6700,
   "charging": {
@@ -13319,7 +13391,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 9000,
   "charging": {
@@ -13372,7 +13444,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 7300,
   "charging": {
@@ -13422,7 +13494,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 6260,
   "charging": {
@@ -13473,7 +13545,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 67
   },
   "battery": 6000,
   "charging": {
@@ -13488,7 +13560,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -13526,7 +13599,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 6400,
   "charging": {
@@ -13572,7 +13645,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 52
   },
   "battery": 9000,
   "charging": {
@@ -13624,7 +13697,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 52
   },
   "battery": 5500,
   "charging": {
@@ -13676,7 +13749,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 55
   },
   "battery": 6100,
   "charging": {
@@ -13727,7 +13800,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 67
   },
   "battery": 5400,
   "charging": {
@@ -13742,7 +13815,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [
@@ -13778,7 +13852,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "哈苏",
-   "score": null
+   "score": 48
   },
   "battery": 5000,
   "charging": {
@@ -13828,7 +13902,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7200,
   "charging": {
@@ -13880,7 +13954,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7000,
   "charging": {
@@ -13931,7 +14005,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 8000,
   "charging": {
@@ -13975,7 +14049,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6150,
   "charging": {
@@ -14027,7 +14101,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7500,
   "charging": {
@@ -14071,7 +14145,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6600,
   "charging": {
@@ -14115,7 +14189,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7500,
   "charging": {
@@ -14166,7 +14240,7 @@
    "telephotoType": "直立长焦",
    "hasOis": true,
    "imageBrand": "原色",
-   "score": null
+   "score": 57
   },
   "battery": 6000,
   "charging": {
@@ -14181,7 +14255,8 @@
    "旗舰芯片",
    "游戏手机",
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -14210,7 +14285,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 5000,
   "charging": {
@@ -14222,7 +14297,8 @@
   "imageUrl": "https://2e.zol-img.com.cn/product/261_320x240/398/ceyKPuxhMXUkA.jpg",
   "features": [
    "高刷屏",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [
    "学生党"
@@ -14253,7 +14329,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 4325,
   "charging": {
@@ -14294,7 +14370,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6500,
   "charging": {
@@ -14338,7 +14414,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 7050,
   "charging": {
@@ -14392,7 +14468,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5000,
   "charging": {
@@ -14436,7 +14512,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 6500,
   "charging": {
@@ -14480,7 +14556,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 7000,
   "charging": {
@@ -14525,7 +14601,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 7000,
   "charging": {
@@ -14570,7 +14646,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -14613,7 +14689,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4310,
   "charging": {
@@ -14656,7 +14732,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4200,
   "charging": {
@@ -14696,7 +14772,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4500,
   "charging": {
@@ -14737,7 +14813,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -14780,7 +14856,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4500,
   "charging": {
@@ -14822,7 +14898,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 5000,
   "charging": {
@@ -14866,7 +14942,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 5000,
   "charging": {
@@ -14880,7 +14956,8 @@
    "高刷屏",
    "旗舰芯片",
    "游戏手机",
-   "大电池"
+   "大电池",
+   "影像"
   ],
   "suitable_for": [
    "学生党"
@@ -14911,7 +14988,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4520,
   "charging": {
@@ -14924,7 +15001,8 @@
   "features": [
    "高刷屏",
    "旗舰芯片",
-   "游戏手机"
+   "游戏手机",
+   "影像"
   ],
   "suitable_for": [],
   "pros": [],
@@ -14953,7 +15031,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -14996,7 +15074,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 5000,
   "charging": {
@@ -15039,7 +15117,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5000,
   "charging": {
@@ -15082,7 +15160,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -15124,7 +15202,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 5000,
   "charging": {
@@ -15167,7 +15245,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5000,
   "charging": {
@@ -15210,7 +15288,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 34
   },
   "battery": 4500,
   "charging": {
@@ -15252,7 +15330,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 5000,
   "charging": {
@@ -15295,7 +15373,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 5000,
   "charging": {
@@ -15335,7 +15413,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 30
   },
   "battery": 4500,
   "charging": {
@@ -15375,7 +15453,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 42
   },
   "battery": 4000,
   "charging": {
@@ -15416,7 +15494,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 38
   },
   "battery": 4500,
   "charging": {
@@ -15460,7 +15538,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5800,
   "charging": {
@@ -15511,7 +15589,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5500,
   "charging": {
@@ -15554,7 +15632,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5800,
   "charging": {
@@ -15596,7 +15674,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": null
+   "score": 45
   },
   "battery": 5500,
   "charging": {

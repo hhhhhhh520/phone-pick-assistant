@@ -4,6 +4,8 @@ from typing import List, Optional
 from sqlalchemy import case, or_
 import re
 
+from backend.services.camera_score import camera_scoring_service
+
 
 def _safe_battery_value(battery) -> int:
     """
@@ -284,15 +286,16 @@ class RetrievalService:
             return sorted(phones, key=game_sort_key)
 
         elif "拍照" in features_lower:
-            # 拍照场景：按主摄像素降序，同像素时影像标签优先
+            # 拍照场景：影像评分为准，裸像素只作次键
+            # （此前按裸像素排序，会让 2021 年代 1.08亿像素老机型压过
+            #  2025-26 年的 5000万大底新机——"像素高≠画质好"）
             def camera_sort_key(phone):
-                """拍照排序键：像素降序，同像素时影像标签优先"""
+                """拍照排序键：影像评分降序 → 像素降序 → 影像标签优先 → 价格升序"""
+                score = camera_scoring_service.calc_total_score(phone)["total"]
                 camera_pixels = _safe_camera_value(phone.camera_main)
-                # 判断是否有影像标签（徕卡、哈苏、蔡司、潜望长焦等）
                 features_str = phone.features or ""
                 has_photo_tag = any(tag in features_str for tag in ["徕卡", "哈苏", "蔡司", "影像", "潜望长焦"])
-                # 像素降序(取负)，影像标签优先(0在前)，价格升序
-                return (-camera_pixels, 0 if has_photo_tag else 1, phone.price)
+                return (-score, -camera_pixels, 0 if has_photo_tag else 1, phone.price)
 
             return sorted(phones, key=camera_sort_key)
 
