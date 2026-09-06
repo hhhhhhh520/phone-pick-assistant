@@ -1,5 +1,3 @@
-import type { Phone } from '../types';
-
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8002';
 
 // AbortController 用于取消请求
@@ -22,7 +20,6 @@ export async function* chatStream(
   currentController = new AbortController();
 
   const requestBody = JSON.stringify({ message, session_id: sessionId });
-  console.log('[API] Sending:', { message, session_id: sessionId, body: requestBody });
 
   const response = await fetch(`${API_BASE}/api/chat`, {
     method: 'POST',
@@ -31,8 +28,6 @@ export async function* chatStream(
     cache: 'no-store',
     signal: currentController.signal,
   });
-
-  console.log('[API] Response status:', response.status);
 
   if (!response.ok) {
     currentController = null;
@@ -71,25 +66,4 @@ export async function* chatStream(
   } finally {
     currentController = null;
   }
-}
-
-export async function getPhones(params?: {
-  brand?: string;
-  min_price?: number;
-  max_price?: number;
-  limit?: number;
-}): Promise<{ phones: Phone[]; total: number }> {
-  const searchParams = new URLSearchParams();
-  if (params?.brand) searchParams.set('brand', params.brand);
-  if (params?.min_price) searchParams.set('min_price', String(params.min_price));
-  if (params?.max_price) searchParams.set('max_price', String(params.max_price));
-  if (params?.limit) searchParams.set('limit', String(params.limit));
-
-  const response = await fetch(`${API_BASE}/api/phones?${searchParams}`);
-  return response.json();
-}
-
-export async function getPhone(id: number): Promise<Phone> {
-  const response = await fetch(`${API_BASE}/api/phones/${id}`);
-  return response.json();
 }

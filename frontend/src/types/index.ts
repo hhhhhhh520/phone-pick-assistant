@@ -27,6 +27,12 @@ export interface Phone {
     ultra: number;
     telephoto: number;
     front: number;
+    /** 以下影像字段后端可能返回，缺省为 undefined */
+    sensorMain?: string;
+    telephotoType?: string;
+    hasOis?: boolean;
+    imageBrand?: string;
+    score?: number;
   };
   battery: number;
   charging: {

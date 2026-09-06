@@ -203,7 +203,7 @@ describe('CompareTable', () => {
       battery: null as unknown as number,
       weight: null as unknown as number,
       charging: { wired: null as unknown as number, wireless: null as unknown as number },
-      camera: { main: null as unknown as number, ultra: null, telephoto: null, front: null },
+      camera: { main: null as unknown as number, ultra: null as unknown as number, telephoto: null as unknown as number, front: null as unknown as number },
     });
     const nullPhone2 = createPhone({ id: 2, model: 'Other' });
 

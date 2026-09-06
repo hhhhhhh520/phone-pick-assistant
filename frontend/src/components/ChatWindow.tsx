@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Message, Phone, SearchHistoryItem, QuestionResponse } from '../types';
 import { chatStream, abortCurrentRequest } from '../services/api';
 import { MessageList } from './MessageList';
@@ -12,6 +12,9 @@ export function ChatWindow() {
   const [loading, setLoading] = useState(false);
   const { history, addHistory, clearHistory } = useSearchHistory();
   const { sessionId, saveSession } = useSession();
+
+  // 组件卸载时中止进行中的流式请求，避免状态更新泄漏
+  useEffect(() => () => abortCurrentRequest(), []);
 
   const handleCancel = () => {
     abortCurrentRequest();
@@ -31,7 +34,6 @@ export function ChatWindow() {
   };
 
   const handleSend = async (content: string) => {
-    console.log('[ChatWindow] handleSend called:', { content, sessionId, timestamp: new Date().toISOString() });
     const userMessage: Message = {
       id: crypto.randomUUID(),
       role: 'user',
@@ -57,10 +59,8 @@ export function ChatWindow() {
 
     try {
       for await (const event of chatStream(content, sessionId)) {
-        console.log('[ChatWindow] SSE event:', event.type, event.type === 'content' ? `chunk(${(event.data as string).length}chars)` : event.type === 'phones' ? `${(event.data as Phone[]).length} phones` : '');
         if (event.type === 'session') {
           // 保存服务器返回的 session_id
-          console.log('[ChatWindow] Received session_id from server:', event.data);
           saveSession(event.data as string);
         } else if (event.type === 'intent') {
           isCompare = (event.data as string) === 'compare';
