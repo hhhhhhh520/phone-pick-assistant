@@ -49,3 +49,6 @@ missing_data_report*.csv
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# 轮转日志（*.log 不匹配 app.log.1）
+*.log.*

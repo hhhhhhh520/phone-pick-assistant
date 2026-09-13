@@ -25,7 +25,7 @@ backend/                # FastAPI 后端
                         # 导出/恢复: scripts/export_phones_json.py / import_phones_json.py
 frontend/               # React 19 + Vite + TailwindCSS
 scripts/                # 数据处理/爬取工具脚本（非核心应用）
-tests/                  # pytest（796 passed，离线运行，不依赖 LLM API）
+tests/                  # pytest（846 passed，离线运行，不依赖 LLM API）
 ```
 
 ## 关键命令
@@ -59,6 +59,12 @@ cd frontend && npm run build
 - **影像评分**: `camera_score` 列为批量计算的缓存（`enrich_camera_data.py` 入库）；"影像"标签下放规则=主摄≥1亿或有明确传感器型号
 - **测试隔离**: conftest 的 `offline_llm` autouse fixture 阻断 LLMService.chat_stream 真实网络调用，套件离线且行为确定；替换 chat 路由服务用 `override_chat_services`（DI 单例对模块级 patch 免疫）
 - **数据库路径**: sqlite URL 统一锚定项目根（config._normalize_sqlite_url），与启动 CWD 无关
+- **图片路径归一在模型层**: `Phone.image_url` 带 `@validates`，强制写进去的永远是 `/images/...` 或
+  `http(s)` 外链。**新增写入路径不要绕过模型**——DB 里曾混进 38% 的 Windows 反斜杠写法
+  （`images\x.jpg`），前端拼出 `localhost:8002images%5C...`（主机名被吃），浏览器拒绝解析、
+  请求根本不发、静默换成默认图标（ISSUE-046）
+- **数据修复必须同时覆盖数据源**: `phones_export.json` 是 git 跟踪的灾难恢复源，
+  `scripts/import_phones_json.py` 会全量灌回 DB——**只 patch 活库，恢复一次 bug 就复发**（ISSUE-046 审查发现）
 
 ## 开发规范
 
@@ -78,4 +84,4 @@ cd frontend && npm run build
 - `README.md` — 快速开始、功能说明
 - `PROGRESS.md` — 项目进度、已完成事项
 - `docs/TODO-NEXT.md` — 后续待办
-- `issues/` — 问题追踪（ISSUE-001 ~ ISSUE-045）
+- `issues/` — 问题追踪（ISSUE-001 ~ ISSUE-046）
