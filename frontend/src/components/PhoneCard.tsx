@@ -8,6 +8,39 @@ interface PhoneCardProps {
 // API基础地址
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8002';
 
+/**
+ * 把数据库里的 `image_url` 转成浏览器可用的完整地址。
+ *
+ * 数据库里混着两种本地路径写法：`images\x.jpg`（Windows 反斜杠，132 条 / 38%）
+ * 与 `/images/x.jpg`。反斜杠必须归一化——`encodeURI` 不会把 `\` 变成 `/`，
+ * 而是编成 `%5C`，于是拼出 `http://localhost:8002images%5C...`：主机名被吃成
+ * `localhost:8002images`，浏览器直接拒绝解析、**连请求都不发**，静默换成默认图标（ISSUE-046）。
+ *
+ * 导出供单测；组件内调用走默认基址。
+ */
+export function getFullImageUrl(
+  url: string | undefined,
+  apiBase: string = API_BASE
+): string | null {
+  if (!url) return null;
+  // 外部URL（如中关村在线图床）直接使用，不重复编码
+  if (url.startsWith('http://') || url.startsWith('https://')) return url;
+
+  // 1) 反斜杠统一成正斜杠
+  // 2) 路径以 / 开头、基址去掉尾斜杠 → 二者之间恰好一个斜杠
+  const path = url.replace(/\\/g, '/');
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const base = apiBase.replace(/\/+$/, '');
+
+  // 文件名含 + (如 12GB+256GB) 需编码为 %2B，否则浏览器当作空格 → 404
+  // 已含 % 视为已编码，跳过避免双重编码
+  const encoded = normalizedPath.includes('%')
+    ? normalizedPath
+    : encodeURI(normalizedPath).replace(/\+/g, '%2B');
+
+  return `${base}${encoded}`;
+}
+
 // 获取评分等级对应的颜色
 function getGradeColor(grade: string): string {
   const gradeColors: Record<string, string> = {
@@ -86,17 +119,6 @@ function DefaultPhoneIcon() {
 
 export function PhoneCard({ phone }: PhoneCardProps) {
   const [imageError, setImageError] = useState(false);
-
-  // 处理图片URL：本地路径需要拼接API地址，外部URL直接使用
-  const getFullImageUrl = (url: string | undefined): string | null => {
-    if (!url) return null;
-    // 外部URL（如中关村在线图床）直接使用，不重复编码
-    if (url.startsWith('http://') || url.startsWith('https://')) return url;
-    // 本地路径拼接API地址；文件名含 + (如 12GB+256GB) 需编码为 %2B，否则浏览器当作空格 → 404
-    // 已含 % 视为已编码，跳过避免双重编码
-    const encoded = url.includes('%') ? url : encodeURI(url).replace(/\+/g, '%2B');
-    return `${API_BASE}${encoded}`;
-  };
 
   const fullImageUrl = getFullImageUrl(phone.imageUrl);
   const showDefaultIcon = !fullImageUrl || imageError;

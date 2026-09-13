@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, Float, Boolean, create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker, validates
 from backend.config import get_settings
 import json
 import re
@@ -43,6 +43,26 @@ class Phone(Base):
     cons = Column(Text)  # 缺点 JSON数组
     created_at = Column(String(30))
     updated_at = Column(String(30))
+
+    @validates("image_url")
+    def _normalize_image_url(self, key, value):
+        r"""把 image_url 归一成 `http(s)://...` 或 `/...`（ISSUE-046）。
+
+        数据库里混进过 Windows 反斜杠写法（`images\x.jpg`，曾占 38%）。前端拼 URL 时
+        `encodeURI` 不会把反斜杠规范成 `/`，而是编成 `%5C`，于是拼出
+        `http://localhost:8002images%5C...`——**主机名被吃**，浏览器拒绝解析、
+        请求根本不发，静默换成默认图标（工单里叫"38% 的图永远不显示"）。
+
+        放在模型层而不是各写入点，是为了覆盖**所有**写入路径。特别地，
+        `scripts/import_phones_json.py`（灾难恢复脚本）是裸写 `imageUrl` 的——
+        只 patch 活库治不了它，恢复一次 bug 就复发。
+        """
+        if not isinstance(value, str) or not value:
+            return value
+        if value.startswith(("http://", "https://")):
+            return value
+        path = value.replace("\\", "/")
+        return path if path.startswith("/") else f"/{path}"
 
     @staticmethod
     def _parse_json_field(value, default=None):

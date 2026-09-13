@@ -17,9 +17,49 @@
 | P2 | chat.py 架构重构 | 120 行业务逻辑拆分为 ChatOrchestrator | ISSUE-032 |
 | P2 | 中文 Prompt Injection 防御 | 当前仅英文正则，中文注入绕过 | REVIEW_REPORT C8 |
 | P2 | 补充 sensor_main/telephoto_type 数据 | 仅 26 款旗舰有精确数据，327 款缺 | — |
-| P3 | 前端无测试 | 缺少组件测试和 E2E 测试 | — |
 | P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
 | P6 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
+
+## 2026-09-13 修复 38% 手机图片不显示（ISSUE-046）
+
+### 问题
+
+数据库 352 条 `image_url` 里 **132 条（38%）是 Windows 反斜杠写法**（`images\x.jpg`）。
+前端拼 URL 时 `API_BASE` 结尾没有 `/`，而 `encodeURI` 不会把 `\` 规范成 `/`（编成 `%5C`），
+于是拼出 `http://localhost:8002images%5C...` —— **主机名被吃成 `localhost:8002images`**，
+浏览器直接拒绝解析、**连请求都不发**，静默换成默认图标。
+
+### 修复
+
+| 方向 | 内容 |
+|---|---|
+| 前端容错 | `PhoneCard.tsx` 的 `getFullImageUrl` 提取导出（便于单测）并归一化：`\`→`/`、路径补前导 `/`、基址去尾 `/` |
+| 数据归一 | 执行**早已存在但从没跑过**的 `backend/data/fix_image_urls.py`：`Total fixed: 132`，残留反斜杠 132 → **0**，`/images/` 开头 43 → 175 |
+| **可持续性** | 审查发现活库 patch 不够：被 git 跟踪的恢复数据源 `phones_export.json` 仍是脏的，恢复脚本裸写 `imageUrl` → **恢复一次 bug 就复发**。补了两层：① `Phone` 模型加 `@validates("image_url")`（覆盖**所有**写入路径）；② `phones_export.json` 132 条归一（diff 恰好 132 行增删） |
+
+⚠️ 该脚本直接跑会 `ModuleNotFoundError`（没把项目根加进 `sys.path`），需 `PYTHONPATH=. ` 前缀。
+
+### 测试
+
+- 前端：`PhoneCard.test.tsx` 新增 `describe('getFullImageUrl')` 5 条，用 **id=1482 的真实值**做样本；
+  前端全量 130 passed（12 文件），`tsc -b` 通过
+- 后端：新增 `tests/test_image_url_normalization.py` 11 条（模型归一化 + **数据源 JSON 无残留反斜杠**）；
+  后端全量 **846 passed**（原本 844 + 11）
+- 浏览器 A/B：三条真实反斜杠记录，修复前拼法 `Failed to parse URL`、修复后 **200**
+
+**关于"先证明会红"的更正**：本节初稿写"前端 5 条全红"，但那是因为函数**还没导出**——
+import 拿到 undefined 直接抛错，把这个 import 错误当成了红。审查者保留导出、只回退函数体后复测：
+**真正有判别力的只有 2 条**（反斜杠归一、斜杠数量），另外 3 条用坏算法也照样绿。
+教训：**"红"必须来自被测量的行为，不能来自 import 错误。**
+
+**诚实的边界**：数据归一之后，真实数据里已无反斜杠值，
+前端那条容错分支不会再被触发 —— 该分支只有单测守卫（样本是真实历史值）。
+DB 清洗为首次执行，执行前已备份到 `backups/phones.db.bak-before-ISSUE046-20260913`（gitignore 内）。
+
+### 附带发现（未处理）
+
+`frontend/.env.example` 写 `VITE_API_BASE=http://localhost:8000`，而组件 fallback 与后端实际都是 8002 ——
+**照抄 example 建 `.env` 反而会连不上**。（与面试助手 ISSUE-007 同类的端口约定散落问题。）
 
 ## 2026-09-06 系统化场景矩阵测试 + 4 项修复
 

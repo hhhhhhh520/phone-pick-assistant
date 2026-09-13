@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { PhoneCard } from '../components/PhoneCard';
+import { PhoneCard, getFullImageUrl } from '../components/PhoneCard';
 import type { Phone } from '../types';
 
 // 创建测试用的手机数据
@@ -222,5 +222,49 @@ describe('PhoneCard', () => {
     render(<PhoneCard phone={phone} />);
 
     expect(screen.queryByText('影像评分')).not.toBeInTheDocument();
+  });
+});
+
+// ISSUE-046：数据库里曾有过 132 条（38%）Windows 反斜杠写法（`images\x.jpg`），
+// 拼出的 URL 主机名被吃成 `localhost:8002images` → 浏览器拒绝解析 → 请求根本不发出。
+//
+// ⚠️ 数据已在 2026-09-13 归一（活库与数据源 JSON 都清了），所以下面这组用例守的是
+// **防御性分支**——真实数据不会再触发它。样本字符串仍是当时的历史真值（备份库 id=1482）。
+describe('getFullImageUrl', () => {
+  const BASE = 'http://localhost:8002';
+  // id=1482 OPPO A32 当时的历史真值
+  const REAL_BACKSLASH = 'images\\OPPO A32（8GB128GB全网通）_1.jpg';
+
+  it('把 Windows 反斜杠路径归一化成合法 URL', () => {
+    const out = getFullImageUrl(REAL_BACKSLASH, BASE);
+
+    expect(out).not.toBeNull();
+    // 修复前这里会抛 `Failed to parse URL from http://localhost:8002images%5C...`
+    expect(() => new URL(out!)).not.toThrow();
+    expect(new URL(out!).pathname.startsWith('/images/')).toBe(true);
+    expect(out).not.toContain('%5C');
+  });
+
+  it('基址与路径之间恰好一个斜杠（含基址带尾斜杠的情况）', () => {
+    expect(getFullImageUrl('/images/a.jpg', BASE)).toBe(`${BASE}/images/a.jpg`);
+    expect(getFullImageUrl('images/a.jpg', BASE)).toBe(`${BASE}/images/a.jpg`);
+    expect(getFullImageUrl('images\\a.jpg', BASE)).toBe(`${BASE}/images/a.jpg`);
+    expect(getFullImageUrl('/images/a.jpg', `${BASE}/`)).toBe(`${BASE}/images/a.jpg`);
+    expect(getFullImageUrl('/images/a.jpg', `${BASE}//`)).toBe(`${BASE}/images/a.jpg`);
+  });
+
+  it('外部 URL 原样返回，不拼接', () => {
+    expect(getFullImageUrl('https://img.zdm.cn/x.jpg', BASE)).toBe('https://img.zdm.cn/x.jpg');
+    expect(getFullImageUrl('http://img.zdm.cn/x.jpg', BASE)).toBe('http://img.zdm.cn/x.jpg');
+  });
+
+  it('空值返回 null', () => {
+    expect(getFullImageUrl(undefined, BASE)).toBeNull();
+    expect(getFullImageUrl('', BASE)).toBeNull();
+  });
+
+  it('保留既有行为：+ 号编码为 %2B，已编码的不重复编码', () => {
+    expect(getFullImageUrl('/images/A(12GB+256GB)_1.jpg', BASE)).toContain('%2B');
+    expect(getFullImageUrl('/images/phone%2025.jpg', BASE)).not.toContain('%2520');
   });
 });
