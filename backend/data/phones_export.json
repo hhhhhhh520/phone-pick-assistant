@@ -513,7 +513,7 @@
    "type": null,
    "refresh": 144
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙888+",
   "ram": 18,
   "storage": 18,
   "camera": {
@@ -525,7 +525,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": 50
+   "score": 38
   },
   "battery": 6000,
   "charging": {
@@ -2417,7 +2417,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙8 Gen 1",
   "ram": 8,
   "storage": 256,
   "camera": {
@@ -2429,7 +2429,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": 60
+   "score": 48
   },
   "battery": 4600,
   "charging": {
@@ -2469,7 +2469,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙8 Gen 2",
   "ram": 8,
   "storage": 128,
   "camera": {
@@ -2481,7 +2481,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": 60
+   "score": 52
   },
   "battery": 4820,
   "charging": {
@@ -2518,7 +2518,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙8 Gen 2",
   "ram": 16,
   "storage": 1,
   "camera": {
@@ -2530,7 +2530,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": 70
+   "score": 62
   },
   "battery": 5000,
   "charging": {
@@ -2569,7 +2569,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙8 Gen 3",
   "ram": 12,
   "storage": 256,
   "camera": {
@@ -2581,7 +2581,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "徕卡",
-   "score": 60
+   "score": 55
   },
   "battery": 4880,
   "charging": {
@@ -2620,7 +2620,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙8 Gen 3",
   "ram": 16,
   "storage": 1,
   "camera": {
@@ -2632,7 +2632,7 @@
    "telephotoType": "双潜望",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": 90
+   "score": 85
   },
   "battery": 5300,
   "charging": {
@@ -2672,7 +2672,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙8 至尊版",
   "ram": 16,
   "storage": 512,
   "camera": {
@@ -2684,7 +2684,7 @@
    "telephotoType": "单潜望",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": 72
+   "score": 67
   },
   "battery": 6100,
   "charging": {
@@ -2725,7 +2725,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙8 至尊版",
   "ram": 16,
   "storage": 1,
   "camera": {
@@ -2737,7 +2737,7 @@
    "telephotoType": "双潜望",
    "hasOis": true,
    "imageBrand": "徕卡",
-   "score": 90
+   "score": 85
   },
   "battery": 6000,
   "charging": {
@@ -3255,7 +3255,7 @@
    "type": null,
    "refresh": 120
   },
-  "processor": "骁龙8 至尊版 Gen5",
+  "processor": "骁龙888",
   "ram": 12,
   "storage": 12,
   "camera": {
@@ -3267,7 +3267,7 @@
    "telephotoType": null,
    "hasOis": null,
    "imageBrand": "原色",
-   "score": 50
+   "score": 34
   },
   "battery": 4500,
   "charging": {
