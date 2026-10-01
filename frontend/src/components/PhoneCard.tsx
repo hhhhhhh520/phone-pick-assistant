@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Phone, CameraScoring } from '../types';
+import { formatStorage } from '../utils/format';
 
 interface PhoneCardProps {
   phone: Phone;
@@ -166,7 +167,7 @@ export function PhoneCard({ phone }: PhoneCardProps) {
           <span className="text-gray-400">内存:</span> {phone.ram ? `${phone.ram}GB` : '-'}
         </div>
         <div>
-          <span className="text-gray-400">存储:</span> {phone.storage ? `${phone.storage}GB` : '-'}
+          <span className="text-gray-400">存储:</span> {formatStorage(phone.storage)}
         </div>
         <div>
           <span className="text-gray-400">电池:</span> {phone.battery ? `${phone.battery}mAh` : '-'}

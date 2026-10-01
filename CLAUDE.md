@@ -25,7 +25,7 @@ backend/                # FastAPI 后端
                         # 导出/恢复: scripts/export_phones_json.py / import_phones_json.py
 frontend/               # React 19 + Vite + TailwindCSS
 scripts/                # 数据处理/爬取工具脚本（非核心应用）
-tests/                  # pytest（846 passed，离线运行，不依赖 LLM API）
+tests/                  # pytest（862 passed，离线运行，不依赖 LLM API）
 ```
 
 ## 关键命令

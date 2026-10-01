@@ -73,6 +73,15 @@ COMPARE_PROMPT = """用户想对比以下手机:
 """
 
 
+def _format_storage(storage: int | None) -> str | None:
+    """存储展示：GB 口径整数，≥1024 整数倍转 TB（1TB 曾被截断为 1，数据已修为 1024，ISSUE-048）"""
+    if not storage:
+        return None
+    if storage >= 1024 and storage % 1024 == 0:
+        return f"{storage // 1024}TB"
+    return f"{storage}GB"
+
+
 class RecommendService:
     def __init__(self):
         self.llm = LLMService()
@@ -85,8 +94,9 @@ class RecommendService:
             parts.append(f"处理器: {p.processor}")
         if p.ram:
             parts.append(f"内存: {p.ram}GB")
-        if p.storage:
-            parts.append(f"存储: {p.storage}GB")
+        storage_display = _format_storage(p.storage)
+        if storage_display:
+            parts.append(f"存储: {storage_display}")
         if p.camera_main:
             parts.append(f"主摄: {p.camera_main}万像素")
         if p.battery:

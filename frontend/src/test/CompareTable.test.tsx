@@ -218,3 +218,29 @@ describe('CompareTable', () => {
     expect(screen.getAllByText('-').length).toBeGreaterThan(0);
   });
 });
+
+// ISSUE-048：1TB 曾被截断为 1（GB 口径），数据修复为 1024 后对比表同样转 TB
+describe('存储 TB 显示 (ISSUE-048)', () => {
+  it('storage=1024 vs 256：TB 与 GB 混排，不出现 1024GB', () => {
+    render(
+      <CompareTable
+        phones={[
+          createPhone({ storage: 1024 }),
+          createPhone({ id: 2, model: 'iPhone 16', storage: 256 }),
+        ]}
+      />
+    );
+    expect(screen.getByText('1TB')).toBeInTheDocument();
+    expect(screen.getByText('256GB')).toBeInTheDocument();
+    expect(screen.queryByText('1024GB')).not.toBeInTheDocument();
+  });
+
+  it('storage 缺失（undefined）双方显示 -', () => {
+    render(
+      <CompareTable
+        phones={[createPhone({ storage: undefined }), createPhone({ id: 2, storage: undefined })]}
+      />
+    );
+    expect(screen.getAllByText('-').length).toBeGreaterThan(0);
+  });
+});

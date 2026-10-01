@@ -2520,7 +2520,7 @@
   },
   "processor": "骁龙8 Gen 2",
   "ram": 16,
-  "storage": 1,
+  "storage": 1024,
   "camera": {
    "main": 5000,
    "ultra": null,
@@ -2622,7 +2622,7 @@
   },
   "processor": "骁龙8 Gen 3",
   "ram": 16,
-  "storage": 1,
+  "storage": 1024,
   "camera": {
    "main": 5000,
    "ultra": null,
@@ -2727,7 +2727,7 @@
   },
   "processor": "骁龙8 至尊版",
   "ram": 16,
-  "storage": 1,
+  "storage": 1024,
   "camera": {
    "main": 5000,
    "ultra": null,

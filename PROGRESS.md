@@ -1,6 +1,6 @@
 # 手机选购助手 - 项目进度
 
-> 创建时间: 2026-04-28 | 最后更新: 2026-09-30（处理器字段代际污染修复，ISSUE-047）
+> 创建时间: 2026-04-28 | 最后更新: 2026-10-01（存储单位截断修复，ISSUE-048）
 
 ## 项目概述
 
@@ -19,6 +19,27 @@
 | P2 | 补充 sensor_main/telephoto_type 数据 | 仅 26 款旗舰有精确数据，327 款缺 | — |
 | P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
 | P6 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
+
+## 2026-10-01 修复存储字段单位截断（ISSUE-048）
+
+历史清洗把 "1TB" 截断为 1（GB 口径），小米13/14/15 Ultra 三款显示"存储: 1GB"。
+
+### 修复
+- 数据：单事务 3 行 storage 1→1024（乐观锁 + rowcount 断言）→ 同窗口重导出 export JSON
+- 展示：新增前端共享 `utils/format.ts` 的 `formatStorage`（≥1024 整数倍转 TB），
+  PhoneCard/CompareTable 两处接入；后端 recommend.py 新增 `_format_storage` 镜像（LLM prompt 侧）
+- 守卫测试：后端 `test_storage_unit_fix.py`（6 用例：数据 3 + export 同步 + _format_storage 单测）、
+  前端 format.test.ts（7，含 0→`-`）+ PhoneCard 3 / CompareTable 2
+
+### 遗留（见 ISSUE-048）
+storage 疑似 RAM 误植 22 行（8/12/16/18/24）待核对；完整聊天 E2E 被外部阻塞——LLM 订阅
+InvalidSubscription（阿里云账户 2123047324，应用已降级兜底）+ 前端 5173 被僵尸进程占用起在 5174 致 CORS 预检 400
+
+### 验证
+后端 862 tests 全绿（+6 存储守卫）、前端 142 tests 全绿（+12）；API `/api/phones/1213` storage=1024；
+组件级渲染测试直接证明卡片/对比表显示 "1TB"。
+
+---
 
 ## 2026-09-30 修复处理器字段代际污染（ISSUE-047）
 

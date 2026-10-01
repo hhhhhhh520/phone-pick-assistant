@@ -1,4 +1,5 @@
 import type { Phone } from '../types';
+import { formatStorage } from '../utils/format';
 
 interface CompareTableProps {
   phones: Phone[];
@@ -39,7 +40,7 @@ export function CompareTable({ phones }: CompareTableProps) {
     { label: '价格', value1: formatPrice(phone1.price), value2: formatPrice(phone2.price), highlight: isDifferent(phone1.price, phone2.price) },
     { label: '处理器', value1: phone1.processor || '-', value2: phone2.processor || '-', highlight: isDifferent(phone1.processor, phone2.processor) },
     { label: '内存', value1: formatUnit(phone1.ram, 'GB'), value2: formatUnit(phone2.ram, 'GB'), highlight: isDifferent(phone1.ram, phone2.ram) },
-    { label: '存储', value1: formatUnit(phone1.storage, 'GB'), value2: formatUnit(phone2.storage, 'GB'), highlight: isDifferent(phone1.storage, phone2.storage) },
+    { label: '存储', value1: formatStorage(phone1.storage), value2: formatStorage(phone2.storage), highlight: isDifferent(phone1.storage, phone2.storage) },
     { label: '屏幕', value1: formatScreen(phone1.screen), value2: formatScreen(phone2.screen), highlight: isDifferent(phone1.screen?.size, phone2.screen?.size) || isDifferent(phone1.screen?.refresh, phone2.screen?.refresh) },
     { label: '电池', value1: formatUnit(phone1.battery, 'mAh'), value2: formatUnit(phone2.battery, 'mAh'), highlight: isDifferent(phone1.battery, phone2.battery) },
     { label: '主摄', value1: formatUnit(phone1.camera?.main, 'MP'), value2: formatUnit(phone2.camera?.main, 'MP'), highlight: isDifferent(phone1.camera?.main, phone2.camera?.main) },

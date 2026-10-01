@@ -268,3 +268,22 @@ describe('getFullImageUrl', () => {
     expect(getFullImageUrl('/images/phone%2025.jpg', BASE)).not.toContain('%2520');
   });
 });
+
+// ISSUE-048：1TB 曾被截断为 1（GB 口径），数据修复为 1024 后展示层转 TB
+describe('存储 TB 显示 (ISSUE-048)', () => {
+  it('storage=1024 显示 1TB，而非 1024GB', () => {
+    render(<PhoneCard phone={createPhone({ storage: 1024 })} />);
+    expect(screen.getByText('1TB')).toBeInTheDocument();
+    expect(screen.queryByText('1024GB')).not.toBeInTheDocument();
+  });
+
+  it('storage=256 保持 GB 显示', () => {
+    render(<PhoneCard phone={createPhone({ storage: 256 })} />);
+    expect(screen.getByText('256GB')).toBeInTheDocument();
+  });
+
+  it('storage 缺失（undefined）显示 -', () => {
+    render(<PhoneCard phone={createPhone({ storage: undefined })} />);
+    expect(screen.getAllByText('-').length).toBeGreaterThan(0);
+  });
+});
