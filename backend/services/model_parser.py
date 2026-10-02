@@ -178,7 +178,7 @@ class ModelParserService:
         matched: list[str] = []
         for p in phones:
             if p.model in text or p.model.lower() in text.lower():
-                matched.append(f"{p.brand} {p.model}")
+                matched.append(p.display_name)
         if matched:
             logger.info(
                 "Recommended models from direct phone matching: %s",

@@ -20,7 +20,7 @@ backend/                # FastAPI 后端
 │   ├── question.py     # 追问生成 + 痛点检测
 │   └── model_parser.py # 推荐型号解析
 ├── utils/security.py   # Prompt 注入防护（拒绝时不回显命中内容）
-└── data/phones.db      # SQLite（353 款手机/17 品牌）
+└── data/phones.db      # SQLite（351 款手机/17 品牌）
                         # phones_export.json 为全量 JSON 副本（git 内备份）
                         # 导出/恢复: scripts/export_phones_json.py / import_phones_json.py
 frontend/               # React 19 + Vite + TailwindCSS

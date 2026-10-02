@@ -287,3 +287,32 @@ describe('存储 TB 显示 (ISSUE-048)', () => {
     expect(screen.getAllByText('-').length).toBeGreaterThan(0);
   });
 });
+
+// ISSUE-050：aria-label 与 alt 的品牌去重（model 已含品牌前缀时不重复）
+describe('品牌去重 aria/alt (ISSUE-050)', () => {
+  it('aria-label 与 alt 不出现品牌重复（真我 + 真我Neo8）', () => {
+    // 需给 imageUrl 才渲染 <img>（无图时走 DefaultIcon 分支，无 role=img）
+    const phone = createPhone({
+      brand: '真我',
+      model: '真我Neo8',
+      price: 2399,
+      imageUrl: '/images/realme_neo8.jpg',
+    });
+    render(<PhoneCard phone={phone} />);
+    expect(screen.getByRole('img', { name: '真我Neo8' })).toBeInTheDocument();
+    expect(screen.getByLabelText('真我Neo8 - 2399元')).toBeInTheDocument();
+    expect(screen.queryByLabelText(/真我 真我/)).not.toBeInTheDocument();
+  });
+
+  it('model === brand 时不重复（真实数据 vivo/vivo 分支）', () => {
+    const phone = createPhone({
+      brand: 'vivo',
+      model: 'vivo',
+      imageUrl: '/images/vivo.jpg',
+    });
+    render(<PhoneCard phone={phone} />);
+    expect(screen.getByRole('img', { name: 'vivo' })).toBeInTheDocument();
+    expect(screen.getByLabelText('vivo - 5999元')).toBeInTheDocument();
+    expect(screen.queryByLabelText(/vivo vivo/)).not.toBeInTheDocument();
+  });
+});

@@ -21,9 +21,16 @@ from backend.services.model_parser import ModelParserService
 
 @dataclass
 class MockPhone:
-    """Lightweight Phone mock -- only brand and model are read by the service."""
+    """Lightweight Phone mock -- brand/model are read by the service via display_name (ISSUE-050)."""
     brand: str
     model: str
+
+    @property
+    def display_name(self) -> str:
+        """与 domain.Phone.display_name 同语义：model 含品牌前缀则不重复拼接"""
+        if self.brand and self.model.startswith(self.brand):
+            return self.model
+        return f"{self.brand} {self.model}".strip()
 
 
 @pytest.fixture
@@ -177,7 +184,9 @@ def test_match_from_candidates_exact(parser, sample_phones):
     """Exact model substring appears in the response text."""
     text = "I recommend the 小米14 for its great value."
     result = parser._match_from_candidates(text, sample_phones)
-    assert "小米 小米14" in result
+    # ISSUE-050：展示名去重——model 已含品牌前缀时不再输出"小米 小米14"
+    assert "小米14" in result
+    assert "小米 小米14" not in result
 
 
 def test_match_from_candidates_case_insensitive(parser, sample_phones):

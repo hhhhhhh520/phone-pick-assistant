@@ -1,5 +1,5 @@
 import type { Phone } from '../types';
-import { formatStorage } from '../utils/format';
+import { formatStorage, formatPhoneName } from '../utils/format';
 
 interface CompareTableProps {
   phones: Phone[];
@@ -55,10 +55,10 @@ export function CompareTable({ phones }: CompareTableProps) {
           <tr className="bg-gray-50">
             <th className="border border-gray-200 px-3 py-2 text-left text-gray-600 w-24" scope="col">参数</th>
             <th className="border border-gray-200 px-3 py-2 text-center text-gray-900 font-medium" scope="col">
-              {phone1.brand} {phone1.model}
+              {formatPhoneName(phone1.brand, phone1.model)}
             </th>
             <th className="border border-gray-200 px-3 py-2 text-center text-gray-900 font-medium" scope="col">
-              {phone2.brand} {phone2.model}
+              {formatPhoneName(phone2.brand, phone2.model)}
             </th>
           </tr>
         </thead>

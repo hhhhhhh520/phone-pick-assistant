@@ -88,7 +88,7 @@ class RecommendService:
 
     def _format_phone(self, p: Phone) -> str:
         """格式化手机信息"""
-        parts = [f"{p.brand} {p.model}"]
+        parts = [p.display_name]
         parts.append(f"价格: {p.price}元")
         if p.processor:
             parts.append(f"处理器: {p.processor}")
@@ -184,7 +184,7 @@ class RecommendService:
                     try:
                         cons_list = json.loads(p.cons) if isinstance(p.cons, str) else p.cons
                         if cons_list:
-                            cons_lines.append(f"- **{p.brand} {p.model}**：{'、'.join(cons_list[:3])}")
+                            cons_lines.append(f"- **{p.display_name}**：{'、'.join(cons_list[:3])}")
                     except (json.JSONDecodeError, TypeError):
                         pass
             if cons_lines:

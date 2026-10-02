@@ -15138,48 +15138,6 @@
   "cons": []
  },
  {
-  "id": 1738,
-  "brand": "索尼",
-  "model": "索尼Xperia PRO-I高通骁龙888",
-  "price": 10999,
-  "release_date": null,
-  "screen": {
-   "size": 6.5,
-   "type": null,
-   "refresh": 120
-  },
-  "processor": "骁龙888",
-  "ram": null,
-  "storage": null,
-  "camera": {
-   "main": 1200,
-   "ultra": null,
-   "telephoto": null,
-   "front": null,
-   "sensorMain": null,
-   "telephotoType": null,
-   "hasOis": null,
-   "imageBrand": "原色",
-   "score": 34
-  },
-  "battery": 4500,
-  "charging": {
-   "wired": 30,
-   "wireless": null
-  },
-  "weight": 211,
-  "url": null,
-  "imageUrl": "https://2b.zol-img.com.cn/product/222_320x240/733/cebeUklBIRGFQ.jpg",
-  "features": [
-   "高刷屏",
-   "旗舰芯片",
-   "游戏手机"
-  ],
-  "suitable_for": [],
-  "pros": [],
-  "cons": []
- },
- {
   "id": 1739,
   "brand": "索尼",
   "model": "索尼移动Xperia 5 Ⅳ 骁龙8 Gen1",
@@ -15468,50 +15426,6 @@
    "游戏手机"
   ],
   "suitable_for": [],
-  "pros": [],
-  "cons": []
- },
- {
-  "id": 1748,
-  "brand": "索尼",
-  "model": "索尼移动Xperia Pro-i",
-  "price": 0,
-  "release_date": null,
-  "screen": {
-   "size": 6.5,
-   "type": null,
-   "refresh": 120
-  },
-  "processor": "骁龙8 Gen 1",
-  "ram": null,
-  "storage": null,
-  "camera": {
-   "main": 1200,
-   "ultra": null,
-   "telephoto": null,
-   "front": null,
-   "sensorMain": null,
-   "telephotoType": null,
-   "hasOis": null,
-   "imageBrand": "原色",
-   "score": 38
-  },
-  "battery": 4500,
-  "charging": {
-   "wired": 30,
-   "wireless": null
-  },
-  "weight": 211,
-  "url": null,
-  "imageUrl": "https://2b.zol-img.com.cn/product/246_320x240/741/cewRpSi7JGkKs.jpg",
-  "features": [
-   "高刷屏",
-   "旗舰芯片",
-   "游戏手机"
-  ],
-  "suitable_for": [
-   "学生党"
-  ],
   "pros": [],
   "cons": []
  },

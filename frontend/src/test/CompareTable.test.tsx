@@ -244,3 +244,22 @@ describe('存储 TB 显示 (ISSUE-048)', () => {
     expect(screen.getAllByText('-').length).toBeGreaterThan(0);
   });
 });
+
+// ISSUE-050：表头品牌去重（审查 F7：表头原为 {brand} {model} 直接拼接）
+describe('表头品牌去重 (ISSUE-050)', () => {
+  it('表头不出现品牌重复（真我Neo8 / 苹果iPhone 15）', () => {
+    render(
+      <CompareTable
+        phones={[
+          createPhone({ id: 1, brand: '真我', model: '真我Neo8' }),
+          createPhone({ id: 2, brand: '苹果', model: '苹果iPhone 15' }),
+        ]}
+      />
+    );
+    // 表头与型号行都会出现该文本（行 cell 是 phone.model），用 getAllByText
+    expect(screen.getAllByText('真我Neo8').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('苹果iPhone 15').length).toBeGreaterThan(0);
+    expect(document.body.textContent).not.toContain('真我 真我');
+    expect(document.body.textContent).not.toContain('苹果 苹果');
+  });
+});

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Phone, CameraScoring } from '../types';
-import { formatStorage } from '../utils/format';
+import { formatStorage, formatPhoneName } from '../utils/format';
 
 interface PhoneCardProps {
   phone: Phone;
@@ -133,7 +133,7 @@ export function PhoneCard({ phone }: PhoneCardProps) {
   return (
     <div
       className="bg-white rounded-lg border border-gray-200 p-4"
-      aria-label={`${phone.brand} ${phone.model} - ${phone.price}元`}
+      aria-label={`${formatPhoneName(phone.brand, phone.model)} - ${phone.price}元`}
     >
       {/* 手机图片 */}
       <div className="mb-3 flex justify-center items-center h-24">
@@ -142,7 +142,7 @@ export function PhoneCard({ phone }: PhoneCardProps) {
         ) : (
           <img
             src={fullImageUrl!}
-            alt={`${phone.brand} ${phone.model}`}
+            alt={`${formatPhoneName(phone.brand, phone.model)}`}
             className="w-24 h-24 object-contain"
             loading="lazy"
             decoding="async"

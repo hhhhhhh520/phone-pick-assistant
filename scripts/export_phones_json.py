@@ -1,7 +1,7 @@
 """
 把 phones.db 全量导出为 JSON，作为数据的版本控制副本。
 
-phones.db 被 .gitignore 的 *.db 规则排除，数据库本身（353 款手机、
+phones.db 被 .gitignore 的 *.db 规则排除，数据库本身（351 款手机、
 多轮爬取+清洗的成果）没有任何版本控制——磁盘故障即全部丢失。
 本脚本导出一份 JSON 进 git 作为异地副本；恢复脚本见 import_phones_json.py。
 

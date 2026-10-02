@@ -76,6 +76,21 @@ class Phone(Base):
         except (json.JSONDecodeError, TypeError):
             return default
 
+    @property
+    def display_name(self) -> str:
+        """展示用名称：model 已含品牌前缀则原样使用（不重复拼接），否则 brand + model 拼一次。
+
+        修复 f"{brand} {model}" 在 model 含品牌时输出"真我 真我Neo8"的问题 (ISSUE-050)。
+        与前端 PhoneCard.displayModel 同思想；区别：本属性保留品牌上下文（LLM prompt 需要）。
+        """
+        model = self.model or ""
+        brand = self.brand or ""
+        if not model:
+            return brand
+        if brand and model.startswith(brand):
+            return model
+        return f"{brand} {model}".strip()
+
     def to_dict(self):
         return {
             "id": self.id,

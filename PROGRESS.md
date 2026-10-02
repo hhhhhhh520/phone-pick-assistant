@@ -1,6 +1,6 @@
 # 手机选购助手 - 项目进度
 
-> 创建时间: 2026-04-28 | 最后更新: 2026-10-02（追问 code 防泄漏 + severity 徽标修复，ISSUE-049）
+> 创建时间: 2026-04-28 | 最后更新: 2026-10-02（品牌去重 + Xperia 重复行清理，ISSUE-050）
 
 ## 项目概述
 
@@ -19,6 +19,32 @@
 | P2 | 补充 sensor_main/telephoto_type 数据 | 仅 26 款旗舰有精确数据，327 款缺 | — |
 | P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
 | P6 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
+
+## 2026-10-02 品牌去重 + Xperia 重复行清理（ISSUE-050）
+
+model 已含品牌前缀时 `f"{brand} {model}"` 输出"真我 真我Neo8"（LLM prompt/匹配结果/aria-label 全中）；
+索尼 Xperia PRO-I 同机 3 行。
+
+### 修复
+- 横切统一入口：`domain.Phone.display_name`（model 含品牌则原样保留上下文，否则拼一次）；
+  前端镜像 `utils/formatPhoneName`（同语义）
+- 接入 7 处：recommend ×2 + model_parser ×1 + PhoneCard aria/alt ×2 + **CompareTable 表头 ×2**
+  （表头为审查发现的漏网——初版 grep 漏 `phone1.` 形态）；
+  chat.py:227（匹配 haystack）与 image_loader（映射键）审查后刻意不动
+- 重复行：保留 1233（W1 修复后芯片正确、名干净），删 1738/1748
+  → DB 353→351、price<=0 归零、API/DB 口径差消失
+- 守卫测试 17 用例先红后绿（后端 10 + 前端 7，含 model===brand 的 vivo/vivo 等值边角）；
+  存量测试订正（test_model_parser 原断言锁死 bug 行为 → 改去重期望+反断言；MockPhone 桩同步）
+- 353→351 计数同步 3 处（README/CLAUDE.md/export 脚本 docstring）；总行数断言区间化
+
+### 遗留（见 ISSUE-050）
+1514 (vivo,vivo) 等 3 行数据本身待人工核对；一次性脚本失效键（重跑 no-op）；
+爬虫字段直入 prompt 无净化（两轮审查标记，建议单开工单）；aria 落无 role 元素（预存在）
+
+### 验证
+后端 872 全绿（+10）、前端 156 全绿（+7）、build 通过；export 同步 351 行。
+
+---
 
 ## 2026-10-02 追问内部 code 防泄漏（ISSUE-049）
 
