@@ -305,3 +305,102 @@ describe('MessageItem', () => {
     expect(questionContainer).toHaveClass('border-blue-200');
   });
 });
+
+// ISSUE-049：内部 pain_point_type code 不得泄漏到用户可见标题
+describe('痛点追问标题 code 防泄漏 (ISSUE-049)', () => {
+  const painMsg = (painPointType: string): Message => ({
+    id: `pp-${painPointType}`,
+    role: 'assistant',
+    content: '您确定要看看其他选择吗？',
+    timestamp: new Date(),
+    isQuestion: true,
+    quickReplies: ['接受', '换品牌'],
+    painPointType,
+  });
+
+  // 后端 question.py PAIN_POINT_TEMPLATES 全集（6 个 code）
+  const BACKEND_CODES = [
+    'budget_too_low_for_features',
+    'brand_budget_conflict',
+    'gaming_camera_budget_conflict',
+    'battery_vs_gaming',
+    'high_demand_low_budget_general',
+    'brand_not_match_features',
+  ];
+
+  it('brand_not_match_features 显示中文标签，DOM 不含原始 code', () => {
+    render(<MessageItem message={painMsg('brand_not_match_features')} />);
+    expect(screen.getByText('关于品牌与功能的追问')).toBeInTheDocument();
+    expect(document.body.textContent).not.toContain('brand_not_match_features');
+  });
+
+  // 标签表须与后端 question.py PAIN_POINT_TEMPLATES 一一对应。
+  // 注意：本列表是前端手抄副本（测试无法 import Python），后端加键时需同步 typeNames 与此处
+  const EXPECTED_LABELS: Record<string, string> = {
+    budget_too_low_for_features: '预算不足',
+    brand_budget_conflict: '品牌与预算',
+    gaming_camera_budget_conflict: '游戏与拍照',
+    battery_vs_gaming: '续航与游戏',
+    high_demand_low_budget_general: '需求与预算',
+    brand_not_match_features: '品牌与功能'
+  };
+
+  it('后端全部 6 个 code 均映射到专属中文标签，DOM 不含任何原始 code', () => {
+    for (const code of BACKEND_CODES) {
+      const { unmount } = render(<MessageItem message={painMsg(code)} />);
+      expect(screen.getByText(`关于${EXPECTED_LABELS[code]}的追问`)).toBeInTheDocument();
+      // 兜底文案不得成为"映射缺失但测试仍绿"的替身
+      expect(screen.queryByText('关于偏好确认的追问')).not.toBeInTheDocument();
+      expect(document.body.textContent).not.toContain(code);
+      unmount();
+    }
+  });
+
+  it('未知的新 code 兜底为通用文案，不泄漏原始 code', () => {
+    render(<MessageItem message={painMsg('future_new_type_xyz')} />);
+    expect(screen.getByText('关于偏好确认的追问')).toBeInTheDocument();
+    expect(document.body.textContent).not.toContain('future_new_type_xyz');
+  });
+
+  it('旧语义键 battery 仍映射"续航问题"（回归）', () => {
+    render(<MessageItem message={painMsg('battery')} />);
+    expect(screen.getByText('关于续航问题的追问')).toBeInTheDocument();
+  });
+});
+
+// ISSUE-049：severity 枚举后端实际发出 high/medium/low，徽标必须渲染（原 mild/moderate/severe 与后端零交集，徽标从未显示过）
+describe('痛点严重度徽标 severity 枚举对齐 (ISSUE-049)', () => {
+  const painMsg = (severity?: string): Message => ({
+    id: 'pp-sev',
+    role: 'assistant',
+    content: '您确定要看看其他选择吗？',
+    timestamp: new Date(),
+    isQuestion: true,
+    quickReplies: ['接受', '换品牌'],
+    painPointType: 'brand_not_match_features',
+    painPointSeverity: severity,
+  });
+
+  it('severity=high/medium/low 渲染对应徽标文案（后端实际枚举）', () => {
+    const cases: Record<string, string> = {
+      high: '重点关注',
+      medium: '中度关注',
+      low: '轻度关注',
+    };
+    for (const [sev, label] of Object.entries(cases)) {
+      const { unmount } = render(<MessageItem message={painMsg(sev)} />);
+      expect(screen.getByText(label)).toBeInTheDocument();
+      unmount();
+    }
+  });
+
+  it('旧键 mild 仍渲染"轻度关注"（回归）', () => {
+    render(<MessageItem message={painMsg('mild')} />);
+    expect(screen.getByText('轻度关注')).toBeInTheDocument();
+  });
+
+  it('severity 缺失时不渲染徽标', () => {
+    render(<MessageItem message={painMsg(undefined)} />);
+    expect(screen.queryByText(/(轻度|中度|重点)关注/)).not.toBeInTheDocument();
+  });
+});

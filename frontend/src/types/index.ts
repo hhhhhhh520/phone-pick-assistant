@@ -58,8 +58,8 @@ export interface Message {
   isQuestion?: boolean;  // 是否为追问消息
   quickReplies?: string[];  // 快捷回复选项
   missingFields?: string[];  // 缺失字段
-  painPointType?: string;  // 痛点追问类型 (battery, storage, camera, performance, screen)
-  painPointSeverity?: string;  // 痛点严重程度 (mild, moderate, severe)
+  painPointType?: string;  // 痛点追问类型：后端 question.py PAIN_POINT_TEMPLATES 6 个 code（+旧语义键 battery 等），渲染映射见 MessageItem.tsx
+  painPointSeverity?: string;  // 痛点严重程度：后端实际发 high/medium/low（旧键 mild/moderate/severe 保留兼容），渲染映射见 MessageItem.tsx
   notice?: string;  // 系统提示（如"未找到匹配机型"），独立灰色提示条，不写入会话历史 (ISSUE-036/039)
   timestamp: Date;
 }

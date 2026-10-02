@@ -1,6 +1,6 @@
 # 手机选购助手 - 项目进度
 
-> 创建时间: 2026-04-28 | 最后更新: 2026-10-01（存储单位截断修复，ISSUE-048）
+> 创建时间: 2026-04-28 | 最后更新: 2026-10-02（追问 code 防泄漏 + severity 徽标修复，ISSUE-049）
 
 ## 项目概述
 
@@ -19,6 +19,26 @@
 | P2 | 补充 sensor_main/telephoto_type 数据 | 仅 26 款旗舰有精确数据，327 款缺 | — |
 | P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
 | P6 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
+
+## 2026-10-02 追问内部 code 防泄漏（ISSUE-049）
+
+追问卡片标题曾渲染"关于brand_not_match_features的追问"——前端 typeNames 5 个旧语义键与
+后端 PAIN_POINT_TEMPLATES 6 个 code 零交集 + 兜底透出原值，实际 100% 泄漏。
+
+### 修复
+- `MessageItem.tsx`：映射表补全后端全集 6 键（语义对齐模板 description），
+  兜底改通用文案"偏好确认"（未知新 code 也不泄漏）；旧语义键保留（后端从未发出，回归覆盖）
+- **同批次 severity 徽标修复**（三路审查独立发现的同病灶）：severityLabels/Colors 只映射
+  mild/moderate/severe，而后端实际发 high/medium/low → 徽标从未渲染过；补全实际枚举
+- `types/index.ts` 两行字段注释同步
+- 守卫测试 7 用例（code 泄漏 4：逐键断言专属标签 + 兜底替身反断言；severity 3），
+  先红 3 failed 后绿
+- 附带核查占位符链路：唯二含 `{brand}` 等占位的分支均 `.format()` 传参完整，无泄漏无 KeyError
+
+### 验证
+后端 862 全绿（无改动）、前端 149 全绿（+7）、build 通过；EOF 换行补齐。
+
+---
 
 ## 2026-10-01 修复存储字段单位截断（ISSUE-048）
 

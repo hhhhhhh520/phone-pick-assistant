@@ -34,23 +34,41 @@ export function MessageItem({ message, onQuickReply, loading }: MessageItemProps
   const getPainPointTitle = () => {
     if (!isPainPoint) return null;
     const typeNames: Record<string, string> = {
+      // 旧语义键（历史 payload，保留兼容）
       battery: '续航问题',
       storage: '存储空间',
       camera: '影像表现',
       performance: '性能表现',
-      screen: '屏幕体验'
+      screen: '屏幕体验',
+      // 后端 question.py PAIN_POINT_TEMPLATES 全集 (ISSUE-049)
+      budget_too_low_for_features: '预算不足',
+      brand_budget_conflict: '品牌与预算',
+      gaming_camera_budget_conflict: '游戏与拍照',
+      battery_vs_gaming: '续航与游戏',
+      high_demand_low_budget_general: '需求与预算',
+      brand_not_match_features: '品牌与功能'
     };
     const severityColors: Record<string, string> = {
+      // 后端实际枚举 question.py severity="high/medium/low" (ISSUE-049)
+      high: 'text-red-600',
+      medium: 'text-orange-600',
+      low: 'text-orange-500',
+      // 旧键保留
       mild: 'text-orange-500',
       moderate: 'text-orange-600',
       severe: 'text-red-600'
     };
     const severityLabels: Record<string, string> = {
+      high: '重点关注',
+      medium: '中度关注',
+      low: '轻度关注',
+      // 旧键保留
       mild: '轻度关注',
       moderate: '中度关注',
       severe: '重点关注'
     };
-    const typeName = typeNames[message.painPointType!] || message.painPointType;
+    // 未命中的新 code 兜底通用文案，避免内部 code 泄漏到用户可见标题 (ISSUE-049)
+    const typeName = typeNames[message.painPointType!] || '偏好确认';
     const severityColor = severityColors[message.painPointSeverity!] || 'text-orange-500';
     const severityLabel = severityLabels[message.painPointSeverity!] || '';
 
