@@ -16,9 +16,10 @@
 |--------|------|------|-----------|
 | P2 | chat.py 架构重构 | 120 行业务逻辑拆分为 ChatOrchestrator | ISSUE-032 |
 | P2 | 中文 Prompt Injection 防御 | 当前仅英文正则，中文注入绕过 | REVIEW_REPORT C8 |
-| P2 | 补充 sensor_main/telephoto_type 数据 | 仅 26 款旗舰有精确数据，327 款缺 | — |
-| P6 | 补充 processor 数据 | 286 条缺失，需外部数据源 | — |
-| P6 | 补充 camera_main 数据 | 324 条缺失，需外部数据源 | — |
+| P2 | 补充 sensor_main/telephoto_type 数据 | 351 款中仅 50 款有 sensor_main（空 301）、28 款有 telephoto_type（空 325） | — |
+
+> 注：原 P6 "processor 缺 286 / camera_main 缺 324" 两行已于 2026-10-02 移除——
+> 数据补全批次已填满（实测两列空值均为 0）。
 
 ## 2026-10-02 品牌去重 + Xperia 重复行清理（ISSUE-050）
 

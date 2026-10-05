@@ -25,7 +25,7 @@ backend/                # FastAPI 后端
                         # 导出/恢复: scripts/export_phones_json.py / import_phones_json.py
 frontend/               # React 19 + Vite + TailwindCSS
 scripts/                # 数据处理/爬取工具脚本（非核心应用）
-tests/                  # pytest（862 passed，离线运行，不依赖 LLM API）
+tests/                  # pytest（872 passed，离线运行，不依赖 LLM API）
 ```
 
 ## 关键命令
@@ -84,4 +84,4 @@ cd frontend && npm run build
 - `README.md` — 快速开始、功能说明
 - `PROGRESS.md` — 项目进度、已完成事项
 - `docs/TODO-NEXT.md` — 后续待办
-- `issues/` — 问题追踪（ISSUE-001 ~ ISSUE-046）
+- `issues/` — 问题追踪（ISSUE-001 ~ ISSUE-050）
